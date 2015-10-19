@@ -11,6 +11,8 @@ fabiobz 0 2015-10-12 17:08 README.txt
  This simluation implements a single scintillation detector with a PMT. 
  The timing information, energy spectrum and number of absorbed photon per
  event is saved as a histogram. 
+ 
+ //Test of small change
 	
  1- GEOMETRY DEFINITION
 	
