@@ -1,5 +1,6 @@
-build
-data
+build/*.*
+build/*
+data/*.vec
 .settings
 .cproject
 .project

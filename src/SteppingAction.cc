@@ -47,7 +47,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 		{
 		G4double EdepStep = aStep->GetTotalEnergyDeposit();
 		if (EdepStep > 0.) {
-		G4double eventAction->totEnergyDep = eventAction->totEnergyDep + EdepStep;
+		eventAction->totEnergyDep = eventAction->totEnergyDep + EdepStep; //TODO not initialized
 		//G4cout <<  eventAction->totEnergyDep << endl;
 		}
 		}
