@@ -33,6 +33,7 @@
 #include "G4LogicalVolume.hh"
 #include "G4Box.hh"
 #include "G4Tubs.hh"
+#include "G4Cons.hh"
 #include "G4UnionSolid.hh"
 #include "G4Material.hh"
 #include "G4NistManager.hh"
@@ -41,6 +42,8 @@
 #include "G4SystemOfUnits.hh"
 #include "G4Transform3D.hh"
 #include "G4PhysicalConstants.hh"
+
+#include "G4Colour.hh"
 
 //#include "G4MultiFunctionalDetector.hh"
 //#include "G4VPrimitiveScorer.hh"
@@ -111,6 +114,14 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   //
   // define materials from elements.
   //
+
+	// Aluminium
+	//a = 26.98*g/mole;
+	G4Material* Aluminium = new G4Material("Aluminum", density = 2.700*g/cm3, ncomponents=1);
+	Aluminium->AddElement(Al, natoms=1);
+
+	// Plexiglas
+	G4Material* PlexiGlass = man->FindOrBuildMaterial("G4_PLEXIGLASS");
 
   // Sili
   G4Material* Sili =    new G4Material("Silicon", density= 2.330*g/cm3, ncomponents=1);
@@ -299,7 +310,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	// World
 	//
 
-  G4double world_sizeXYZ = 35*cm;
+  G4double world_sizeXYZ = 50*cm;
 
   G4Box* solidWorld = new G4Box("World",
                          world_sizeXYZ/2, world_sizeXYZ/2, world_sizeXYZ/2);     				//size (defined through half-sizes)
@@ -308,7 +319,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                         		  vacuum,           	//material of the World
                         		  "World");         	//name
 
-  G4VPhysicalVolume* WorldPhys = new G4PVPlacement(0,       //specifies rotation: 0 = no rotation
+  G4VPhysicalVolume* physiWorld = new G4PVPlacement(0,       //specifies rotation: 0 = no rotation
                       			    G4ThreeVector(),     	//at (0,0,0)
                       				WorldLog,            	//logical volume
 									"World",               	//name
@@ -319,98 +330,213 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 
 
-  	//
-	// Detector
-	//
+    // parameters
 
-
-	// Reflector
-	// Assumption: We (currently) don't know whether we really have a Reflector/Material properiets
-	//             the specifications are taken from the Scintillation example
-
-	G4double crystalOuterR = 50.*mm;
+	G4double crystalOuterR = 8.89*cm/2; // 3.5 in in cm
   	G4double crystalInnerR = 0.0*mm;
   	G4double crystalHalfLength = 213.5*0.5*mm;
-  	G4double startAngleOfTheCrystal = 0.*deg;
-  	G4double spanningAngleOfTheCrystal = 360.*deg;
+  	G4double startPhi = 0.*deg;
+  	G4double deltaPhi = 360.*deg;
 
-  	G4double ReflectorThickness = 0.5*mm;
-	G4double ReflectorHalfLength = crystalHalfLength + ReflectorThickness;
+  	G4double reflectorThickness = 1*mm; // assumption: 1 mm thick reflector on the front side
+	G4double reflectorHalfLength = crystalHalfLength + 0.5 * reflectorThickness; // assumption: backside doesn't have a reflector
 	//G4double ReflectorInnerR = crystalOuterR;
-	G4double ReflectorInnerR = 0;
-	G4double ReflectorOuterR = crystalOuterR + ReflectorThickness;
-	G4double StartPhi = 0.*deg;
-	G4double DeltaPhi = 360.*deg;
+	G4double reflectorInnerR = 0*mm;
+	G4double reflectorOuterR = crystalOuterR + reflectorThickness;
+
+	// in between reflector and coating, there will be some plastic
+	G4double coatingPlasticThickness = 2.55*mm; // assumption: 2.55 mm plexiglas coating around the reflector before the aluminium
+
+  	G4double coatingThickness = 2.*mm; // thickness as in the radius part
+  	G4double coatingThicknessFront = 1.*mm; // we assume a smaller thickness at the front of the detector
+  	G4double coatingOuterR = 100.*mm/2 ;
+  	G4double coatingHalfLength = reflectorHalfLength + 0.5 * coatingThicknessFront + 0.5 * coatingPlasticThickness; // backside doesn't have an (Aluminium) coating
+
+  	G4double plexiGlasWindowOuterR = coatingOuterR; // currently we just assume a flat window on the top.
+  	G4double plexiGlasWindowHalfLength= 0.5 * 1*mm;
+
+  	G4double shieldingThickness = 5*mm; 		// thickness of the tube
+  	G4double shieldingHalfThicknessLid = 2*mm/2;
+  	G4double shieldingInnerR = 0*mm; 			// as we use it as a mother volume
+  	G4double shieldingOuterR = coatingOuterR + shieldingThickness;
+
+  	//in the front, the shielding tube diameter is reduces. It's later modeled by a conical section
+  	G4double shieldingConeHalfLength = 10.*mm;// in the front, the tube
+  	//G4double shieldingConeInnerRFront = coatingOuterR;
+  	G4double shieldingConeOuterRFront = coatingOuterR + 2.*mm;
+  	//G4double shieldingConeInnerRBack = shieldingConeInnerRFront;
+  	G4double shieldingConeOuterRBack = coatingOuterR + 5.*mm;
+
+  	G4double shieldingHalfLength = coatingHalfLength - shieldingConeHalfLength; // without conical Section and Lid
+  																						 //  we assume no coating at the back side
+
+
+
+  	//
+	// Detector Geometry
+	//
+
+  	//
+    // Shielding
+  	//
+
+  	// Main tube
+
+  	G4Tubs* solidShieldingMain = new G4Tubs("ShieldingMainTube",
+											shieldingInnerR,
+											shieldingOuterR,
+											shieldingHalfLength,
+											startPhi,
+											deltaPhi);
+
+	//G4LogicalVolume* logicShieldingMain = new G4LogicalVolume(solidShieldingMain, Aluminium, "ShieldingMainTube");
+
+	// concial section
+
+	G4Cons* solidShieldingConical = new G4Cons("ShieldingConnical",
+										shieldingInnerR,   // inner radius = 0 because used as mother volume
+										shieldingConeOuterRFront,
+										shieldingInnerR,   // inner radius = 0 because used as mother volume
+										shieldingConeOuterRBack,
+										shieldingConeHalfLength,
+										startPhi,
+										deltaPhi);
+
+	//G4LogicalVolume* logicShieldConical = new G4LogicalVolume(solidShieldingConical, Aluminium, "ShieldingConical");
+
+	// lid
+
+  	G4Tubs* solidShieldingLid = new G4Tubs("ShieldingLid",
+  									shieldingInnerR,
+  									shieldingConeOuterRFront, // we assume that there is no gap between the coating/crystal and shielding
+  									shieldingHalfThicknessLid,
+  									startPhi,
+  									deltaPhi);
+
+	//G4LogicalVolume* logicShieldingLid = new G4LogicalVolume(solidShieldingLid, Aluminium, "ShieldingLid");
+
+	// add the shielding parts together
+
+  	// The origin and the coordinates of the combined solid are the same as those of
+  	// the first solid.
+
+	G4ThreeVector translationUnion1 = G4ThreeVector(0, 0, - (shieldingConeHalfLength+shieldingHalfThicknessLid) );
+    G4UnionSolid* unionShielding1 = new  G4UnionSolid("unionShielding1",
+									solidShieldingConical,  // 1st object
+									solidShieldingLid,	   // 2nd object
+                    				0,				// no Rotation
+                    				translationUnion1);   // translation of the second object
+
+	G4ThreeVector translationUnion2 = G4ThreeVector(0, 0, -(shieldingHalfLength+shieldingConeHalfLength));
+    G4UnionSolid* unionShielding2 = new  G4UnionSolid ("unionShielding2",
+									solidShieldingMain,		     // 1nd object
+									unionShielding1,			// 2st object
+                    				0,				// no Rotation
+                    				translationUnion2);   // translation of the second object
+
+    G4LogicalVolume* logicShielding = new G4LogicalVolume(unionShielding2, Aluminium, "ShieldingLid");
+
+    G4ThreeVector positionShielding = G4ThreeVector(0.*cm,
+    											    0.*cm,
+    											    2*(shieldingHalfLength + shieldingConeHalfLength)-2*crystalHalfLength-reflectorThickness-coatingPlasticThickness-coatingThicknessFront
+
+    ); // because of the shift in the coordinate system of the coating
+    																					 // (center != origin)
+
+	G4VPhysicalVolume* physiShield = new G4PVPlacement(0, positionShielding, "Shielding", logicShielding, physiWorld, false, 0);
+
+
+	//
+	// Detector Crystal (incl. Reflector & Coating)
+	//
+
+	// Coating
+	// Coating: Aluminum part
+
+	G4Tubs* solidCoating = new G4Tubs("Coating",
+	  									0. * mm, // inner radius = 0 because used as mother volume
+	  									coatingOuterR,
+	  									coatingHalfLength,
+	  									startPhi,
+	  									deltaPhi);
+
+	G4LogicalVolume* logicCoating = new G4LogicalVolume(solidCoating, Aluminium, "Coating");
+
+	G4ThreeVector positionCoating = G4ThreeVector(0.*cm,0.*cm,-shieldingConeHalfLength); // because of the shift in the coordinate system of the shielding
+																						 // (center != origin)
+
+	G4VPhysicalVolume* physiCoating = new G4PVPlacement(0,positionCoating,
+															  "Coating",logicCoating,
+															  physiShield,false,0);
+	// Coating: PlexiGlass part
+	G4Tubs* solidCoatingPlexi = new G4Tubs("CoatingPlexiGlas",
+	  									0. * mm, // inner radius = 0 because used as mother volume
+	  									coatingOuterR-coatingThickness,
+	  									coatingHalfLength - 0.5 * coatingThicknessFront, // in order to get the coatingPlasticHalfLength
+	  									startPhi,
+	  									deltaPhi);
+
+	G4LogicalVolume* logicCoatingPlexi = new G4LogicalVolume(solidCoatingPlexi, PlexiGlass, "CoatingPlexiGlas");
+
+	G4ThreeVector positionCoatingPlexi = G4ThreeVector(0.*cm,
+													   0.*cm,
+													   0.5 * coatingThicknessFront); // because of the shift in the coordinate system of the coating
+																					 // (center != origin)
+
+	G4VPhysicalVolume* physiCoatingPlexi = new G4PVPlacement(0,positionCoatingPlexi,
+															  "CoatingPlexiGlas",logicCoatingPlexi,
+															  physiCoating,false,0);
+
+	// Reflector
+	// Assumption: We (currently) don't know whether we really have a Reflector/Material properties
+	//             the specifications are taken from the Scintillation example
 
 	G4Tubs* solidReflector = new G4Tubs("Reflector",
-										ReflectorInnerR, ReflectorOuterR, ReflectorHalfLength,
-										StartPhi,DeltaPhi);
+										reflectorInnerR, reflectorOuterR, reflectorHalfLength,
+										startPhi,deltaPhi);
 
 	G4LogicalVolume* logicReflector = new G4LogicalVolume(solidReflector,MgO,
 														  "Reflector");
 
-	G4ThreeVector positionReflector = G4ThreeVector(0.*cm,0.*cm,0.*cm);
+	G4ThreeVector positionReflector = G4ThreeVector(0.*cm,
+													0.*cm,
+													0.5 * coatingPlasticThickness
+													);
 
 	G4VPhysicalVolume* physiReflector = new G4PVPlacement(0,positionReflector,
 														  "Reflector",logicReflector,
-														  WorldPhys,false,0);
+														  physiCoatingPlexi,false,0);
 
 	// Crystal
 
-  	G4Tubs* detectorSolid = new G4Tubs("Crystal",
+  	G4Tubs* solidCrystal = new G4Tubs("Crystal",
 				 			crystalInnerR, crystalOuterR, crystalHalfLength,
-                                 		startAngleOfTheCrystal,spanningAngleOfTheCrystal);
+                                 		startPhi,deltaPhi);
 
-    G4LogicalVolume* detectorLog = new G4LogicalVolume(detectorSolid, LaBr3_Ce, "Crystal");
+    G4LogicalVolume* logicCrystal = new G4LogicalVolume(solidCrystal, LaBr3_Ce, "Crystal");
 
-    G4ThreeVector positionCrystal = G4ThreeVector(0.*cm,0.*cm,ReflectorThickness);
+    G4ThreeVector positionCrystal = G4ThreeVector(0.*cm,0.*cm, 0.5*reflectorThickness );
 
 	G4VPhysicalVolume* physiCrystal = new G4PVPlacement(0, positionCrystal, "Crystal",
-	                                                    detectorLog, physiReflector, false, 0);
+	                                                    logicCrystal, physiReflector, false, 0);
 
+	// Plexiglas Window on Detector
+	G4Tubs* solidPlexiWindow = new G4Tubs("PlexiGlasWindow",
+	  									0. * mm, // inner radius = 0
+	  									plexiGlasWindowOuterR,
+	  									plexiGlasWindowHalfLength, // in order to get the coatingPlasticHalfLength
+	  									startPhi,
+	  									deltaPhi);
 
+	G4LogicalVolume* logicPlexiWindow = new G4LogicalVolume(solidPlexiWindow, PlexiGlass, "PlexiGlasWindow");
 
-    // Shielding
+	G4ThreeVector positionPlexiWindow = G4ThreeVector(0.*cm,
+													  0.*cm,
+													  crystalHalfLength+plexiGlasWindowHalfLength); // because of the shift in the coordinate system of the coating
+																					 // (center != origin)
 
-    G4double shieldOuterR = 60.*mm + ReflectorThickness;
-  	G4double shieldInnerR = 50.*mm + ReflectorThickness;
-  	G4double shieldHeight = 213.5*0.5*mm;
-  	G4double startAngleOfTheShield = 0.*deg;
-  	G4double spanningAngleOfTheShield = 360.*deg;
-
-
-  	G4Tubs* shieldSolid = new G4Tubs("Shield",
-				 			shieldInnerR, shieldOuterR, shieldHeight,
-                                 		startAngleOfTheShield,spanningAngleOfTheShield);
-
-    G4LogicalVolume* shieldLog = new G4LogicalVolume(shieldSolid, iron, "Shield");
-
-	G4VPhysicalVolume* physiShield = new G4PVPlacement(0, G4ThreeVector(), "Shield", shieldLog, WorldPhys, false, 0);
-
-   // define lid - addition of two disks
-
-	G4double lidOuterR = 60.*mm;
-	G4double lidFullInnerR = 0.*mm;
-	G4double lidDiskInnerR = 90.5*0.5*mm;
-	G4double lidHeight = 2.5*mm;
-	G4double startAngle = 0.*deg;
-  	G4double spanningAngle = 360.*deg;
-
-  	G4ThreeVector translate = G4ThreeVector(0, 0, -5*mm);
-  	G4RotationMatrix rMat;									// rotation matrix around X axis
-  		rMat.rotateX(0.*deg);
-  	G4Transform3D transform(rMat,translate);
-
-  	G4Tubs* lidFullSolid = new G4Tubs("LidFull", lidFullInnerR, lidOuterR, lidHeight, startAngle, spanningAngle);
-  	G4Tubs* lidDiskSolid = new G4Tubs("LidDisk", lidDiskInnerR, lidOuterR, lidHeight, startAngle, spanningAngle);
-  	G4UnionSolid* lidSolid = new G4UnionSolid("Lid", lidFullSolid, lidDiskSolid, transform);
-
-  	G4LogicalVolume* lidLog = new G4LogicalVolume( lidSolid, iron, "Lid");
-
-  	G4ThreeVector positionLid = G4ThreeVector(0.,0., -(crystalHalfLength + ReflectorThickness)  );
-
-	G4VPhysicalVolume* physiLid = new G4PVPlacement(0, positionLid, "Lid", lidLog, WorldPhys, false, 0);
-
+	G4VPhysicalVolume* physiPlexiWindow = new G4PVPlacement(0,positionPlexiWindow,
+			"PlexiGlasWindow",logicPlexiWindow,physiWorld,false,0);
 
 	//
 	// PMT
@@ -419,40 +545,40 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4double PMTWindowHalfLength = 1.0*mm;
 	G4double PMTWindowRadius = 85*0.5*mm;
 
-	G4double CathodeHalfLength = 0.005*mm;
-	G4double CathodeRadius =85*0.5*mm;
+	G4double cathodeHalfLength = 0.005*mm;
+	G4double cathodeRadius =85*0.5*mm;
 
 
     // PMT window
 
 	G4Tubs* solidPMTWindow = new G4Tubs("PMTWindow",0.*cm,PMTWindowRadius,
-										PMTWindowHalfLength,StartPhi,DeltaPhi);
+										PMTWindowHalfLength,startPhi,deltaPhi);
 
 	G4LogicalVolume* logicPMTWindow = new G4LogicalVolume(solidPMTWindow,
 														  SiO2,"PMTWindow");
 
 	G4ThreeVector positionPMTWindow = G4ThreeVector(0.*cm,0.*cm,
-													crystalHalfLength+PMTWindowHalfLength);
+													crystalHalfLength+2.*plexiGlasWindowHalfLength+PMTWindowHalfLength);
 
 	G4VPhysicalVolume* physiPMTWindow = new G4PVPlacement(0,positionPMTWindow,
 														  "PMTWindow",logicPMTWindow,
-														  WorldPhys,false,0);
+														  physiWorld,false,0);
 
 	// Photocathode
 
-	G4Tubs* solidCathode = new G4Tubs("Cathode",0.*cm,CathodeRadius,
-									  CathodeHalfLength,StartPhi,DeltaPhi);
+	G4Tubs* solidCathode = new G4Tubs("Cathode",0.*cm,cathodeRadius,
+									  cathodeHalfLength,startPhi,deltaPhi);
 
 	G4LogicalVolume* logicCathode = new G4LogicalVolume(solidCathode,
 														Bialkali,"Cathode");
 
 	G4ThreeVector positionCathode = G4ThreeVector(0.*cm,0.*cm,
-												  crystalHalfLength+2.*PMTWindowHalfLength
-												  +CathodeHalfLength);
+												  crystalHalfLength+2.*plexiGlasWindowHalfLength+2.*PMTWindowHalfLength
+												  +cathodeHalfLength);
 
 	G4VPhysicalVolume* physiCathode = new G4PVPlacement(0,positionCathode,
 														"Cathode",logicCathode,
-														WorldPhys,false,0);
+														physiWorld,false,0);
 
 
 	//------------------------------------------------------
@@ -460,10 +586,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	//------------------------------------------------------
 
 
-	// Reflector - sintillator surface
+	// Reflector - scintillator surface
 
 			//some sort of reflector!
-		// Reflector - sintillator surface
+		// Reflector - scintillator surface
 		// HELP HELP HELP!! This needs to be reviewed!
 
 	G4OpticalSurface* OpRefCrySurface =
@@ -525,31 +651,35 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	// visualization attributes
 	//------------------------------------------------------
 
-//  detectorLog->SetVisAttributes(G4VisAttributes::GetInvisible());
-  G4VisAttributes* worldVisAtt= new G4VisAttributes(G4Colour(1.0,1.0,1.0)); //White
-  worldVisAtt->SetVisibility(true);
-  detectorLog->SetVisAttributes(worldVisAtt);
+	// White color for Detector
+	G4VisAttributes* VisAtt1= new G4VisAttributes(G4Colour(1.0,1.0,1.0)); //White
+	logicCrystal->SetVisAttributes(VisAtt1);
 
-  G4VisAttributes* worldVisAtt1 = new G4VisAttributes(G4Colour(1.0,0.0,0.0)); //red
-  worldVisAtt1->SetVisibility(true);
-  shieldLog->SetVisAttributes(worldVisAtt1);
-//    shieldLog->SetVisAttributes(G4VisAttributes::GetInvisible());
+	// Red color for Shielding
+	G4VisAttributes* VisAtt2 = new G4VisAttributes(G4Colour(1.0,0.0,0.0)); //red
+	logicShielding->SetVisAttributes(VisAtt2);
 
-  G4VisAttributes* worldVisAtt2 = new G4VisAttributes(G4Colour(0.0,1.0,0.0)); //red
-  worldVisAtt2->SetVisibility(true);
-  lidLog->SetVisAttributes(worldVisAtt2);
+	// Gray color for Coating (Aluminium)
+	G4VisAttributes* VisAtt3= new G4VisAttributes(G4Colour(0.5, 0.5, 0.5));
+	logicCoating->SetVisAttributes(VisAtt3);
 
-	//Blue color for PMT window
-	G4VisAttributes* Att3= new G4VisAttributes(G4Colour(0.0,0.0,1.0));
-	logicPMTWindow->SetVisAttributes(Att3);
+	// Brown color for CoatingPlexiGlass
+	G4VisAttributes* VisAtt4= new G4VisAttributes(G4Colour(0.45,0.25,0.0));
+	logicCoatingPlexi->SetVisAttributes(VisAtt4);
 
-	//White color for the absorber photocathode
-	G4VisAttributes* Att4= new G4VisAttributes(G4Colour(1.0,1.0,1.0));
-	logicCathode->SetVisAttributes(Att4);
+	// Yellow color for reflector
+	G4VisAttributes* VisAtt7= new G4VisAttributes(G4Colour(1.0,1.0,0.0));
+	logicReflector->SetVisAttributes(VisAtt7);
 
-		//Yellow color for reflector
-	G4VisAttributes* Att2= new G4VisAttributes(G4Colour(1.0,1.0,0.0));
-	logicReflector->SetVisAttributes(Att2);
+	// Blue color for PMT window
+	G4VisAttributes* VisAtt5= new G4VisAttributes(G4Colour(0.0,0.0,1.0));
+	logicPMTWindow->SetVisAttributes(VisAtt5);
+
+	// White color for the absorber photocathode
+	G4VisAttributes* VisAtt6= new G4VisAttributes(G4Colour(1.0,1.0,1.0));
+	logicCathode->SetVisAttributes(VisAtt6);
+
+
 
 
 
@@ -560,7 +690,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	// always return the physical World
 	//
 
-  return WorldPhys;
+  return physiWorld;
 }
 
 //void DetectorConstruction::ConstructSDandField()

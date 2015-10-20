@@ -6,11 +6,11 @@
 
 class G4VPhysicalVolume;
 
-class TestDetectorConstruction : public G4VUserDetectorConstruction
+class DetectorConstruction : public G4VUserDetectorConstruction
 {
   public:
-    TestDetectorConstruction();
-    ~TestDetectorConstruction();
+    DetectorConstruction();
+    ~DetectorConstruction();
 
   public:
      G4VPhysicalVolume* Construct();
