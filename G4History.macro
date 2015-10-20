@@ -42,3 +42,5 @@
 /vis/viewer/flush
 /vis/viewer/refresh viewer-0
 /vis/viewer/update viewer-0
+/control/execute run10.mac
+/run/beamOn 1

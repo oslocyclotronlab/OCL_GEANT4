@@ -1,9 +1,3 @@
-///////////////////////////////////////////
-//
-// Apr/2015  E. Nacher -> EventAction.cc
-//
-///////////////////////////////////////////
-
 #include "EventAction.hh"
 
 #include "RunAction.hh"
@@ -42,8 +36,8 @@ EventAction::~EventAction()
 
 void EventAction::BeginOfEventAction(const G4Event*)
 {
-	G4double totEnergyDep = 0.; // TODO why still not initialized?
-	G4double nAbsPhotons = 0;
+	totEnergyDep = 0.;
+	nAbsPhotons = 0;
 }
 
 void EventAction::EndOfEventAction(const G4Event* evt)
