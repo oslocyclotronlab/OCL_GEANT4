@@ -8,6 +8,7 @@
 
 	char InputFileName[60], ;
 	int NumberOfChannels = 2000;
+	int Erange = 1000; // Energy Range in keV
 	int Histo[NumberOfChannels];
 	float dummy;
 
@@ -35,7 +36,7 @@
 
 	cout << "Processing data..." << endl;
 
-	TH1F* RootHist = new TH1F(" ","",NumberOfChannels,0,1000.);
+	TH1F* RootHist = new TH1F(" ","",NumberOfChannels,0,Erange);
 
 	while(i < NumberOfChannels && InputFile.good()){
 	    InputFile >> i >> Histo[i];

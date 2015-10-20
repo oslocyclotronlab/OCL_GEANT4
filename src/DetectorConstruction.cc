@@ -23,9 +23,7 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-// -------------------------------------------------------------------
-// $Id: DetectorConstruction.cc,v 1.5 2010-10-06 14:39:41 sincerti Exp $
-// -------------------------------------------------------------------
+
 
 #include "DetectorConstruction.hh"
 
@@ -58,8 +56,8 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
 DetectorConstruction::DetectorConstruction()
-:
-     solidWorld(0), WorldLog(0), WorldPhys(0)
+//:
+//     solidWorld(0), WorldLog(0), WorldPhys(0)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
@@ -212,7 +210,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     // at the moment taken from the Scintiallator example
   	const G4int nEntries = 2;
 
-	G4double PhotonEnergy[nEntries] = {1.0*eV,7.0*eV};
+	G4double PhotonEnergy[nEntries] = {1.0*eV,7.0*eV}; // 1eV -> 1.2399 µm; 7eV -> 0.1771µm // TODO more detailed; adopt all of them
 
 	// MgO reflector
 
@@ -254,6 +252,31 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	LaBr3MPT->AddConstProperty("SCINTILLATIONYIELD",63./keV);     // manifact. info
 
 	LaBr3_Ce->SetMaterialPropertiesTable(LaBr3MPT);
+
+
+
+	// PlexiGlas
+
+	G4double PhotonEnergy_PlexiGlass[nEntries] = {3.2626*eV, 3.4439*eV}; // 3.4439eV <- 360nm; 3.2626eV <- 380nm
+
+	//info from: http://refractiveindex.info/?shelf=organic&book=poly%28methyl_methacrylate%29&page=Szczurowski
+	// Szczurowski 2013 - n 0.4047-1.083 µm; extrapolated with
+	// n=\sqrt( 1+\frac{0.99654λ^2}{λ^2-0.00787}+\frac{0.18964λ^2}{λ^2-0.02191}
+	//          +\frac{0.00411λ^2}{λ^2-3.85727} ), where λ is in µm
+	G4double PlexiGlasRefractionIndex[nEntries] = {1.47996,1.47996};
+
+	// values from
+	// Polycast Acrylic Sheets. Davis Earle, Ron Deal and Earl Gaudette. 	SNO-STR-93-042	revised and expanded Jan 24, 1994
+	G4double PlexiGlasAbsorptionLength[nEntries] = {1./(0.04e-2)*m,1./(0.02e-2)*m};
+
+	G4MaterialPropertiesTable* PlexiGlasMPT = new G4MaterialPropertiesTable();
+
+	MgOMPT->AddProperty("RINDEX",PhotonEnergy,MgORefractionIndex,
+						nEntries);
+	MgOMPT->AddProperty("ABSLENGTH",PhotonEnergy,MgOAbsorptionLength,
+						nEntries);
+
+	PlexiGlass->SetMaterialPropertiesTable(PlexiGlasMPT);
 
 	// Quartz
 
@@ -334,7 +357,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	G4double crystalOuterR = 8.89*cm/2.; // 3.5 in in cm
   	G4double crystalInnerR = 0.0*mm;
-  	G4double crystalHalfLength = 213.5*0.5*mm;
+  	G4double crystalHalfLength = 203.2*0.5*mm; // 8 in in cm
   	G4double startPhi = 0.*deg;
   	G4double deltaPhi = 360.*deg;
 
@@ -351,9 +374,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4double coatingPlasticThickness = coatingOuterR - coatingThickness -reflectorThickness - crystalOuterR; // assumption: 2.55 mm plexiglas coating around the reflector before the aluminium
   	G4double coatingHalfLength = reflectorHalfLength + 0.5 * coatingThicknessFront + 0.5 * coatingPlasticThickness; // backside doesn't have an (Aluminium) coating
 
-  	G4double plexiGlasWindowOuterR = coatingOuterR; // currently we just assume a flat window on the top.
-  	G4double plexiGlasWindowHalfLength= 0.5 * 1.*mm;
-
   	G4double shieldingThickness = 5.*mm; 		// thickness of the tube
   	G4double shieldingHalfThicknessLid = 2.*mm/2.;
   	G4double shieldingInnerR = 0*mm; 			// as we use it as a mother volume
@@ -368,6 +388,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
   	G4double shieldingHalfLength = coatingHalfLength - shieldingConeHalfLength; // without conical Section and Lid
   																						 //  we assume no coating at the back side
+
+  	G4double plexiGlasWindowOuterR = shieldingOuterR; // currently we just assume a flat window on the top.
+  	G4double plexiGlasWindowHalfLength= 0.5 * 1.*mm;
 
 
 
@@ -437,10 +460,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
     G4ThreeVector positionShielding = G4ThreeVector(0.*cm,
     											    0.*cm,
-    											    //2*(shieldingHalfLength + shieldingConeHalfLength)-2*crystalHalfLength-reflectorThickness-coatingPlasticThickness-coatingThicknessFront
-    											    shieldingConeHalfLength-2.275*mm // TODO: Why exactly this number?!; something todo with the plastic layer
-    ); // because of the shift in the coordinate system of the coating
-    																					 // (center != origin)
+    											    -(coatingHalfLength-shieldingConeHalfLength-crystalHalfLength) // because of the shift in the coordinate system of the coating
+    												);  														   // (center != origin)
 
 	G4VPhysicalVolume* physiShield = new G4PVPlacement(0, positionShielding, "Shielding", logicShielding, physiWorld, false, 0);
 
@@ -588,22 +609,29 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	// Reflector - scintillator surface
 
-			//some sort of reflector!
-		// Reflector - scintillator surface
-		// HELP HELP HELP!! This needs to be reviewed!
+	G4OpticalSurface* OpCryRefSurface =
+	new G4OpticalSurface("CryRefSurface");
 
-	G4OpticalSurface* OpRefCrySurface =
-	new G4OpticalSurface("RefCrySurface");
+	OpCryRefSurface->SetType(dielectric_metal);
+	OpCryRefSurface->SetModel(glisur);
+	OpCryRefSurface->SetFinish(polished);
 
-	OpRefCrySurface->SetType(dielectric_metal);
-	OpRefCrySurface->SetModel(glisur);
-	OpRefCrySurface->SetFinish(polished);
+	G4LogicalBorderSurface* CryRefSurface =
+    new G4LogicalBorderSurface("CryRefSurface",physiCrystal,
+							   physiReflector,OpCryRefSurface);
 
-	G4LogicalBorderSurface* RefCrySurface =
-    new G4LogicalBorderSurface("RefCrySurface",physiCrystal,
-							   physiReflector,OpRefCrySurface);
+	// scintillator - scintillatorPlexiGlass surface
 
+	G4OpticalSurface* OpCryPlexiSurface =
+	new G4OpticalSurface("CryPlexiSurface");
 
+	OpCryPlexiSurface->SetType(dielectric_dielectric);
+	OpCryPlexiSurface->SetModel(glisur);
+	OpCryPlexiSurface->SetFinish(polished);
+
+	G4LogicalBorderSurface* CryPlexiSurface =
+    new G4LogicalBorderSurface("CryPlexiSurface",physiCrystal,
+							   physiCoatingPlexi,OpCryPlexiSurface);
 
 //	G4OpticalSurface* OpRefCrySurface =
 //	new G4OpticalSurface("RefCrySurface");
@@ -617,18 +645,18 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 //							   physiShield,OpRefCrySurface);
 
 
-	// Scintillator - PMT window surface
+	// scintillatorPlexiGlass - PMT window surface
 
-	G4OpticalSurface* OpCryPMTWinSurface =
-	new G4OpticalSurface("CryPMTWinSurface");
+	G4OpticalSurface* OpPlexiPMTWinSurface =
+	new G4OpticalSurface("CryPlexiPMTWinSurface");
 
-	OpCryPMTWinSurface->SetType(dielectric_dielectric);
-	OpCryPMTWinSurface->SetModel(glisur);
-	OpCryPMTWinSurface->SetFinish(polished);
+	OpPlexiPMTWinSurface->SetType(dielectric_dielectric);
+	OpPlexiPMTWinSurface->SetModel(glisur);
+	OpPlexiPMTWinSurface->SetFinish(polished);
 
-	G4LogicalBorderSurface* CryPMTWinSurface =
-    new G4LogicalBorderSurface("CryPMTWinSurface",physiCrystal,physiPMTWindow,
-							   OpCryPMTWinSurface);
+	G4LogicalBorderSurface* CryPlexiPMTWinSurface =
+    new G4LogicalBorderSurface("CryPlexiPMTWinSurface",physiCoatingPlexi,physiPMTWindow,
+							   OpPlexiPMTWinSurface);
 
 	// PMT window - photocathode surface
 
