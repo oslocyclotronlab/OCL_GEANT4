@@ -332,31 +332,30 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
     // parameters
 
-	G4double crystalOuterR = 8.89*cm/2; // 3.5 in in cm
+	G4double crystalOuterR = 8.89*cm/2.; // 3.5 in in cm
   	G4double crystalInnerR = 0.0*mm;
   	G4double crystalHalfLength = 213.5*0.5*mm;
   	G4double startPhi = 0.*deg;
   	G4double deltaPhi = 360.*deg;
 
-  	G4double reflectorThickness = 1*mm; // assumption: 1 mm thick reflector on the front side
+  	G4double reflectorThickness = 1.*mm; // assumption: 1 mm thick reflector on the front side
 	G4double reflectorHalfLength = crystalHalfLength + 0.5 * reflectorThickness; // assumption: backside doesn't have a reflector
 	//G4double ReflectorInnerR = crystalOuterR;
-	G4double reflectorInnerR = 0*mm;
+	G4double reflectorInnerR = 0.*mm;
 	G4double reflectorOuterR = crystalOuterR + reflectorThickness;
-
-	// in between reflector and coating, there will be some plastic
-	G4double coatingPlasticThickness = 2.55*mm; // assumption: 2.55 mm plexiglas coating around the reflector before the aluminium
 
   	G4double coatingThickness = 2.*mm; // thickness as in the radius part
   	G4double coatingThicknessFront = 1.*mm; // we assume a smaller thickness at the front of the detector
-  	G4double coatingOuterR = 100.*mm/2 ;
+  	G4double coatingOuterR = 100.*mm/2. ;
+	// in between reflector and coating, there will be some plastic
+	G4double coatingPlasticThickness = coatingOuterR - coatingThickness -reflectorThickness - crystalOuterR; // assumption: 2.55 mm plexiglas coating around the reflector before the aluminium
   	G4double coatingHalfLength = reflectorHalfLength + 0.5 * coatingThicknessFront + 0.5 * coatingPlasticThickness; // backside doesn't have an (Aluminium) coating
 
   	G4double plexiGlasWindowOuterR = coatingOuterR; // currently we just assume a flat window on the top.
-  	G4double plexiGlasWindowHalfLength= 0.5 * 1*mm;
+  	G4double plexiGlasWindowHalfLength= 0.5 * 1.*mm;
 
-  	G4double shieldingThickness = 5*mm; 		// thickness of the tube
-  	G4double shieldingHalfThicknessLid = 2*mm/2;
+  	G4double shieldingThickness = 5.*mm; 		// thickness of the tube
+  	G4double shieldingHalfThicknessLid = 2.*mm/2.;
   	G4double shieldingInnerR = 0*mm; 			// as we use it as a mother volume
   	G4double shieldingOuterR = coatingOuterR + shieldingThickness;
 
@@ -438,8 +437,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
     G4ThreeVector positionShielding = G4ThreeVector(0.*cm,
     											    0.*cm,
-    											    2*(shieldingHalfLength + shieldingConeHalfLength)-2*crystalHalfLength-reflectorThickness-coatingPlasticThickness-coatingThicknessFront
-
+    											    //2*(shieldingHalfLength + shieldingConeHalfLength)-2*crystalHalfLength-reflectorThickness-coatingPlasticThickness-coatingThicknessFront
+    											    shieldingConeHalfLength-2.275*mm // TODO: Why exactly this number?!; something todo with the plastic layer
     ); // because of the shift in the coordinate system of the coating
     																					 // (center != origin)
 
@@ -532,7 +531,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	G4ThreeVector positionPlexiWindow = G4ThreeVector(0.*cm,
 													  0.*cm,
-													  crystalHalfLength+plexiGlasWindowHalfLength); // because of the shift in the coordinate system of the coating
+													  crystalHalfLength+plexiGlasWindowHalfLength
+													  ); // because of the shift in the coordinate system of the coating
 																					 // (center != origin)
 
 	G4VPhysicalVolume* physiPlexiWindow = new G4PVPlacement(0,positionPlexiWindow,

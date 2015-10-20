@@ -4,3 +4,4 @@ data/*.vec
 .settings
 .cproject
 .project
+G4source
