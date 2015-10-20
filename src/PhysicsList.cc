@@ -29,8 +29,8 @@ PhysicsList::PhysicsList() : G4VModularPhysicsList()
 	G4OpticalPhysics* opticalPhysics = new G4OpticalPhysics();
 	RegisterPhysics(opticalPhysics);
 
-	opticalPhysics->SetScintillationYieldFactor(1);
-	//opticalPhysics->SetScintillationYieldFactor(0.008);
+	//opticalPhysics->SetScintillationYieldFactor(1);
+	opticalPhysics->SetScintillationYieldFactor(0.008);
     opticalPhysics->SetScintillationExcitationRatio(0.);
 
 	opticalPhysics->SetTrackSecondariesFirst(kScintillation,true);

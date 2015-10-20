@@ -32,7 +32,7 @@ class EventAction : public G4UserEventAction
 	G4int        nAbsPhotons;
 	G4double     totEnergyDep;
 	//G4double     totEnergyDepCathod;
-
+	G4double  EdepInCrystal;
    
   private:
     RunAction*       runAction;

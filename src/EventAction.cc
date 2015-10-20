@@ -1,4 +1,7 @@
 #include "EventAction.hh"
+#include "Analysis.hh"
+//#include "Randomize.hh" // do we really need this?
+#include <iomanip>
 
 #include "RunAction.hh"
 
@@ -14,7 +17,7 @@ using namespace std;
 using namespace CLHEP;
 
 EventAction::EventAction(RunAction* RunAct)
-:runAction(RunAct)
+:runAction(RunAct),G4UserEventAction()
 {
 	// HistogramS length and range
 	TNumberChannel = 10000;  // number of channels
@@ -36,6 +39,8 @@ EventAction::~EventAction()
 
 void EventAction::BeginOfEventAction(const G4Event*)
 {
+	// initialisation per event
+	EdepInCrystal = 0.;
 	totEnergyDep = 0.;
 	nAbsPhotons = 0;
 }
@@ -72,6 +77,18 @@ void EventAction::EndOfEventAction(const G4Event* evt)
 
 	}
 
+	  // Accumulate statistics
+	  //
+
+	  // get analysis manager
+	  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+
+	  // fill histograms
+	  analysisManager->FillH1(1, EdepInCrystal);
+
+	  // fill ntuple
+	  analysisManager->FillNtupleDColumn(0, EdepInCrystal);
+	  analysisManager->AddNtupleRow();
 }
 
 void EventAction::fillThistogram(G4double T)

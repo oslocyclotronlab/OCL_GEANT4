@@ -16,6 +16,8 @@
 #include "EventAction.hh"
 #include "G4SteppingManager.hh"
 
+#include "G4RunManager.hh"
+
 #include "fstream"
 #include "iomanip"
 
@@ -41,14 +43,15 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 		G4double EdepStep = aStep->GetTotalEnergyDeposit();
 		
 		if (EdepStep > 0.) eventAction->totEnergyDep = eventAction->totEnergyDep + EdepStep;
+		if (EdepStep > 0.) eventAction->EdepInCrystal = eventAction->EdepInCrystal + EdepStep;
 
-		//count scintillating photons and kill the photons after the first step
-		if (particleName == "opticalphoton"){
-			eventAction->nAbsPhotons++;
-			G4double absTime = aStep -> GetPreStepPoint() -> GetGlobalTime();
-			eventAction-> fillThistogram(absTime);
-			aStep->GetTrack()->SetTrackStatus(fStopAndKill);
-		}
+//		//count scintillating photons and kill the photons after the first step
+//		if (particleName == "opticalphoton"){
+//			eventAction->nAbsPhotons++;
+//			G4double absTime = aStep -> GetPreStepPoint() -> GetGlobalTime();
+//			eventAction-> fillThistogram(absTime);
+//			aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+//		}
 	}
 	
 	// check if the photon is absorbed in the sensitive volume
