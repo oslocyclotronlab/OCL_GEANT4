@@ -39,8 +39,11 @@ EventAction::~EventAction()
 
 void EventAction::BeginOfEventAction(const G4Event*)
 {
+<<<<<<< HEAD
 	// initialisation per event
 	EdepInCrystal = 0.;
+=======
+>>>>>>> refs/remotes/origin/master
 	totEnergyDep = 0.;
 	nAbsPhotons = 0;
 }
