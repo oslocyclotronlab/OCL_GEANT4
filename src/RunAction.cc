@@ -39,7 +39,7 @@ RunAction::RunAction() : G4UserRunAction()
 	  G4int nbins;
 	  G4double xmin;
 	  G4double xmax;
-	  analysisManager->CreateH1("Histo1","Edep in Crystal", nbins=12000, xmin=0., xmax=12*MeV);
+	  analysisManager->CreateH1("Histo1","Edep in Crystal", nbins=1200, xmin=0., xmax=12*MeV);
 
 	  // Creating ntuple
 	  //

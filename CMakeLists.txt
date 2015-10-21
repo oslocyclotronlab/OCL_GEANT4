@@ -47,7 +47,9 @@ set(ScintSCRIPTS
   init.mac
   init_vis.mac
   vis.mac
+  vis_VRML.mac
   run1.mac
+  run100.mac
 
   )
 

@@ -43,17 +43,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 		G4double EdepStep = aStep->GetTotalEnergyDeposit();
 		
 		if (EdepStep > 0.) eventAction->totEnergyDep = eventAction->totEnergyDep + EdepStep;
-<<<<<<< HEAD
-		if (EdepStep > 0.) eventAction->EdepInCrystal = eventAction->EdepInCrystal + EdepStep;
 
-//		//count scintillating photons and kill the photons after the first step
-//		if (particleName == "opticalphoton"){
-//			eventAction->nAbsPhotons++;
-//			G4double absTime = aStep -> GetPreStepPoint() -> GetGlobalTime();
-//			eventAction-> fillThistogram(absTime);
-//			aStep->GetTrack()->SetTrackStatus(fStopAndKill);
-//		}
-=======
+		if (EdepStep > 0.) eventAction->EdepInCrystal = eventAction->EdepInCrystal + EdepStep;
 
 		//count scintillating photons and kill the photons after the first step
 		if (particleName == "opticalphoton"){
@@ -62,7 +53,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 			eventAction-> fillThistogram(absTime);
 			aStep->GetTrack()->SetTrackStatus(fStopAndKill);
 		}
->>>>>>> refs/remotes/origin/master
+
+
 	}
 	
 	// check if the photon is absorbed in the sensitive volume
