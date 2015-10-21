@@ -56,8 +56,8 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
 DetectorConstruction::DetectorConstruction()
-//:
-//     solidWorld(0), WorldLog(0), WorldPhys(0)
+:
+     solidWorld(0), WorldLog(0), WorldPhys(0)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
@@ -333,7 +333,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	// World
 	//
 
-  G4double world_sizeXYZ = 50*cm;
+  G4double world_sizeXYZ = 80*cm;
 
   G4Box* solidWorld = new G4Box("World",
                          world_sizeXYZ/2, world_sizeXYZ/2, world_sizeXYZ/2);     				//size (defined through half-sizes)
@@ -601,6 +601,50 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 														"Cathode",logicCathode,
 														physiWorld,false,0);
 
+	//
+	// Collimator
+	//
+
+	// TODO set this as default value for GPS
+	G4double distSourceCol = 20.*cm; 		// Distance from source to Collimator (beginning)
+
+	G4double collimatorHalfLength = 2.*cm; // adapt here for different collimator lengths
+	// Distance from collimator End to Crystal Half point (or fraction r in crystal length)
+	G4double distHalfColHalfCry = collimatorHalfLength + 2.*shieldingHalfThicknessLid + coatingThicknessFront
+	                              + coatingPlasticThickness + reflectorThickness + crystalHalfLength;
+	G4double ratioInCrystal = 0.5;          // range: [0..1], defines point r from where the gammas can hit the crystal
+	G4double distColEndPointToRatioCrsytal = distHalfColHalfCry - collimatorHalfLength + ( 2*ratioInCrystal - 1.) * crystalHalfLength;
+	//parameters for collimator as a cone as a function of the parameters above
+	// 1 is the front (towards source), 2 the backside
+    G4double colRmin1 = crystalOuterR * (distSourceCol / (distSourceCol + 2.*collimatorHalfLength + distColEndPointToRatioCrsytal) );
+    G4double colRmax1 = crystalOuterR * (distSourceCol / (distSourceCol + 2.*collimatorHalfLength) );
+	G4double colRmin2 = crystalOuterR * (distSourceCol + 2*collimatorHalfLength)
+			             / ( distSourceCol + 2*collimatorHalfLength + distColEndPointToRatioCrsytal );
+	G4double colRmax2 = shieldingConeOuterRFront;
+
+
+	// Collimator geometry
+
+	G4Cons* solidCollimator = new G4Cons("ShieldingConnical",
+											colRmin1,   // inner radius = 0 because used as mother volume
+											colRmax1,
+											colRmin2,   // inner radius = 0 because used as mother volume
+											colRmax2,
+											collimatorHalfLength,
+											startPhi,
+											deltaPhi);
+
+	G4LogicalVolume* logicCollimator = new G4LogicalVolume(solidCollimator, lead, "Collimator");
+
+	G4ThreeVector positionCollimator = G4ThreeVector(0.*cm,0.*cm,
+													  - distHalfColHalfCry);
+
+	G4VPhysicalVolume* physiCollimator = new G4PVPlacement(0,
+														   positionCollimator,
+														   "Collimator",
+														   logicCollimator,
+														   physiWorld,
+														   false,0);
 
 	//------------------------------------------------------
 	// Surfaces and boundary processes

@@ -35,11 +35,12 @@ RunAction::RunAction() : G4UserRunAction()
 
 	  // Creating histograms
 //	  G4String Histoname;
-//	  G4String Histotitle;
-	  G4int nbins;
-	  G4double xmin;
-	  G4double xmax;
-	  analysisManager->CreateH1("Histo1","Edep in Crystal", nbins=1200, xmin=0., xmax=12*MeV);
+//	  G4String Histotitle
+	  G4double xmin = 0; // in keV
+	  G4double xmax = 12e3; // in keV
+	  G4int binsize = 2; // in keV
+	  G4int nbins= (int)(xmax-xmin)/binsize;
+	  analysisManager->CreateH1("Histo1","Edep in Crystal", nbins, xmin, xmax*keV);
 
 	  // Creating ntuple
 	  //
