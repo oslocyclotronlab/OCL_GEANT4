@@ -26,6 +26,7 @@
 
 
 #include "DetectorConstruction.hh"
+#include "Parameters.hh"
 
 #include "G4VPhysicalVolume.hh"
 #include "G4LogicalVolume.hh"
@@ -89,22 +90,22 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   //
 
   // there were here already
-    G4Element* H =  new G4Element("Hydrogen",    "H",   z=1.,   a=1.01*g/mole);
-    G4Element* C =  new G4Element("Carbon",      "C",   z=6.,   a=12.01*g/mole);
-    G4Element* F =  new G4Element("Fluorine",    "F",   z=9.,   a=18.9984*g/mole);
+//    G4Element* H =  new G4Element("Hydrogen",    "H",   z=1.,   a=1.01*g/mole);
+//    G4Element* C =  new G4Element("Carbon",      "C",   z=6.,   a=12.01*g/mole);
+//    G4Element* F =  new G4Element("Fluorine",    "F",   z=9.,   a=18.9984*g/mole);
     G4Element* Br = new G4Element("Bromium",    "Br",   z=35.,  a=79.904*g/mole);
     G4Element* La = new G4Element("Lanthanum",  "La",   z=57.,  a=138.90547*g/mole); // TODO Test for Todo
     G4Element* Ce = new G4Element("Cerium",     "Cl",   z=58.,  a=140.116*g/mole);
-    G4Element* Tl = new G4Element("Thallium",   "Tl",   z=81.,  a=204.383*g/mole);
+//    G4Element* Tl = new G4Element("Thallium",   "Tl",   z=81.,  a=204.383*g/mole);
 
   // add more elements from NIST database
-    G4Element* B  = man->FindOrBuildElement("B");
+//    G4Element* B  = man->FindOrBuildElement("B");
     G4Element* O  = man->FindOrBuildElement("O");
-    G4Element* Na = man->FindOrBuildElement("Na");
+//    G4Element* Na = man->FindOrBuildElement("Na");
     G4Element* Al = man->FindOrBuildElement("Al");
     G4Element* Si = man->FindOrBuildElement("Si");
     G4Element* K  = man->FindOrBuildElement("K");
-    G4Element* Sc = man->FindOrBuildElement("Sc");
+//    G4Element* Sc = man->FindOrBuildElement("Sc");
     G4Element* Sb = man->FindOrBuildElement("Sb");
     G4Element* Cs = man->FindOrBuildElement("Cs");
     G4Element* Mg = man->FindOrBuildElement("Mg");
@@ -330,10 +331,12 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	//------------------------------------------------------
 
 	//
-	// World
+	// All parameters have been moved to Parameters.hh
 	//
 
-  G4double world_sizeXYZ = 80*cm;
+	//
+	// World
+	//
 
   G4Box* solidWorld = new G4Box("World",
                          world_sizeXYZ/2, world_sizeXYZ/2, world_sizeXYZ/2);     				//size (defined through half-sizes)
@@ -349,49 +352,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 									0,                     	//mother  volume
 									false,                 	//no boolean operation
 									0);                     //copy number
-
-
-
-
-    // parameters
-
-	G4double crystalOuterR = 8.89*cm/2.; // 3.5 in in cm
-  	G4double crystalInnerR = 0.0*mm;
-  	G4double crystalHalfLength = 203.2*0.5*mm; // 8 in in cm
-  	G4double startPhi = 0.*deg;
-  	G4double deltaPhi = 360.*deg;
-
-  	G4double reflectorThickness = 1.*mm; // assumption: 1 mm thick reflector on the front side
-	G4double reflectorHalfLength = crystalHalfLength + 0.5 * reflectorThickness; // assumption: backside doesn't have a reflector
-	//G4double ReflectorInnerR = crystalOuterR;
-	G4double reflectorInnerR = 0.*mm;
-	G4double reflectorOuterR = crystalOuterR + reflectorThickness;
-
-  	G4double coatingThickness = 2.*mm; // thickness as in the radius part
-  	G4double coatingThicknessFront = 1.*mm; // we assume a smaller thickness at the front of the detector
-  	G4double coatingOuterR = 100.*mm/2. ;
-	// in between reflector and coating, there will be some plastic
-	G4double coatingPlasticThickness = coatingOuterR - coatingThickness -reflectorThickness - crystalOuterR; // assumption: 2.55 mm plexiglas coating around the reflector before the aluminium
-  	G4double coatingHalfLength = reflectorHalfLength + 0.5 * coatingThicknessFront + 0.5 * coatingPlasticThickness; // backside doesn't have an (Aluminium) coating
-
-  	G4double shieldingThickness = 5.*mm; 		// thickness of the tube
-  	G4double shieldingHalfThicknessLid = 2.*mm/2.;
-  	G4double shieldingInnerR = 0*mm; 			// as we use it as a mother volume
-  	G4double shieldingOuterR = coatingOuterR + shieldingThickness;
-
-  	//in the front, the shielding tube diameter is reduces. It's later modeled by a conical section
-  	G4double shieldingConeHalfLength = 10.*mm;// in the front, the tube
-  	//G4double shieldingConeInnerRFront = coatingOuterR;
-  	G4double shieldingConeOuterRFront = coatingOuterR + 2.*mm;
-  	//G4double shieldingConeInnerRBack = shieldingConeInnerRFront;
-  	G4double shieldingConeOuterRBack = coatingOuterR + 5.*mm;
-
-  	G4double shieldingHalfLength = coatingHalfLength - shieldingConeHalfLength; // without conical Section and Lid
-  																						 //  we assume no coating at the back side
-
-  	G4double plexiGlasWindowOuterR = shieldingOuterR; // currently we just assume a flat window on the top.
-  	G4double plexiGlasWindowHalfLength= 0.5 * 1.*mm;
-
 
 
   	//
@@ -563,13 +523,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	// PMT
 	//
 
-	G4double PMTWindowHalfLength = 1.0*mm;
-	G4double PMTWindowRadius = 85*0.5*mm;
-
-	G4double cathodeHalfLength = 0.005*mm;
-	G4double cathodeRadius =85*0.5*mm;
-
-
     // PMT window
 
 	G4Tubs* solidPMTWindow = new G4Tubs("PMTWindow",0.*cm,PMTWindowRadius,
@@ -605,22 +558,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	// Collimator
 	//
 
-	// TODO set this as default value for GPS
-	G4double distSourceCol = 20.*cm; 		// Distance from source to Collimator (beginning)
-
-	G4double collimatorHalfLength = 2.*cm; // adapt here for different collimator lengths
-	// Distance from collimator End to Crystal Half point (or fraction r in crystal length)
-	G4double distHalfColHalfCry = collimatorHalfLength + 2.*shieldingHalfThicknessLid + coatingThicknessFront
-	                              + coatingPlasticThickness + reflectorThickness + crystalHalfLength;
-	G4double ratioInCrystal = 0.5;          // range: [0..1], defines point r from where the gammas can hit the crystal
-	G4double distColEndPointToRatioCrsytal = distHalfColHalfCry - collimatorHalfLength + ( 2*ratioInCrystal - 1.) * crystalHalfLength;
-	//parameters for collimator as a cone as a function of the parameters above
-	// 1 is the front (towards source), 2 the backside
-    G4double colRmin1 = crystalOuterR * (distSourceCol / (distSourceCol + 2.*collimatorHalfLength + distColEndPointToRatioCrsytal) );
-    G4double colRmax1 = crystalOuterR * (distSourceCol / (distSourceCol + 2.*collimatorHalfLength) );
-	G4double colRmin2 = crystalOuterR * (distSourceCol + 2*collimatorHalfLength)
-			             / ( distSourceCol + 2*collimatorHalfLength + distColEndPointToRatioCrsytal );
-	G4double colRmax2 = shieldingConeOuterRFront;
+    // Parameters are now in the header file "Parameters.hh"
 
 
 	// Collimator geometry

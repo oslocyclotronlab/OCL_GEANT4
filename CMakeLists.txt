@@ -61,6 +61,18 @@ foreach(_script ${ScintSCRIPTS})
     )
 endforeach()
 
+#----------------------------------------------------------------------------
+#
+# Checks whether a "data" directory exists at the place GEANT4 wants to save
+# the root files. 
+# If it does not exist, this will lead to errors when you run the simulation
+#
+IF(EXISTS "../data")
+       message("-- Data directory exists (needed for the root outputs)")
+else() 
+       message(SEND_ERROR " \n WARNING \n \"../data\" directory DOES NOT exists (needed for the root outputs)")
+endif()
+
 ##----------------------------------------------------------------------------
 ## For internal Geant4 use - but has no effect if you build this
 ## example standalone

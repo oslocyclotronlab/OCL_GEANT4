@@ -11,6 +11,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 
 #include "PrimaryGeneratorAction.hh"
+#include "Parameters.hh"
 
 #include "G4Event.hh"
 #include "G4ParticleGun.hh"
@@ -33,7 +34,8 @@ PrimaryGeneratorAction::PrimaryGeneratorAction()
 	particleGun = new G4GeneralParticleSource();
 	particleGun->SetCurrentSourceIntensity (1);
 	particleGun->SetParticlePosition(G4ThreeVector());
-	
+	// Source position determined from Parameters.hh
+	particleGun->GetCurrentSource()->GetPosDist()->SetCentreCoords(G4ThreeVector(0., 0., - distSourceHalfCry ));
 }
 
 PrimaryGeneratorAction::~PrimaryGeneratorAction()

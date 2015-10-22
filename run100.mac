@@ -4,11 +4,12 @@
 ## Particle type, position, energy...
 /gps/particle gamma
 /gps/number 1
-/gps/pos/centre  0 0 -22 cm
+# Source position now hardcoded
+#/gps/pos/centre  0 0 -22 cm
 /gps/energy 500. keV
 /gps/direction 0 0 1
 #/gps/ang/type iso
-#/gps/ang/mintheta 180. degree
+#/gps/ang/mintheta 160. degree
 #/gps/ang/maxtheta 180. degree
 
 /process/inactivate Cerenkov

@@ -25,12 +25,14 @@ PhysicsList::PhysicsList() : G4VModularPhysicsList()
 	// EM Physics
 	RegisterPhysics(new G4EmStandardPhysics());
 	
+	// this whole block can be commented to speed up the simulation
 	// Optical Physics
 	G4OpticalPhysics* opticalPhysics = new G4OpticalPhysics();
 	RegisterPhysics(opticalPhysics);
 
 
 	//opticalPhysics->SetScintillationYieldFactor(1);
+	// "articifially" reduce the yield in order to create/display less opt. photons
 	opticalPhysics->SetScintillationYieldFactor(0.008);
 
     opticalPhysics->SetScintillationExcitationRatio(0.);
