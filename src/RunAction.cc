@@ -29,6 +29,7 @@ RunAction::RunAction() : G4UserRunAction()
 	  //analysisManager->SetNtupleDirectoryName("ntuple");
 	  analysisManager->SetVerboseLevel(1);
 	  analysisManager->SetFirstHistoId(1);
+	  G4int histID; // Histogram ID staring with SetFirstHistoId(xxx)
 
 	  // Book histograms, ntuple
 	  //
@@ -41,6 +42,9 @@ RunAction::RunAction() : G4UserRunAction()
 	  G4int binsize = 2; // in keV
 	  G4int nbins= (int)(xmax-xmin)/binsize;
 	  analysisManager->CreateH1("Histo1","Edep in Crystal", nbins, xmin, xmax*keV);
+	  //G4bool SetH1XAxisTitle(G4int id, const G4String& title);
+
+	  analysisManager->SetH1XAxisTitle(histID=1, "Edep (MeV)");
 
 	  // Creating ntuple
 	  //
