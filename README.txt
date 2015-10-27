@@ -18,69 +18,75 @@ fabiobz 0 2015-10-12 17:08 README.txt
 	
    The geometry is constructed in the DetectorConstruction class.
    The setup consists of a cylinder containing the LaBr3 crystal, and outer ring with
-   shielding and a lit in front side of the detector. It is optically coupled to 
+   shielding, a lit in front side of the detector and collimator. The shielding is composed 
+   as a    boolean solid to include the conical front. The detector s optically coupled to 
    a bialkali photocathode through a Borosilicate PMT Window.
-   -- 12/10/15 Currently there is no reflector but the shielding is faked as such.
+   -- 12/10/15 Currently we assumed a MgO reflector in accordance with 
+   the workshop example.
+   
+   The collimator currently designed such that it aims to stop gammas that reach less then the
+   half length of the detector. This is easily changeable by a parameter called "ratioInCrystal".
 
    The dimensions and materials have been chosen as close as possible to our set-up. Where
    no manufacturer information was available, we used assumptions based e.g. other studies.
    The is an arbitrary mix of materials created with the NIST manager and by hand.
    Additionally, we defined the optical properties and Surfaces and boundary processes for the 
    Scintillation process.
+   
+   All parameters for the detector geometry definition have been moved as /const/ values to
+   Parameters.hh. 
 		
  2- PHYSICS LIST
  
-  The physic processes are set in the PhysicsList class. Currentøy implemented are
+  The physic processes are set in the PhysicsList class. Currently implemented are
   G4EmStandardPhysics and G4OpticalPhysics (the latter is necessary for scintillation).
   
-  One should review/set the ScintillationExcitationRatio, the ratio for the fast&slow excitation
-  ratio.
+  To speed-up the simulations one can either set the ScinillationYieldFactor to a low value
+  (for example 0.0008) or uncomment the scintillation physics part totally.
+  
+  -- 12/10/15 One should review/set the ScintillationExcitationRatio, the ratio for the 
+  fast&slow excitation ratio.
  	
-  In addition the build-in interactive command:
-               /process/(in)activate processName
-  allows to activate/inactivate the processes one by one.
+  // In addition the build-in interactive command:
+  //             /process/(in)activate processName
+  // allows to activate/inactivate the processes one by one.
    
  3- AN EVENT : THE PRIMARY GENERATOR
  
   The Primary Generator is defined in the PrimaryGeneratorAction  via 
   the G4GeneralParticleSource. The type of the particle and its energy (and possible 
   biases/shape...) are via macro. Currently run1.mac uses a particle 
-  which hits the detector perpendicular to the input face. 
+  which hits the detector perpendicular to the input face (or isotropic emission).
+  
+  The source distance is linked to the collimator length and has therefore been hard-
+  coded taken the parameters from Parameters.hh  .
         
- 5- DETECTOR RESPONSE
+ 4- DETECTOR RESPONSE
 
    The PMT response is simulated via UserSteppingAction in the SteppingAction class.
    More precisely, the number and time of absorbed photons in the PMT cathode is recorded;
-   the broadening due to the PMT has to be modeled separately and is not implemented here.
+   the broadening due to the PMT has to be modelled separately and is not implemented here.
    
-   The total energy deposited is taken from the crystal volume. As Geant4 does not conserve
-   Energy for optical photons, these are ignored in the summation. However, this means one
-   still has to carefully check that the crystal reflector is of the right type and all
-   scintillation photons are reflected as they should.
-   
-   This example demonstrates a simple scoring implemented directly
-   in the user action classes and B1Run object. 
-   Alternative ways of scoring via Geant4 classes can be found in the 
-   other examples.
+   The total energy deposited is taken from the crystal volume. Important: Geant4 does not 
+   conserve energy for optical photons! Check the results with easy configurations!
+   (The main problem previously seems to have been the creation of the histograms)
    
    The energy deposited is collected step by step for a selected volume
-   in B1SteppingAction and accumulated event by event in B1EventAction.
+   in SteppingAction and accumulated event by event in EventAction.
    
-   At end of event, the value acummulated in B1EventAction is added in B1Run
-   and summed over the whole run (see B1EventAction::EndOfevent()).
+   At end of event, the value accumulated in EventAction is added in Run
+   and summed over the whole run (see EventAction::EndOfevent()).
    
-   Total dose deposited is computed at B1RunAction::EndOfRunAction(), 
-   and printed together with informations about the primary particle.
+   The histograms are exported as root files to the data folder. To ensure that this works,
+   one has to have a data folder on the same level as the build folder! Currently one has to re-
+   name the file after each run to save the results.
    
-   In multi-threading mode the energy accumulated in B1Run objects per
-   workers is merged to the master in B1Run::Merge() and the final
-   result is printed on the screen.
-
-   An example of creating and computing new units (e.g., dose) is also shown 
-   in the class constructor. 
-
- The following paragraphs are common to all basic examples
-
+   
+   ///////////////////////////////////////////
+   ///////////////////////////////////////////
+ The following paragraphs are common to 
+ all basic examples (where this has been taken from)
+   ///////////////////////////////////////////
  A- VISUALISATION
 
    The visualization manager is set via the G4VisExecutive class

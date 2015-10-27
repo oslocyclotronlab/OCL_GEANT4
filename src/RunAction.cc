@@ -1,6 +1,6 @@
 ///////////////////////////////////////////
 //
-// Oct/2013  E. Nacher -> RunAction.cc
+// Oct/2015  Fabio -> RunAction.cc
 //
 ///////////////////////////////////////////
 
@@ -19,7 +19,7 @@
 RunAction::RunAction() : G4UserRunAction()
 {
 	  // Create analysis manager
-	  // The choice of analysis technology is done via selectin of a namespace
+	  // The choice of analysis technology is done via selecting of a namespace
 	  // in B4Analysis.hh
 	  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 	  G4cout << "Using " << analysisManager->GetType() << G4endl;
@@ -29,27 +29,45 @@ RunAction::RunAction() : G4UserRunAction()
 	  //analysisManager->SetNtupleDirectoryName("ntuple");
 	  analysisManager->SetVerboseLevel(1);
 	  analysisManager->SetFirstHistoId(1);
-	  G4int histID; // Histogram ID staring with SetFirstHistoId(xxx)
 
 	  // Book histograms, ntuple
 	  //
 
 	  // Creating histograms
-//	  G4String Histoname;
-//	  G4String Histotitle
-	  G4double xmin = 0; // in keV
-	  G4double xmax = 12e3; // in keV
-	  G4int binsize = 2; // in keV
-	  G4int nbins= (int)(xmax-xmin)/binsize;
-	  analysisManager->CreateH1("Histo1","Edep in Crystal", nbins, xmin, xmax*keV);
-	  //G4bool SetH1XAxisTitle(G4int id, const G4String& title);
 
-	  analysisManager->SetH1XAxisTitle(histID=1, "Edep (MeV)");
+	  //  G4int CreateH1(const G4String& name, const G4String& title,
+	  //                 G4int nbins, G4double xmin, G4double xmax,
+	  //                 const G4String& unitName = "none",
+	  //                 const G4String& fcnName = "none",
+	  //                 const G4String& binSchemeName = "linear");
+
+	  xmin = 0; // in keV
+	  xmax = 12e3; // in keV
+	  binsize = 2; // in keV
+	  nbins= (int)((xmax-xmin)/binsize);
+	  analysisManager->CreateH1("Histo1","Edep in Crystal", nbins, xmin*keV, xmax*keV);
+
+	  xmin = 0; //
+	  xmax = 2e3; //
+	  binsize = 2; //
+	  nbins= (int)(xmax-xmin)/binsize;
+          analysisManager->CreateH1("Histo2","Absorbed Photons", nbins, xmin, xmax);
+
+      // Here we need some units!
+      xmin = 0; // in ns
+	  xmax = 500; // in ns
+	  binsize = 2; // in ns
+	  nbins= (int)(xmax-xmin)/binsize;
+          analysisManager->CreateH1("Histo3","Time of Absorption", nbins, xmin, xmax*ns);
 
 	  // Creating ntuple
 	  //
 	  analysisManager->CreateNtuple("B4", "Edep and TrackL...");
 	  analysisManager->CreateNtupleDColumn("Edep");
+	  analysisManager->CreateNtupleDColumn("nAbsPhotons");
+	  analysisManager->CreateNtupleDColumn("absTime");
+	  analysisManager->FinishNtuple();
+
 }
 
 RunAction::~RunAction()
@@ -98,6 +116,5 @@ void RunAction::EndOfRunAction(const G4Run*)
 	  analysisManager->CloseFile();
 
 }
-
 
 
