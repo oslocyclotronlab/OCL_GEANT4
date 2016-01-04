@@ -6,7 +6,7 @@
 //
 ////////////////////////////////////////////////////////
 
-#include "PhysicsList.hh"
+#include "SingleScintPhysicsList.hh"
 
 #include "G4EmStandardPhysics.hh"
 #include "G4OpticalPhysics.hh"
@@ -17,7 +17,7 @@
 #include "G4SystemOfUnits.hh"
 
 
-PhysicsList::PhysicsList() : G4VModularPhysicsList()
+SingleScintPhysicsList::SingleScintPhysicsList() : G4VModularPhysicsList()
 {
 	// default cut value  (0.1 mm)
 	defaultCutValue = 0.1*mm;
@@ -42,9 +42,9 @@ PhysicsList::PhysicsList() : G4VModularPhysicsList()
 }
 
 
-PhysicsList::~PhysicsList() {}
+SingleScintPhysicsList::~SingleScintPhysicsList() {}
 
-void PhysicsList::SetCuts(){
+void SingleScintPhysicsList::SetCuts(){
 	
 	SetCutsWithDefault();
 }

@@ -1,6 +1,6 @@
 
-#ifndef EventAction_h
-#define EventAction_h 1
+#ifndef SingleScintEventAction_h
+#define SingleScintEventAction_h 1
 
 #include <fstream>
 
@@ -11,13 +11,13 @@ using namespace std;
 
 
 class G4Event;
-class RunAction;
+class SingleScintRunAction;
 
-class EventAction : public G4UserEventAction
+class SingleScintEventAction : public G4UserEventAction
 {
   public:
-    EventAction(RunAction*);
-    ~EventAction();
+	SingleScintEventAction(SingleScintRunAction*);
+    ~SingleScintEventAction();
 
   public:
     void BeginOfEventAction(const G4Event*);
@@ -33,7 +33,7 @@ class EventAction : public G4UserEventAction
 	G4double  EdepInCrystal;
    
   private:
-    RunAction*       runAction;
+	SingleScintRunAction*       runAction;
 
 };
 

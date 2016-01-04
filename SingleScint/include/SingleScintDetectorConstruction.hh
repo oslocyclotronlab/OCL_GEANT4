@@ -1,6 +1,6 @@
 
-#ifndef DetectorConstruction_h
-#define DetectorConstruction_h 1
+#ifndef SingleScintDetectorConstruction_h
+#define SingleScintDetectorConstruction_h 1
 
 #include "G4VUserDetectorConstruction.hh"
 #include "globals.hh"
@@ -11,12 +11,12 @@ class G4VPhysicalVolume;
 class G4PVPlacement;
 class G4Box;
 
-class DetectorConstruction : public G4VUserDetectorConstruction
+class SingleScintDetectorConstruction : public G4VUserDetectorConstruction
 {
   public:
 
-    DetectorConstruction();
-    ~DetectorConstruction();
+    SingleScintDetectorConstruction();
+    ~SingleScintDetectorConstruction();
 
   public:
     virtual G4VPhysicalVolume* Construct();

@@ -1,22 +1,22 @@
 
-#ifndef SteppingAction_h
-#define SteppingAction_h 1
+#ifndef SingleScintSteppingAction_h
+#define SingleScintSteppingAction_h 1
 
 #include "G4UserSteppingAction.hh"
 
-class EventAction;
+class SingleScintEventAction;
 // class RunAction;
 
-class SteppingAction : public G4UserSteppingAction
+class SingleScintSteppingAction : public G4UserSteppingAction
 {
   public:
-    SteppingAction(EventAction*);
-    ~SteppingAction();
+    SingleScintSteppingAction(SingleScintEventAction*);
+    ~SingleScintSteppingAction();
 
     void UserSteppingAction(const G4Step*);
     
   private:
-    EventAction* eventAction;
+    SingleScintEventAction* eventAction;
 
 };
 
