@@ -1,8 +1,4 @@
-build/*.*
-build/*
-data/*.vec
-data/*.root
-data/*.png
+# ignore eclipse files
 .settings
 .cproject
 .project
