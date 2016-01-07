@@ -1,6 +1,6 @@
 
-#ifndef RunAction_h
-#define RunAction_h 1
+#ifndef SingleScintRunAction_h
+#define SingleScintRunAction_h 1
 
 #include "G4UserRunAction.hh"
 #include "globals.hh"
@@ -11,11 +11,11 @@ using namespace std;
 
 class G4Run;
 
-class RunAction : public G4UserRunAction
+class SingleScintRunAction : public G4UserRunAction
 {
   public:
-    RunAction();
-    ~RunAction();
+    SingleScintRunAction();
+    ~SingleScintRunAction();
 
   public:
     void BeginOfRunAction(const G4Run*);

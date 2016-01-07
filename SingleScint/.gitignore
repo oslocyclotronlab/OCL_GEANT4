@@ -1,0 +1,10 @@
+build/*.*
+build/*
+data/*.vec
+data/*.root
+data/*.png
+.settings
+.cproject
+.project
+G4source
+G4History.macro

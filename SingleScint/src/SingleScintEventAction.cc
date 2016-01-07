@@ -1,9 +1,9 @@
-#include "EventAction.hh"
-#include "Analysis.hh"
+#include "SingleScintEventAction.hh"
+#include "SingleScintAnalysis.hh"
 //#include "Randomize.hh" // do we really need this?
 #include <iomanip>
 
-#include "RunAction.hh"
+#include "SingleScintRunAction.hh"
 
 #include "G4Event.hh"
 #include "G4EventManager.hh"
@@ -16,14 +16,14 @@
 using namespace std;
 using namespace CLHEP;
 
-EventAction::EventAction(RunAction* run)
+SingleScintEventAction::SingleScintEventAction(SingleScintRunAction* run)
 :G4UserEventAction(), EdepInCrystal(0.), nAbsPhotons(0.), absTime(0.)
 {}
 
-EventAction::~EventAction()
+SingleScintEventAction::~SingleScintEventAction()
 {}
 
-void EventAction::BeginOfEventAction(const G4Event*)
+void SingleScintEventAction::BeginOfEventAction(const G4Event*)
 {
 	// initialisation per event
 	EdepInCrystal = 0.;
@@ -31,7 +31,7 @@ void EventAction::BeginOfEventAction(const G4Event*)
 	absTime = 0;
 }
 
-void EventAction::EndOfEventAction(const G4Event* evt)
+void SingleScintEventAction::EndOfEventAction(const G4Event* evt)
 {
 
 	  // Accumulate statistics

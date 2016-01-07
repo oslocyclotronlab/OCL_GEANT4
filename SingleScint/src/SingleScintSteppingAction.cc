@@ -12,8 +12,8 @@
 //
 /////////////////////////////////////////////////////////////////////////
 
-#include "SteppingAction.hh"
-#include "EventAction.hh"
+#include "SingleScintSteppingAction.hh"
+#include "SingleScintEventAction.hh"
 #include "G4SteppingManager.hh"
 
 #include "G4RunManager.hh"
@@ -23,14 +23,14 @@
 
 using namespace std;	 
 
-SteppingAction::SteppingAction(EventAction* EvAct) 
+SingleScintSteppingAction::SingleScintSteppingAction(SingleScintEventAction* EvAct)
 :eventAction(EvAct)
 { }
 
-SteppingAction::~SteppingAction()
+SingleScintSteppingAction::~SingleScintSteppingAction()
 { }
 
-void SteppingAction::UserSteppingAction(const G4Step* aStep)
+void SingleScintSteppingAction::UserSteppingAction(const G4Step* aStep)
 {
 	const G4String currentPhysicalName 
     = aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName();

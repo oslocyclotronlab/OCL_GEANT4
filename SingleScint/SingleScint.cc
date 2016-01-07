@@ -1,11 +1,11 @@
 
 
-#include "DetectorConstruction.hh"
-#include "PhysicsList.hh"
-#include "PrimaryGeneratorAction.hh"
-#include "RunAction.hh"
-#include "EventAction.hh"
-#include "SteppingAction.hh"
+#include "SingleScintDetectorConstruction.hh"
+#include "SingleScintPhysicsList.hh"
+#include "SingleScintPrimaryGeneratorAction.hh"
+#include "SingleScintRunAction.hh"
+#include "SingleScintEventAction.hh"
+#include "SingleScintSteppingAction.hh"
 
 #ifdef G4MULTITHREADED
 #include "G4MTRunManager.hh"
@@ -52,26 +52,26 @@ int main(int argc,char** argv)
 
   // Set mandatory initialization classes
   // Detector construction
-  runManager->SetUserInitialization(new DetectorConstruction());
+  runManager->SetUserInitialization(new SingleScintDetectorConstruction());
 
   // Physics list
 //  G4VModularPhysicsList* physicsList = new QBBC;
 //  physicsList->SetVerboseLevel(1);
 //  runManager->SetUserInitialization(physicsList);
-  runManager->SetUserInitialization(new PhysicsList);
+  runManager->SetUserInitialization(new SingleScintPhysicsList);
 
 	// set aditional user action classes
-	RunAction* run = new RunAction;
+    SingleScintRunAction* run = new SingleScintRunAction;
 	runManager->SetUserAction(run);
 	
-	EventAction* event = new EventAction(run);
+	SingleScintEventAction* event = new SingleScintEventAction(run);
 	runManager->SetUserAction(event);
 	
-	SteppingAction* step = new SteppingAction(event);
+	SingleScintSteppingAction* step = new SingleScintSteppingAction(event);
 	runManager->SetUserAction(step);
 	
 	// set mandatory user action class
-	runManager->SetUserAction(new PrimaryGeneratorAction);
+	runManager->SetUserAction(new SingleScintPrimaryGeneratorAction);
 
 
 

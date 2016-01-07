@@ -25,8 +25,8 @@
 //
 
 
-#include "DetectorConstruction.hh"
-#include "Parameters.hh"
+#include "SingleScintDetectorConstruction.hh"
+#include "SingleScintParameters.hh"
 
 #include "G4VPhysicalVolume.hh"
 #include "G4LogicalVolume.hh"
@@ -56,20 +56,20 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
-DetectorConstruction::DetectorConstruction()
+SingleScintDetectorConstruction::SingleScintDetectorConstruction()
 :
      solidWorld(0), WorldLog(0), WorldPhys(0)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
-DetectorConstruction::~DetectorConstruction()
+SingleScintDetectorConstruction::~SingleScintDetectorConstruction()
 {}
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
-G4VPhysicalVolume* DetectorConstruction::Construct()
+G4VPhysicalVolume* SingleScintDetectorConstruction::Construct()
 {
 
     //----------------------------------------------------
