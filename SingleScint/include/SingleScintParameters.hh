@@ -25,19 +25,19 @@
     // Detector & Shielding
     //
 
-	const G4double crystalOuterR = 132.*mm/2.;
+	const G4double crystalOuterR = 127.*mm/2.; //5in = 12.7 cm
 	const G4double crystalInnerR = 0.0*mm;
-	const G4double crystalHalfLength = 89.*0.5*mm;
+	const G4double crystalHalfLength = 127.*0.5*mm;
   	const G4double startPhi = 0.*deg;
   	const G4double deltaPhi = 360.*deg;
 
-  	const G4double reflectorThickness = 0.5*mm; // assumption: 1 mm thick reflector on the front side
+  	const G4double reflectorThickness = 1*mm; // assumption: 1 mm thick reflector on the front side
 	const G4double reflectorHalfLength = crystalHalfLength + 0.5 * reflectorThickness; // assumption: backside doesn't have a reflector
 	//const G4double ReflectorInnerR = crystalOuterR;
 	const G4double reflectorInnerR = 0.*mm;
 	const G4double reflectorOuterR = crystalOuterR + reflectorThickness;
 
-  	const G4double coatingThickness = 0.5*mm; // thickness as in the radius part
+  	const G4double coatingThickness = 1*mm; // thickness as in the radius part
   	const G4double coatingThicknessFront = 0.5*mm; // we assume a smaller thickness at the front of the detector
   	const G4double coatingOuterR = 134*mm/2. ;
 	// in between reflector and coating, there will be some plastic
