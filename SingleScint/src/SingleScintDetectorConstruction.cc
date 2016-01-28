@@ -146,10 +146,11 @@ G4VPhysicalVolume* SingleScintDetectorConstruction::Construct()
   //Lead
   G4Material* lead =    man->FindOrBuildMaterial("G4_Pb");
 
-  //LaBr3
-  G4Material* LaBr3 =   new G4Material("LaBr3", density = 5.07*g/cm3, ncomponents=2);
-  LaBr3->AddElement(La, natoms=1);
-  LaBr3->AddElement(Br, natoms=3);
+  //NaI
+  // G4Material* LaBr3 =   new G4Material("LaBr3", density = 5.07*g/cm3, ncomponents=2);
+  // LaBr3->AddElement(La, natoms=1);
+  // LaBr3->AddElement(Br, natoms=3);
+  G4Material* NaI =     man->FindOrBuildMaterial("G4_SODIUM_IODIDE");
 
   // MgO reflector
   density = 2.0*g/cm3;
@@ -159,9 +160,9 @@ G4VPhysicalVolume* SingleScintDetectorConstruction::Construct()
 
   //LaBr3_Ce
   //with 5% dopping, see technical note "BrilLanCe Scintillators Performance Summary"
-  G4Material* LaBr3_Ce = new G4Material("LaBr3_Ce", density = 5.08*g/cm3, ncomponents=2);
-  LaBr3_Ce->AddMaterial(LaBr3,  fractionmass=95*perCent);
-  LaBr3_Ce->AddElement(Ce,      fractionmass=5*perCent);
+  // G4Material* LaBr3_Ce = new G4Material("LaBr3_Ce", density = 5.08*g/cm3, ncomponents=2);
+  // LaBr3_Ce->AddMaterial(LaBr3,  fractionmass=95*perCent);
+  // LaBr3_Ce->AddElement(Ce,      fractionmass=5*perCent);
 
 
    // vacuum (non-STP)
@@ -231,28 +232,28 @@ G4VPhysicalVolume* SingleScintDetectorConstruction::Construct()
 
   	// LaBr3
 
-	G4double LaBr3RefractionIndex[nEntries] = {1.9,1.9};
+	// G4double LaBr3RefractionIndex[nEntries] = {1.9,1.9};
 
-	G4double LaBr3AbsorptionLength[nEntries] = {50.*cm,50.*cm};
+	// G4double LaBr3AbsorptionLength[nEntries] = {50.*cm,50.*cm};
 
-	G4MaterialPropertiesTable* LaBr3MPT = new G4MaterialPropertiesTable();
+	// G4MaterialPropertiesTable* LaBr3MPT = new G4MaterialPropertiesTable();
 
-	LaBr3MPT->AddProperty("RINDEX",PhotonEnergy,LaBr3RefractionIndex,
-						  nEntries);
-	LaBr3MPT->AddProperty("ABSLENGTH",PhotonEnergy,LaBr3AbsorptionLength,
-						  nEntries);
+	// LaBr3MPT->AddProperty("RINDEX",PhotonEnergy,LaBr3RefractionIndex,
+	// 					  nEntries);
+	// LaBr3MPT->AddProperty("ABSLENGTH",PhotonEnergy,LaBr3AbsorptionLength,
+	// 					  nEntries);
 
-	G4double ScintEnergy[nEntries] = {3.26*eV,3.44*eV};
-	G4double ScintFast[nEntries] = {1.0,1.0};
+	// G4double ScintEnergy[nEntries] = {3.26*eV,3.44*eV};
+	// G4double ScintFast[nEntries] = {1.0,1.0};
 
-	LaBr3MPT->AddProperty("FASTCOMPONENT",ScintEnergy,ScintFast,nEntries);
+	// LaBr3MPT->AddProperty("FASTCOMPONENT",ScintEnergy,ScintFast,nEntries);
 
-	LaBr3MPT->AddConstProperty("RESOLUTIONSCALE",1.);
-	LaBr3MPT->AddConstProperty("FASTTIMECONSTANT",20.*ns);
-	LaBr3MPT->AddConstProperty("YIELDRATIO",1.);
-	LaBr3MPT->AddConstProperty("SCINTILLATIONYIELD",63./keV);     // manifact. info
+	// LaBr3MPT->AddConstProperty("RESOLUTIONSCALE",1.);
+	// LaBr3MPT->AddConstProperty("FASTTIMECONSTANT",20.*ns);
+	// LaBr3MPT->AddConstProperty("YIELDRATIO",1.);
+	// LaBr3MPT->AddConstProperty("SCINTILLATIONYIELD",63./keV);     // manifact. info
 
-	LaBr3_Ce->SetMaterialPropertiesTable(LaBr3MPT);
+	// LaBr3_Ce->SetMaterialPropertiesTable(LaBr3MPT);
 
 
 
@@ -493,7 +494,7 @@ G4VPhysicalVolume* SingleScintDetectorConstruction::Construct()
 				 			crystalInnerR, crystalOuterR, crystalHalfLength,
                                  		startPhi,deltaPhi);
 
-    G4LogicalVolume* logicCrystal = new G4LogicalVolume(solidCrystal, LaBr3_Ce, "Crystal");
+    G4LogicalVolume* logicCrystal = new G4LogicalVolume(solidCrystal, NaI, "Crystal");
 
     G4ThreeVector positionCrystal = G4ThreeVector(0.*cm,0.*cm, 0.5*reflectorThickness );
 

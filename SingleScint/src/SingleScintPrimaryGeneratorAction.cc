@@ -36,6 +36,7 @@ SingleScintPrimaryGeneratorAction::SingleScintPrimaryGeneratorAction()
 	particleGun->SetParticlePosition(G4ThreeVector());
 	// Source position determined from Parameters.hh
 	particleGun->GetCurrentSource()->GetPosDist()->SetCentreCoords(G4ThreeVector(0., 0., - distSourceHalfCry ));
+	G4cout << "distSourceCrystalBeginning:" << distSourceCol + 2*collimatorHalfLength << G4endl;
 }
 
 SingleScintPrimaryGeneratorAction::~SingleScintPrimaryGeneratorAction()

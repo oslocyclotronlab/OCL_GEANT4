@@ -25,23 +25,23 @@
     // Detector & Shielding
     //
 
-	const G4double crystalOuterR = 8.89*cm/2.; // 3.5 in in cm
+	const G4double crystalOuterR = 132.*mm/2.;
 	const G4double crystalInnerR = 0.0*mm;
-	const G4double crystalHalfLength = 203.2*0.5*mm; // 8 in in cm
+	const G4double crystalHalfLength = 89.*0.5*mm;
   	const G4double startPhi = 0.*deg;
   	const G4double deltaPhi = 360.*deg;
 
-  	const G4double reflectorThickness = 1.*mm; // assumption: 1 mm thick reflector on the front side
+  	const G4double reflectorThickness = 0.5*mm; // assumption: 1 mm thick reflector on the front side
 	const G4double reflectorHalfLength = crystalHalfLength + 0.5 * reflectorThickness; // assumption: backside doesn't have a reflector
 	//const G4double ReflectorInnerR = crystalOuterR;
 	const G4double reflectorInnerR = 0.*mm;
 	const G4double reflectorOuterR = crystalOuterR + reflectorThickness;
 
-  	const G4double coatingThickness = 2.*mm; // thickness as in the radius part
-  	const G4double coatingThicknessFront = 1.*mm; // we assume a smaller thickness at the front of the detector
-  	const G4double coatingOuterR = 100.*mm/2. ;
+  	const G4double coatingThickness = 0.5*mm; // thickness as in the radius part
+  	const G4double coatingThicknessFront = 0.5*mm; // we assume a smaller thickness at the front of the detector
+  	const G4double coatingOuterR = 134*mm/2. ;
 	// in between reflector and coating, there will be some plastic
-	const G4double coatingPlasticThickness = coatingOuterR - coatingThickness -reflectorThickness - crystalOuterR; // assumption: 2.55 mm plexiglas coating around the reflector before the aluminium
+	  const G4double coatingPlasticThickness = coatingOuterR - coatingThickness -reflectorThickness - crystalOuterR; // assumption: 2.55 mm plexiglas coating around the reflector before the aluminium
   	const G4double coatingHalfLength = reflectorHalfLength + 0.5 * coatingThicknessFront + 0.5 * coatingPlasticThickness; // backside doesn't have an (Aluminium) coating
 
   	const G4double shieldingThickness = 5.*mm; 		// thickness of the tube
@@ -80,8 +80,8 @@
 
 	// when you change the Collimator length and distance to Source, check that it's still inside the World Volume!
 
-	const G4double distSourceCol = 20.*cm; 		// Distance from source to Collimator (beginning)
-	const G4double collimatorHalfLength = 2.*cm; // adapt here for different collimator lengths
+	const G4double distSourceCol = 12.*cm; 		// Distance from source to Collimator (beginning)
+	const G4double collimatorHalfLength = 5.*cm; // adapt here for different collimator lengths
 
 	// Distance from collimator End to Crystal Half point (or fraction r in crystal length)
 	const G4double distHalfColHalfCry = collimatorHalfLength + 2.*shieldingHalfThicknessLid + coatingThicknessFront
@@ -89,16 +89,20 @@
 	const G4double distSourceHalfCry =  distSourceCol + collimatorHalfLength + distHalfColHalfCry;
 
 
-	const G4double ratioInCrystal = 0.5;          // range: [0..1], defines point r from where the gammas can hit the crystal
-	const G4double distColEndPointToRatioCrsytal = distHalfColHalfCry - collimatorHalfLength + ( 2*ratioInCrystal - 1.) * crystalHalfLength;
+	// const G4double ratioInCrystal = 0.5;          // range: [0..1], defines point r from where the gammas can hit the crystal
+	// const G4double distColEndPointToRatioCrsytal = distHalfColHalfCry - collimatorHalfLength + ( 2*ratioInCrystal - 1.) * crystalHalfLength;
 
 	//parameters for collimator as a cone as a function of the parameters above
 	// 1 is the front (towards source), 2 the backside
-	const G4double colRmin1 = crystalOuterR * (distSourceCol / (distSourceCol + 2.*collimatorHalfLength + distColEndPointToRatioCrsytal) );
-	const G4double colRmax1 = crystalOuterR * (distSourceCol / (distSourceCol + 2.*collimatorHalfLength) );
-	const G4double colRmin2 = crystalOuterR * (distSourceCol + 2*collimatorHalfLength)
-							 / ( distSourceCol + 2*collimatorHalfLength + distColEndPointToRatioCrsytal );
-	const G4double colRmax2 = shieldingConeOuterRFront;
+	// const G4double colRmin1 = crystalOuterR * (distSourceCol / (distSourceCol + 2.*collimatorHalfLength + distColEndPointToRatioCrsytal) );
+	// const G4double colRmax1 = crystalOuterR * (distSourceCol / (distSourceCol + 2.*collimatorHalfLength) );
+	// const G4double colRmin2 = crystalOuterR * (distSourceCol + 2*collimatorHalfLength)
+	// 						 / ( distSourceCol + 2*collimatorHalfLength + distColEndPointToRatioCrsytal );
+	// const G4double colRmax2 = shieldingConeOuterRFront;
+  const G4double colRmin1 = 38.*mm/2.;
+  const G4double colRmax1 = 72./2.*mm;
+  const G4double colRmin2 = 70./2.*mm;
+  const G4double colRmax2 = 135./2.*mm;
 
 
 
