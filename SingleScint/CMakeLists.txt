@@ -50,6 +50,9 @@ set(SingleScintSCRIPTS
   vis_VRML.mac
   run1.mac
   run100.mac
+  run1kk_n.mac
+  fission_neutron_ENDF.dat
+  
 
   )
 

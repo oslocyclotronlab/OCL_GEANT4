@@ -22,4 +22,4 @@
 /process/inactivate Cerenkov
 
 ## Number of events to run
-/run/beamOn 1
+/run/beamOn 40000
