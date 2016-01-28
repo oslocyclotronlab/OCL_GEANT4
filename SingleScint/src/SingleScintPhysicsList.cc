@@ -8,7 +8,9 @@
 
 #include "SingleScintPhysicsList.hh"
 
-#include "G4EmStandardPhysics.hh"
+// #include "G4EmStandardPhysics.hh"
+#include "G4EmStandardPhysics_option4.hh"
+#include "G4HadronPhysicsQGSP_BIC_HP.hh"
 #include "G4OpticalPhysics.hh"
 #include "G4OpticalProcessIndex.hh"
 
@@ -19,11 +21,15 @@
 
 SingleScintPhysicsList::SingleScintPhysicsList() : G4VModularPhysicsList()
 {
+	SetVerboseLevel(1); 
 	// default cut value  (0.1 mm)
 	defaultCutValue = 0.1*mm;
 	
 	// EM Physics
-	RegisterPhysics(new G4EmStandardPhysics());
+	// RegisterPhysics(new G4EmStandardPhysics_option4(1));
+	RegisterPhysics(new G4EmStandardPhysics_option4(1));
+
+	RegisterPhysics(new G4HadronPhysicsQGSP_BIC_HP(1));
 	
 	// this whole block can be commented to speed up the simulation
 	// // Optical Physics
