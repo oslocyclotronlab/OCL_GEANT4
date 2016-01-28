@@ -4,14 +4,14 @@
 #/gps/verbose 2
 
 ## Particle type, position, energy...
-/gps/particle neutron
+/gps/particle gamma
 /gps/number 1
 # Source position now hardcoded
 #/gps/pos/centre  0 0 -22 cm
 
 /gps/ene/type Arb   # important: capital A in Arb
 /gps/hist/type arb
-/gps/hist/file fission_neutron_ENDF.dat
+/gps/hist/file fission_gamma_ENDF.dat
 /gps/hist/inter Lin
 
 #/gps/direction 0 0 1

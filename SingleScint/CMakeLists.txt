@@ -51,7 +51,9 @@ set(SingleScintSCRIPTS
   run1.mac
   run100.mac
   run1kk_n.mac
+  run1kk_g.mac
   fission_neutron_ENDF.dat
+  fission_gamma_ENDF.dat
   
 
   )
