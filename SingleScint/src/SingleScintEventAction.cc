@@ -41,9 +41,9 @@ void SingleScintEventAction::EndOfEventAction(const G4Event* evt)
 	  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
 	  // fill histograms
-	  analysisManager->FillH1(1, EdepInCrystal);
-	  analysisManager->FillH1(2, nAbsPhotons);
-	  analysisManager->FillH1(3, absTime);
+	  analysisManager->FillH1(0, EdepInCrystal);
+	  analysisManager->FillH1(1, nAbsPhotons);
+	  analysisManager->FillH1(2, absTime);
 
 	  // fill ntuple
 	  analysisManager->FillNtupleDColumn(0, EdepInCrystal);

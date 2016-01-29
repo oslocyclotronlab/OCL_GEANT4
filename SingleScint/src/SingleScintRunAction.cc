@@ -28,7 +28,8 @@ SingleScintRunAction::SingleScintRunAction() : G4UserRunAction()
 	  //analysisManager->SetHistoDirectoryName("histograms");
 	  //analysisManager->SetNtupleDirectoryName("ntuple");
 	  analysisManager->SetVerboseLevel(1);
-	  analysisManager->SetFirstHistoId(1);
+	  analysisManager->SetFirstHistoId(0); // default is 0
+	  analysisManager->SetFirstNtupleId(0); // default is 0
 
 	  // Book histograms, ntuple
 	  //
