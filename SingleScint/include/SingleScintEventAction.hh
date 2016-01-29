@@ -31,6 +31,8 @@ class SingleScintEventAction : public G4UserEventAction
 	G4double     absTime;
 	//G4double     totEnergyDepCathod;
 	G4double  EdepInCrystal;
+
+	G4double  k_primary;
    
   private:
 	SingleScintRunAction*       runAction;

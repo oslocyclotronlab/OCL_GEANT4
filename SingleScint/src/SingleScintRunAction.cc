@@ -61,12 +61,19 @@ SingleScintRunAction::SingleScintRunAction() : G4UserRunAction()
 	  nbins= (int)(xmax-xmin)/binsize;
           analysisManager->CreateH1("Histo3","Time of Absorption", nbins, xmin, xmax*ns);
 
+      xmin = 0; // in keV
+	  xmax = 12e3; // in keV
+	  binsize = 2; // in keV
+	  nbins= (int)((xmax-xmin)/binsize);
+	  analysisManager->CreateH1("Histo4","Energy of Primary Particles", nbins, xmin*keV, xmax*keV);
+
 	  // Creating ntuple
 	  //
 	  analysisManager->CreateNtuple("B4", "Edep and TrackL...");
 	  analysisManager->CreateNtupleDColumn("Edep");
 	  analysisManager->CreateNtupleDColumn("nAbsPhotons");
 	  analysisManager->CreateNtupleDColumn("absTime");
+	  analysisManager->CreateNtupleDColumn("EPrimaries");
 	  analysisManager->FinishNtuple();
 
 }

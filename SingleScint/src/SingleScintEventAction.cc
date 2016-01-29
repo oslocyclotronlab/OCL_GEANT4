@@ -4,6 +4,10 @@
 #include <iomanip>
 
 #include "SingleScintRunAction.hh"
+#include "G4GeneralParticleSource.hh"
+
+#include "SingleScintPrimaryGeneratorAction.hh"
+#include "G4RunManager.hh"
 
 #include "G4Event.hh"
 #include "G4EventManager.hh"
@@ -16,8 +20,8 @@
 using namespace std;
 using namespace CLHEP;
 
-SingleScintEventAction::SingleScintEventAction(SingleScintRunAction* run)
-:G4UserEventAction(), EdepInCrystal(0.), nAbsPhotons(0.), absTime(0.)
+SingleScintEventAction::SingleScintEventAction(SingleScintRunAction*)
+:G4UserEventAction()//, EdepInCrystal(0.), nAbsPhotons(0.), absTime(0.)
 {}
 
 SingleScintEventAction::~SingleScintEventAction()
@@ -27,8 +31,18 @@ void SingleScintEventAction::BeginOfEventAction(const G4Event*)
 {
 	// initialisation per event
 	EdepInCrystal = 0.;
-	nAbsPhotons = 0;
-	absTime = 0;
+	nAbsPhotons = 0.;
+	absTime = 0.;
+
+    // Get energy of the primary particles (created with GPS)
+   const SingleScintPrimaryGeneratorAction* generatorAction
+   = static_cast<const SingleScintPrimaryGeneratorAction*>
+     (G4RunManager::GetRunManager()->GetUserPrimaryGeneratorAction());
+
+    G4GeneralParticleSource* particleGun = generatorAction->GetParticleGun();
+    k_primary = particleGun->GetParticleEnergy();
+    // G4cout << "\n And the energy is: BeginOfEventAction" << k_primary << "MeV" << G4endl;
+
 }
 
 void SingleScintEventAction::EndOfEventAction(const G4Event* evt)
@@ -44,11 +58,13 @@ void SingleScintEventAction::EndOfEventAction(const G4Event* evt)
 	  analysisManager->FillH1(0, EdepInCrystal);
 	  analysisManager->FillH1(1, nAbsPhotons);
 	  analysisManager->FillH1(2, absTime);
+	  analysisManager->FillH1(3, k_primary);
 
 	  // fill ntuple
 	  analysisManager->FillNtupleDColumn(0, EdepInCrystal);
 	  analysisManager->FillNtupleDColumn(1, nAbsPhotons);
 	  analysisManager->FillNtupleDColumn(2, absTime);
+	  analysisManager->FillNtupleDColumn(3, k_primary);
 	  analysisManager->AddNtupleRow();
 
   // Print per event (modulo n)
