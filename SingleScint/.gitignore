@@ -1,8 +1,6 @@
 build/*.*
 build/*
-data/*.vec
-data/*.root
-data/*.png
+data/*
 .settings
 .cproject
 .project
