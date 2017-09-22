@@ -48,7 +48,7 @@ SingleScintRunAction::SingleScintRunAction() : G4UserRunAction()
 	  analysisManager->CreateH1("Histo1","Edep in Crystal", nbins, xmin*keV, xmax*keV);
 
 	  xmin = 0; //
-	  xmax = 2e3; //
+	  xmax = 12e3; //
 	  binsize = 2; //
 	  nbins= (int)(xmax-xmin)/binsize;
           analysisManager->CreateH1("Histo2","Absorbed Photons", nbins, xmin, xmax);
