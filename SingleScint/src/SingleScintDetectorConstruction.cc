@@ -120,7 +120,7 @@ G4VPhysicalVolume* SingleScintDetectorConstruction::Construct()
 
 
 G4double offsettoCollimator = 10*cm;          // Distance from source to Collimator (beginning);
-G4double phi = 45*deg, 
+G4double phi = 45*deg; 
 G4double theta = 45*deg;
 
 G4RotationMatrix rotm1 = G4RotationMatrix();
