@@ -20,7 +20,7 @@
     // World
     //
 
-	const G4double world_sizeXYZ = 80*cm;
+	const G4double world_sizeXYZ = 90*cm;
     //
     // Detector & Shielding
     //
@@ -74,20 +74,30 @@
 	const G4double cathodeRadius =85*0.5*mm;
 
 
+  //
+  // Whole detector incl. PMT (-> Logical unit)
+  //
+
+  const G4double detectorHalfinclPMT = shieldingHalfThicknessLid + shieldingConeHalfLength + shieldingHalfLength
+                                         + plexiGlasWindowHalfLength + PMTWindowHalfLength + cathodeHalfLength;
+
+
+
     //
 	// Collimator and Source
     //
 
+    const G4double collimatorHalfLength = 1.*cm; // adapt here for different collimator lengths
+
 	// when you change the Collimator length and distance to Source, check that it's still inside the World Volume!
     //  Keeping the sum of distSourceCol and 2*collimatorHalfLength >= 20 cm.
-	const G4double distSourceCol = 18.*cm; 		// Distance from source to Collimator (beginning)
-	const G4double collimatorHalfLength = 1.*cm; // adapt here for different collimator lengths
+	const G4double distSourceCol =   18.*cm; 		// Distance from source to Collimator (beginning)
+	
 
-	// Distance from collimator End to Crystal Half point (or fraction r in crystal length)
+	// Distance from collimator Half point to Crystal Half point (or fraction r in crystal length)
 	const G4double distHalfColHalfCry = collimatorHalfLength + 2.*shieldingHalfThicknessLid + coatingThicknessFront
 									  + coatingPlasticThickness + reflectorThickness + crystalHalfLength;
-	const G4double distSourceHalfCry =  distSourceCol + collimatorHalfLength + distHalfColHalfCry;
-
+	const G4double distSourceHalfCry =  distSourceCol + 2*collimatorHalfLength + distHalfColHalfCry;
 
 	const G4double ratioInCrystal = 0.5;          // range: [0..1], defines point r from where the gammas can hit the crystal
 	const G4double distColEndPointToRatioCrsytal = distHalfColHalfCry - collimatorHalfLength + ( 2*ratioInCrystal - 1.) * crystalHalfLength;
