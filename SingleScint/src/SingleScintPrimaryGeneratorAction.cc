@@ -34,8 +34,8 @@ SingleScintPrimaryGeneratorAction::SingleScintPrimaryGeneratorAction()
 	particleGun = new G4GeneralParticleSource();
 	particleGun->SetCurrentSourceIntensity (1);
 	particleGun->SetParticlePosition(G4ThreeVector());
-	// Source position determined from Parameters.hh
-	particleGun->GetCurrentSource()->GetPosDist()->SetCentreCoords(G4ThreeVector(0., 0., - distSourceHalfCry ));
+	// 	// Source position determined from Parameters.hh
+	// 	particleGun->GetCurrentSource()->GetPosDist()->SetCentreCoords(G4ThreeVector(0., 0., - distSourceHalfCry ));
 }
 
 SingleScintPrimaryGeneratorAction::~SingleScintPrimaryGeneratorAction()

@@ -4,8 +4,9 @@
 ## Particle type, position, energy...
 /gps/particle gamma
 /gps/number 1
-# Source position now hardcoded
-#/gps/pos/centre  0 0 -22 cm
+
+# Source not hardcoded any longer
+/gps/pos/centre  0 0 -22 cm
 /gps/energy 500. keV
 /gps/direction 0 0 1
 #/gps/ang/type iso
