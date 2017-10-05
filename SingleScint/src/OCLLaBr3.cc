@@ -128,7 +128,7 @@ OCLLaBr3::OCLLaBr3()
 
 	// Bialkali
 	// (Bialkali KCsSb,  Density=?, Thickness=?)?
-	Bialkali = new G4Material("Bialkali", density= 2*g/cm3, ncomponents=3);
+	Bialkali = new G4Material("Bialkali", density= 2.*g/cm3, ncomponents=3);
 	Bialkali->AddElement(K,  natoms=2);
 	Bialkali->AddElement(Cs, natoms=1);
 	Bialkali->AddElement(Sb, natoms=1);
@@ -506,8 +506,8 @@ void OCLLaBr3::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 	// lid
     positionShielding = G4ThreeVector(0.*cm,
     								  0.*cm,  
-    								  (2*shieldingHalfThicknessLid 
-    								  	+ 2*shieldingConeHalfLength 
+    								  (2.*shieldingHalfThicknessLid 
+    								  	+ 2.*shieldingConeHalfLength 
     								  	+ shieldingHalfLength)
 			                          - detectorHalfinclPMT
     												);  	

@@ -138,7 +138,7 @@ G4VPhysicalVolume* SingleScintDetectorConstruction::Construct()
 	//
 
 	G4double disttoLaBr3Half = offsettoCollimator 
-							   + 2 * collimatorHalfLength 
+							   + 2. * collimatorHalfLength 
 							   + detectorHalfinclPMT;
 
 	G4ThreeVector w = G4ThreeVector( sin(theta) * cos(phi),
