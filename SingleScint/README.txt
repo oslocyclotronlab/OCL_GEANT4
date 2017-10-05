@@ -1,4 +1,4 @@
-fabiobz 0 2015-10-12 17:08 README.txt
+fabiobz 0 2017-09-05 17:03 README.txt
 
 
      =========================================================
@@ -17,10 +17,14 @@ fabiobz 0 2015-10-12 17:08 README.txt
  1- GEOMETRY DEFINITION
 	
    The geometry is constructed in the DetectorConstruction class.
+
+   The detectors and collimators are called form their own classes.
+
    The setup consists of a cylinder containing the LaBr3 crystal, and outer ring with
    shielding, a lit in front side of the detector and collimator. The shielding is composed 
    as a    boolean solid to include the conical front. The detector s optically coupled to 
    a bialkali photocathode through a Borosilicate PMT Window.
+
    -- 12/10/15 Currently we assumed a MgO reflector in accordance with 
    the workshop example.
    

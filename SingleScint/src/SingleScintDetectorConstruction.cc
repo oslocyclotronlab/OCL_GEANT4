@@ -30,38 +30,28 @@
 #include "OCLLaBr3.hh"
 #include "OCLCollimator.hh"
 
-
-#include "G4VPhysicalVolume.hh"
-#include "G4LogicalVolume.hh"
-#include "G4Box.hh"
-#include "G4Tubs.hh"
-#include "G4Cons.hh"
-#include "G4UnionSolid.hh"
-#include "G4Material.hh"
-#include "G4NistManager.hh"
-#include "G4PVPlacement.hh"
-#include "G4VisAttributes.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4Transform3D.hh"
 #include "G4PhysicalConstants.hh"
 
-#include "G4Colour.hh"
-
-//#include "G4MultiFunctionalDetector.hh"
-//#include "G4VPrimitiveScorer.hh"
-//#include "G4PSEnergyDeposit.hh"
-//#include "G4TransportationManager.hh"
-//#include "G4SDManager.hh"
-
+#include "G4Material.hh"
+#include "G4NistManager.hh"
+#include "G4VisAttributes.hh"
 #include "G4LogicalBorderSurface.hh"
 #include "G4OpticalSurface.hh"
 
+#include "G4Box.hh"
+#include "G4LogicalVolume.hh"
+#include "G4VPhysicalVolume.hh"
+#include "G4PVPlacement.hh"
+
+#include "G4Colour.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
 SingleScintDetectorConstruction::SingleScintDetectorConstruction()
 :
-     solidWorld(0), WorldLog(0), WorldPhys(0)
+     solidWorld(0), WorldLog(0), physiWorld(0)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
@@ -77,16 +67,17 @@ G4VPhysicalVolume* SingleScintDetectorConstruction::Construct()
 
    // vacuum (non-STP)
 
-    G4Material* vacuum = new G4Material("Vacuum",       //name as String
-							1,		                    //atomic number (use 1 for Hydrogen)
-                    		1.008*g/mole, 	            //molar mass (use 1.008*g/mole for Hydoren)
-							1.e-25*g/cm3,  	            //density
-							kStateGas,		            //kStateGas - the material is gas (see G4State)
-                    		2.73*kelvin,	            //Temperature
-							1.e-25*g/cm3);	            //pressure
+    G4Material* vacuum = 
+    	new G4Material("Vacuum",       				//name as String
+						1,		                    //atomic number (use 1 for Hydrogen)
+                    	1.008*g/mole, 	            //molar mass (use 1.008*g/mole for Hydoren)
+						1.e-25*g/cm3,  	            //density
+						kStateGas,		            //kStateGas - the material is gas (see G4State)
+                    	2.73*kelvin,	            //Temperature
+						1.e-25*g/cm3);	            //pressure
 
 
-  	//------------------------------------------------------
+	//------------------------------------------------------
 	// Detector geometry
 	//------------------------------------------------------
 
@@ -98,76 +89,88 @@ G4VPhysicalVolume* SingleScintDetectorConstruction::Construct()
 	// World
 	//
 
-  G4Box* solidWorld = new G4Box("World",
-                         world_sizeXYZ/2, world_sizeXYZ/2, world_sizeXYZ/2);     				//size (defined through half-sizes)
+	solidWorld = 					 //size (defined through half-sizes)
+		new G4Box("World",
+	               world_sizeXYZ/2, 
+	               world_sizeXYZ/2, 
+	               world_sizeXYZ/2); 
 
-  G4LogicalVolume* WorldLog =  new G4LogicalVolume(solidWorld,        		//solid defining the World
-                        		  vacuum,           	//material of the World
-                        		  "World");         	//name
+	WorldLog =  
+		new G4LogicalVolume(solidWorld,        	//solid defining the World
+	                    	vacuum,           	//material of the World
+	                    	"World");         	//name
 
-  G4VPhysicalVolume* physiWorld = new G4PVPlacement(0,       //specifies rotation: 0 = no rotation
-                      			    G4ThreeVector(),     	//at (0,0,0)
-                      				WorldLog,            	//logical volume
-									"World",               	//name
-									0,                     	//mother  volume
-									false,                 	//no boolean operation
-									0);                     //copy number
-
-
- ////////////////////////
- // Positinging
- ////////////////////////
+	physiWorld = 
+		new G4PVPlacement(0,                    //specifies rotation: 0 = no rotation
+	                  	  G4ThreeVector(),     	//at (0,0,0)
+	                  	  WorldLog,            	//logical volume
+						  "World",              //name
+						  0,                    //mother  volume
+						  false,                //no boolean operation
+						  0);                   //copy number
 
 
-G4double offsettoCollimator = 10*cm;          // Distance from source to Collimator (beginning);
-G4double phi = 45*deg; 
-G4double theta = 45*deg;
+	////////////////////////
+	// Positinging
+	////////////////////////
 
-G4RotationMatrix rotm1 = G4RotationMatrix();
-rotm1.rotateY(theta); 
-rotm1.rotateZ(phi);
-G4cout << "\n --> phi = " << phi/deg << " deg;  direct rotation matrix : ";
-// rotm1.print(G4cout);   
 
-//
-// possitioning
-//
+	G4double offsettoCollimator = 10*cm;          // Distance from source to Collimator (beginning);
+	G4double phi = 45*deg; 
+	G4double theta = 45*deg;
 
-G4int copynumber;
-copynumber = 0;
-bool pSurfChk = false;
+	G4RotationMatrix rotm1 = G4RotationMatrix();
+	rotm1.rotateY(theta); 
+	rotm1.rotateZ(phi);
+	G4cout << "\n --> phi = " << phi/deg << " deg;  direct rotation matrix : ";
+	// rotm1.print(G4cout);   
 
-//
-// LaBr3
-//
+	//
+	// possitioning
+	//
 
-G4double disttoLaBr3Half = offsettoCollimator + 2*collimatorHalfLength +  detectorHalfinclPMT;
+	G4int copynumber;
+	copynumber = 0;
+	bool pSurfChk = false;
 
-G4ThreeVector w = G4ThreeVector( std::sin(theta) * std::cos(phi), std::sin(theta) * std::sin(phi), std::cos(theta));    
-G4ThreeVector positionLaBr3 = disttoLaBr3Half*w;
+	//
+	// LaBr3
+	//
 
-OCLLaBr3* labr3;
-labr3 = new OCLLaBr3();
-labr3->SetRotation(rotm1);
-labr3->SetPosition(positionLaBr3);
-labr3->Placement(copynumber,  physiWorld, pSurfChk);
+	G4double disttoLaBr3Half = offsettoCollimator 
+							   + 2 * collimatorHalfLength 
+							   + detectorHalfinclPMT;
 
-///////////
+	G4ThreeVector w = G4ThreeVector( sin(theta) * cos(phi),
+									 sin(theta) * sin(phi), 
+									 cos(theta));    
+	G4ThreeVector positionLaBr3 = disttoLaBr3Half * w;
 
-//
-// Collimator
-//
-G4double disttoCol = offsettoCollimator + collimatorHalfLength;
+	OCLLaBr3* labr3;
+	labr3 = new OCLLaBr3();
+	labr3->SetRotation(rotm1);
+	labr3->SetPosition(positionLaBr3);
+	labr3->Placement(copynumber,  physiWorld, pSurfChk);
 
-// possitioning     
-w = G4ThreeVector( std::sin(theta) * std::cos(phi), std::sin(theta) * std::sin(phi), std::cos(theta));    
-G4ThreeVector positionCol = disttoCol*w;
+	///////////
 
-OCLCollimator* collimator;
-collimator = new OCLCollimator();
-collimator->SetRotation(rotm1);
-collimator->SetPosition(positionCol);
-collimator->Placement(copynumber,  physiWorld, pSurfChk);
+	//
+	// Collimator
+	//
+	G4double disttoCol = offsettoCollimator + collimatorHalfLength;
+
+	// possitioning     
+	w = G4ThreeVector( sin(theta) * cos(phi), 
+					   sin(theta) * sin(phi),
+					   cos(theta));    
+
+	G4ThreeVector positionCol = disttoCol*w;
+
+	OCLCollimator* collimator;
+	collimator = new OCLCollimator();
+	collimator->SetRotation(rotm1);
+	collimator->SetPosition(positionCol);
+	collimator->Placement(copynumber,  physiWorld, pSurfChk);
 
 
 

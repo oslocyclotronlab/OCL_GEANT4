@@ -26,7 +26,7 @@ class SingleScintDetectorConstruction : public G4VUserDetectorConstruction
     
     G4Box* solidWorld;
     G4LogicalVolume* WorldLog;
-    G4PVPlacement* WorldPhys;
+    G4PVPlacement* physiWorld;
     
 };
 
