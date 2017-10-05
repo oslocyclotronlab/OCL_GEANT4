@@ -28,78 +28,66 @@
 #include "OCLCollimator.hh"
 #include "SingleScintParameters.hh"
 
-// #include "G4VPhysicalVolume.hh"
-// #include "G4LogicalVolume.hh"
-// #include "G4Box.hh"
-// #include "G4Tubs.hh"
-// #include "G4Cons.hh"
-// #include "G4UnionSolid.hh"
-// #include "G4Material.hh"
 #include "G4NistManager.hh"
-// #include "G4PVPlacement.hh"
-// #include "G4VisAttributes.hh"
-// #include "G4SystemOfUnits.hh"
-// #include "G4Transform3D.hh"
-// #include "G4PhysicalConstants.hh"
 
-// #include "G4Colour.hh"
 
-// //#include "G4MultiFunctionalDetector.hh"
-// //#include "G4VPrimitiveScorer.hh"
-// //#include "G4PSEnergyDeposit.hh"
-// //#include "G4TransportationManager.hh"
-// //#include "G4SDManager.hh"
-
-// #include "G4LogicalBorderSurface.hh"
-// #include "G4OpticalSurface.hh"
-
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
 OCLCollimator::OCLCollimator()
 {
-  //some default Clover detector parameters
-  // --> Parameter file
+	//some default Clover detector parameters
+	// --> Parameter file
 
 
-    //----------------------------------------------------
+	//----------------------------------------------------
 	// Material definitions
 	//----------------------------------------------------
 
-  G4double a, z;                    //a=mass of a mole;
-  G4double density;                 //z=mean number of protons;
+	G4double a, z;                    //a=mass of a mole;
+	G4double density;                 //z=mean number of protons;
 
-  G4int ncomponents, natoms;
-  G4double abundance, fractionmass;
+	G4int ncomponents, natoms;
+	G4double abundance, fractionmass;
 
-  // load NIST material database manager
-  G4NistManager * man = G4NistManager::Instance();
+	// load NIST material database manager
+	G4NistManager * man = G4NistManager::Instance();
 
-  //
-  // Define Elements
-  //
+	//
+	// Define Elements
+	//
 
-  //Lead
-  lead =    man->FindOrBuildMaterial("G4_Pb");
+	//Lead
+	lead =    man->FindOrBuildMaterial("G4_Pb");
 
-  ////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////
 
-  //create the solids.....
-  CreateSolids();
+	//create the solids.....
+	CreateSolids();
 
 }
 
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
+
 //Destructor
 OCLCollimator::~OCLCollimator() { }
+
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
 void OCLCollimator::SetPosition(G4ThreeVector thisPos) {
   translatePos = thisPos*mm;
   G4cout << " ----> A OCLCollimator will be placed at " << translatePos/mm << " mm" << G4endl;
 }
 
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
+
 void OCLCollimator::SetRotation(G4RotationMatrix thisRot) { rotation = thisRot; }
 
-//---------------------------------------------------------------------
-// Create the solids defining Phase-II Clovers
-//---------------------------------------------------------------------
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
+
 void  OCLCollimator::CreateSolids()
 {
 
@@ -112,21 +100,24 @@ void  OCLCollimator::CreateSolids()
 
 	// Collimator geometry
 
-	solidCollimator = new G4Cons("ShieldingConnical",
-											colRmin1,   // inner radius = 0 because used as mother volume
-											colRmax1,
-											colRmin2,   // inner radius = 0 because used as mother volume
-											colRmax2,
-											collimatorHalfLength,
-											startPhi,
-											deltaPhi);
+	solidCollimator = 
+		new G4Cons("ShieldingConnical",
+					colRmin1,   // inner radius = 0 because used as mother volume
+					colRmax1,
+					colRmin2,   // inner radius = 0 because used as mother volume
+					colRmax2,
+					collimatorHalfLength,
+					startPhi,
+					deltaPhi);
 
 	logicCollimator = new G4LogicalVolume(solidCollimator, lead, "Collimator");
 
 }
 
 
-//------------------------------------------------------------------
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
+
 void OCLCollimator::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool checkOverlaps)
 {
 
@@ -134,14 +125,14 @@ void OCLCollimator::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bo
 	// Collimator
 	//
 
-	positionCollimator = G4ThreeVector(0.*cm,0.*cm,0.*cm);
-	positionCollimator += translatePos;
-
 	G4Transform3D transCollimator = G4Transform3D(rotation,translatePos);
-	physiCollimator = new G4PVPlacement(transCollimator,
-														   "Collimator",
-														   logicCollimator,
-														   physiMother,
-														   false,copyNo,checkOverlaps);
+	physiCollimator = 
+		new G4PVPlacement(transCollimator,		// Transformation (Rot&Transl)
+							"Collimator",		// its name
+							logicCollimator,	// its logical volume
+							physiMother,		// its physical mother volume
+							false,				// unknown "pMany"; def: false
+							copyNo,				// copy number
+							checkOverlaps);		// checkOverlaps
 
 }
