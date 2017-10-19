@@ -29,6 +29,7 @@
 #include "SingleScintParameters.hh"
 #include "OCLLaBr3.hh"
 #include "OCLCollimator.hh"
+#include "OCLFrame.hh"
 
 #include "G4SystemOfUnits.hh"
 #include "G4Transform3D.hh"
@@ -116,8 +117,8 @@ G4VPhysicalVolume* SingleScintDetectorConstruction::Construct()
 
 
 	G4double offsettoCollimator = 10*cm;          // Distance from source to Collimator (beginning);
-	G4double phi = 45*deg; 
-	G4double theta = 45*deg;
+	G4double phi = 90*deg; 
+	G4double theta = 80*deg;
 
 	G4RotationMatrix rotm1 = G4RotationMatrix();
 	rotm1.rotateY(theta); 
@@ -150,7 +151,7 @@ G4VPhysicalVolume* SingleScintDetectorConstruction::Construct()
 	labr3 = new OCLLaBr3();
 	labr3->SetRotation(rotm1);
 	labr3->SetPosition(positionLaBr3);
-	labr3->Placement(copynumber,  physiWorld, pSurfChk);
+	// labr3->Placement(copynumber,  physiWorld, pSurfChk);
 
 	///////////
 
@@ -173,6 +174,18 @@ G4VPhysicalVolume* SingleScintDetectorConstruction::Construct()
 	collimator->Placement(copynumber,  physiWorld, pSurfChk);
 
 
+
+	//
+	//	Frame
+	//
+	G4RotationMatrix rotmFrame = G4RotationMatrix();
+	G4ThreeVector 	 positionFrame = G4ThreeVector();
+
+	OCLFrame* frame;
+	frame = new OCLFrame();
+	frame->SetRotation(rotmFrame);
+	frame->SetPosition(positionFrame);
+	frame->Placement(0,  physiWorld, pSurfChk);
 
 
  	//
