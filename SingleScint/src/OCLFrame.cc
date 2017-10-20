@@ -123,7 +123,14 @@ void  OCLFrame::CreateSolids()
 	
 	G4double sideLengthPentagon_z01  = 115.*mm;				
     G4double sideLengthPentagon_z00  = hightPentagon_z00 
-    									/ ( tan(pi/5.) * sqrt(5.+2.*sqrt(5)) );
+    									* 2. / (sqrt(5.+2.*sqrt(5)) );
+    
+    G4double arbReduction = 1.5 *mm; // Hot-Fix to make geometry overlaps go away
+    sideLengthPentagon_z01 -= arbReduction;
+    sideLengthPentagon_z00 -= arbReduction;
+
+    G4cout << "Hight " <<hightPentagon_z00  << G4endl;
+    G4cout << "BLA " << sideLengthPentagon_z00 << G4endl;
 
 	G4double rOuterPentagon_z01   = sideLengthPentagon_z01  // inradius of the larger side
 									/ (2.*tan(pi/5.));   
@@ -163,7 +170,7 @@ void  OCLFrame::CreateSolids()
 								solidFrameHoles);	   	// 2nd object
 
 
-    logicFramePentagon = new G4LogicalVolume(solidPentagon, Aluminium, "FramePentagon");
+    logicFramePentagon = new G4LogicalVolume(subtractFramePentagon, Aluminium, "FramePentagon");
 
     // Hexagons
 
@@ -197,7 +204,7 @@ void  OCLFrame::CreateSolids()
 								solidFrameHoles);	   	// 2nd object
 
 
-    logicFrameHexagon = new G4LogicalVolume(solidHexagon, Aluminium, "FrameHexagon");
+    logicFrameHexagon = new G4LogicalVolume(subtractFrameHexagon, Aluminium, "FrameHexagon");
 
 
 }
@@ -270,6 +277,12 @@ G4ThreeVector SpherToCatG4three(G4double r,G4double theta,G4double phi){
 
 void OCLFrame::CreatePlacementParameters()
 {
+
+G4ThreeVector w;
+
+G4double distToPentagonHalf = 240.738*mm    + 10*mm; // dist. to inner side of Pentagon + halfwidth
+G4double distToHexagonHalf  = 247.66 *mm    + 10*mm; // dist. to inner side of Hexagon  + halfwidth
+
 frameHexagon_theta[0]  = 69.094720*deg;      
 frameHexagon_phi[ 0]  = 148.282473*deg;     
 frameHexagon_psi[ 0]  = 0/twopi;
@@ -398,10 +411,6 @@ framePentagon_theta[11] = 58.282550*deg;
 framePentagon_phi[11] = 58.282475*deg;      
 framePentagon_psi[11] = 0/twopi;
 
-G4ThreeVector w;
-G4double distToPentagonHalf = 240.9 *mm+10*mm; // TODO!!!
-G4double distToHexagonHalf  = 247.66*mm    +10*mm; // TODO!!!
-
 double arbrot1 = (90.-72.);
 
 rotmPentagon[1].rotateZ(180*deg);
@@ -416,7 +425,6 @@ rotmPentagon[7].rotateZ(-arbrot1*deg);
 rotmPentagon[8].rotateZ(arbrot1*deg);
 rotmPentagon[10].rotateZ(-arbrot1*deg);
 rotmPentagon[11].rotateZ(arbrot1*deg);
-
 
 
 for(G4int i=0; i<numberOf_Pentagons; i++){
