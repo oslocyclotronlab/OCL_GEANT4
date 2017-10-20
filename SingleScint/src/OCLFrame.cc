@@ -123,14 +123,7 @@ void  OCLFrame::CreateSolids()
 	
 	G4double sideLengthPentagon_z01  = 115.*mm;				
     G4double sideLengthPentagon_z00  = hightPentagon_z00 
-    									* 2. / (sqrt(5.+2.*sqrt(5)) );
-    
-    G4double arbReduction = 1.5 *mm; // Hot-Fix to make geometry overlaps go away
-    sideLengthPentagon_z01 -= arbReduction;
-    sideLengthPentagon_z00 -= arbReduction;
-
-    G4cout << "Hight " <<hightPentagon_z00  << G4endl;
-    G4cout << "BLA " << sideLengthPentagon_z00 << G4endl;
+    									* 2. / (sqrt(5.+2.*sqrt(5.)) );
 
 	G4double rOuterPentagon_z01   = sideLengthPentagon_z01  // inradius of the larger side
 									/ (2.*tan(pi/5.));   
@@ -219,10 +212,9 @@ void OCLFrame::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 	// rotation.rotateZ(90.*deg);
 	// G4Transform3D translationGlobal = G4Transform3D(rotation,translatePos);
 
-	G4int copyNoSub = 0; // copy number for the sub elements (could also be copyNo)
 
  	//
-	// Detector Geometry
+	// Frame (Ball) Geometry
 	//
 
 	for(G4int i=0; i<numberOf_Pentagons; i++){
@@ -257,216 +249,161 @@ void OCLFrame::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 	// // visualization attributes
 	// //------------------------------------------------------
 
-	// // White color for Detector
-	// VisAtt1= new G4VisAttributes(G4Colour(1.0,1.0,1.0)); //White
-	// logicCrystal->SetVisAttributes(VisAtt1);
-
-	// // Red color for Shielding
-	// VisAtt2 = new G4VisAttributes(G4Colour(1.0,0.0,0.0)); //red
-	// logicShielding->SetVisAttributes(VisAtt2);
+	// Frame (Ball)
+	VisAtt1= new G4VisAttributes(G4Colour(0.5,0.5,0.5)); //White
+	logicFramePentagon->SetVisAttributes(VisAtt1);
+	logicFrameHexagon->SetVisAttributes(VisAtt1);
 
 }
 
-
-G4ThreeVector SpherToCatG4three(G4double r,G4double theta,G4double phi){
-	return r * G4ThreeVector( sin(theta) * cos(phi),
-					   sin(theta) * sin(phi), 
-					   cos(theta));
-}
-
+G4ThreeVector SpherToCatG4three(G4double r,G4double theta,G4double phi);
 
 void OCLFrame::CreatePlacementParameters()
 {
 
 G4ThreeVector w;
 
-G4double distToPentagonHalf = 240.738*mm    + 10*mm; // dist. to inner side of Pentagon + halfwidth
-G4double distToHexagonHalf  = 247.66 *mm    + 10*mm; // dist. to inner side of Hexagon  + halfwidth
+G4double distToPentagonHalf = 240.738*mm + 10*mm; // dist. to inner side of Pentagon + halfwidth
+G4double distToHexagonHalf  = 247.66 *mm + 10*mm; // dist. to inner side of Hexagon  + halfwidth
 
-frameHexagon_theta[0]  = 69.094720*deg;      
-frameHexagon_phi[ 0]  = 148.282473*deg;     
-frameHexagon_psi[ 0]  = 0/twopi;
-     
-frameHexagon_theta[ 1]  = 54.735580*deg;      
-frameHexagon_phi[ 1]  = 193.282664*deg;     
-frameHexagon_psi[ 1]  = 0/twopi;
-     
-frameHexagon_theta[ 2]  = 90.000000*deg;      
-frameHexagon_phi[ 2]  = 217.377465*deg;     
-frameHexagon_psi[ 2]  = 0/twopi;
-     
-frameHexagon_theta[ 3]  = 125.264420*deg;     
-frameHexagon_phi[ 3]  = 193.282664*deg;     
-frameHexagon_psi[ 3]  = 0/twopi;
-     
-frameHexagon_theta[ 4]  = 110.905280*deg;     
-frameHexagon_phi[ 4]  = 148.282473*deg;     
-frameHexagon_psi[ 4]  = 0/twopi;
-     
-frameHexagon_theta[ 5]  = 54.735549*deg;      
-frameHexagon_phi[ 5]  = 103.282380*deg;     
-frameHexagon_psi[ 5]  = 0/twopi;
-     
-frameHexagon_theta[ 6]  = 20.905182*deg;      
-frameHexagon_phi[ 6]  = 58.282163*deg;      
-frameHexagon_psi[ 6]  = 0/twopi;
-     
-frameHexagon_theta[ 7]  = 20.905065*deg;      
-frameHexagon_phi[ 7]  = 238.282731*deg;     
-frameHexagon_psi[ 7]  = 0/twopi;
-     
-frameHexagon_theta[ 8]  = 54.735580*deg;      
-frameHexagon_phi[ 8]  = 283.282664*deg;     
-frameHexagon_psi[ 8]  = 0/twopi;
-     
-frameHexagon_theta[ 9]  = 90.000000*deg;      
-frameHexagon_phi[ 9]  = 259.187825*deg;     
-frameHexagon_psi[ 9]  = 0/twopi;
-     
-frameHexagon_theta[10]  = 125.264420*deg;     
-frameHexagon_phi[10]  = 283.282664*deg;     
-frameHexagon_psi[10]  = 0/twopi;
-     
-frameHexagon_theta[11]  = 159.094935*deg;     
-frameHexagon_phi[11]  = 238.282731*deg;     
-frameHexagon_psi[11]  = 0/twopi;
-     
-frameHexagon_theta[12]  = 159.094818*deg;     
-frameHexagon_phi[12]  = 58.282163*deg;      
-frameHexagon_psi[12]  = 0/twopi;
-     
-frameHexagon_theta[13]  = 125.264451*deg;     
-frameHexagon_phi[13]  = 103.282380*deg;     
-frameHexagon_psi[13]  = 0/twopi;
-     
-frameHexagon_theta[14]  = 90.000000*deg;      
-frameHexagon_phi[14]  = 79.187591*deg;      
-frameHexagon_psi[14]  = 0/twopi;
-     
-frameHexagon_theta[15]  = 90.000000*deg;      
-frameHexagon_phi[15]  = 37.377321*deg;      
-frameHexagon_psi[15]  = 0/twopi;
-     
-frameHexagon_theta[16]  = 125.264286*deg;     
-frameHexagon_phi[16]  = 13.282597*deg;      
-frameHexagon_psi[16]  = 0/twopi;
-     
-frameHexagon_theta[17]  = 110.905208*deg;     
-frameHexagon_phi[17]  = 328.282607*deg;     
-frameHexagon_psi[17]  = 0/twopi;
-     
-frameHexagon_theta[18]  = 69.094792*deg;      
-frameHexagon_phi[18]  = 328.282607*deg;     
-frameHexagon_psi[18]  = 0/twopi;
-     
-frameHexagon_theta[19]  = 54.735714*deg;      
-frameHexagon_phi[19]  = 13.282597*deg;      
-frameHexagon_psi[19]  = 0/twopi;
-     
-framePentagon_theta[ 0] = 90.000000*deg;      
-framePentagon_phi[ 0] = 180.000000*deg;     
-framePentagon_psi[ 0] = 0/twopi;
-     
-framePentagon_theta[ 1] = 90.000000*deg;      
-framePentagon_phi[ 1] = 116.564844*deg;     
-framePentagon_psi[ 1] = 0/twopi;
-     
-framePentagon_theta[ 2] = 31.717335*deg;      
-framePentagon_phi[ 2] = 148.282427*deg;     
-framePentagon_psi[ 2] = 0/twopi;
-     
-framePentagon_theta[ 3] = 58.282486*deg;      
-framePentagon_phi[ 3] = 238.282706*deg;     
-framePentagon_psi[ 3] = 0/twopi;
-     
-framePentagon_theta[ 4] = 121.717514*deg;     
-framePentagon_phi[ 4] = 238.282706*deg;     
-framePentagon_psi[ 4] = 0/twopi;
-     
-framePentagon_theta[ 5] = 148.282665*deg;     
-framePentagon_phi[ 5] = 148.282427*deg;     
-framePentagon_psi[ 5] = 0/twopi;
-     
-framePentagon_theta[ 6] = 90.000000*deg;      
-framePentagon_phi[ 6] = 0.000000*deg;     
-framePentagon_psi[ 6] = 0/twopi;
-     
-framePentagon_theta[ 7] = 121.717450*deg;     
-framePentagon_phi[ 7] = 58.282475*deg;      
-framePentagon_psi[ 7] = 0/twopi;
-     
-framePentagon_theta[ 8] = 148.282498*deg;     
-framePentagon_phi[ 8] = 328.282658*deg;     
-framePentagon_psi[ 8] = 0/twopi;
-     
-framePentagon_theta[ 9] = 90.000000*deg;      
-framePentagon_phi[ 9] = 296.565051*deg;     
-framePentagon_psi[ 9] = 0/twopi;
-     
-framePentagon_theta[10] = 31.717502*deg;      
-framePentagon_phi[10] = 328.282658*deg;     
-framePentagon_psi[10] = 0/twopi;
-     
-framePentagon_theta[11] = 58.282550*deg;      
-framePentagon_phi[11] = 58.282475*deg;      
-framePentagon_psi[11] = 0/twopi;
+frameHexagon_theta[ 0]	= 142.622528*deg;			
+frameHexagon_phi[ 0]	= 144.000134*deg;			
+			 
+frameHexagon_theta[ 1]	= 142.622561*deg;			
+frameHexagon_phi[ 1]	= 216.000153*deg;			
+			 
+frameHexagon_theta[ 2]	= 142.622535*deg;			
+frameHexagon_phi[ 2]	= 288.000000*deg;			
+			 
+frameHexagon_theta[ 3]	= 142.622561*deg;			
+frameHexagon_phi[ 3]	= 359.999847*deg;			
+			 
+frameHexagon_theta[ 4]	= 142.622528*deg;			
+frameHexagon_phi[ 4]	= 71.999866*deg;			
+			 
+frameHexagon_theta[ 5]	= 100.812191*deg;			
+frameHexagon_phi[ 5]	= 144.000046*deg;			
+			 
+frameHexagon_theta[ 6]	= 79.187559*deg;			
+frameHexagon_phi[ 6]	= 180.000044*deg;			
+			 
+frameHexagon_theta[ 7]	= 100.812208*deg;			
+frameHexagon_phi[ 7]	= 215.999956*deg;			
+			 
+frameHexagon_theta[ 8]	= 79.187575*deg;			
+frameHexagon_phi[ 8]	= 251.999954*deg;			
+			 
+frameHexagon_theta[ 9]	= 100.812175*deg;			
+frameHexagon_phi[ 9]	= 288.000000*deg;			
+			 
+frameHexagon_theta[10]	= 79.187575*deg;			
+frameHexagon_phi[10]	= 324.000046*deg;			
+			 
+frameHexagon_theta[11]	= 100.812208*deg;			
+frameHexagon_phi[11]	= 0.000044*deg;			
+			 
+frameHexagon_theta[12]	= 79.187559*deg;			
+frameHexagon_phi[12]	= 35.999956*deg;			
+			 
+frameHexagon_theta[13]	= 100.812191*deg;			
+frameHexagon_phi[13]	= 71.999954*deg;			
+			 
+frameHexagon_theta[14]	= 79.187591*deg;			
+frameHexagon_phi[14]	= 108.000000*deg;			
+			 
+frameHexagon_theta[15]	= 37.377321*deg;			
+frameHexagon_phi[15]	= 108.000000*deg;			
+			 
+frameHexagon_theta[16]	= 37.377294*deg;			
+frameHexagon_phi[16]	= 36.000153*deg;			
+			 
+frameHexagon_theta[17]	= 37.377328*deg;			
+frameHexagon_phi[17]	= 324.000134*deg;			
+			 
+frameHexagon_theta[18]	= 37.377328*deg;			
+frameHexagon_phi[18]	= 251.999866*deg;			
+			 
+frameHexagon_theta[19]	= 37.377294*deg;			
+frameHexagon_phi[19]	= 179.999847*deg;			
+			 
+framePentagon_theta[ 0]	= 180.000000*deg;			
+framePentagon_phi[ 0]	= 180.000000*deg;			
+			 
+framePentagon_theta[ 1]	= 116.564844*deg;			
+framePentagon_phi[ 1]	= 108.000000*deg;			
+			 
+framePentagon_theta[ 2]	= 116.564908*deg;			
+framePentagon_phi[ 2]	= 180.000045*deg;			
+			 
+framePentagon_theta[ 3]	= 116.564893*deg;			
+framePentagon_phi[ 3]	= 252.000011*deg;			
+			 
+framePentagon_theta[ 4]	= 116.564893*deg;			
+framePentagon_phi[ 4]	= 323.999989*deg;			
+			 
+framePentagon_theta[ 5]	= 116.564908*deg;			
+framePentagon_phi[ 5]	= 35.999955*deg;			
+			 
+framePentagon_theta[ 6]	= 0.000000*deg;			
+framePentagon_phi[ 6]	= 0.000000*deg;			
+			 
+framePentagon_theta[ 7]	= 63.434900*deg;			
+framePentagon_phi[ 7]	= 72.000011*deg;			
+			 
+framePentagon_theta[ 8]	= 63.434885*deg;			
+framePentagon_phi[ 8]	= 0.000045*deg;			
+			 
+framePentagon_theta[ 9]	= 63.434949*deg;			
+framePentagon_phi[ 9]	= 288.000000*deg;			
+			 
+framePentagon_theta[10]	= 63.434885*deg;			
+framePentagon_phi[10]	= 215.999955*deg;			
+			 
+framePentagon_theta[11]	= 63.434900*deg;			
+framePentagon_phi[11]	= 143.999989*deg;			
 
-double arbrot1 = (90.-72.);
+double rot1 = 36.*deg;
 
-rotmPentagon[1].rotateZ(180*deg);
-rotmPentagon[9].rotateZ(180*deg);
-
-rotmPentagon[2].rotateZ(-arbrot1*deg);
-rotmPentagon[3].rotateZ(arbrot1*deg);
-rotmPentagon[4].rotateZ(-arbrot1*deg);
-rotmPentagon[5].rotateZ(arbrot1*deg);
-
-rotmPentagon[7].rotateZ(-arbrot1*deg);
-rotmPentagon[8].rotateZ(arbrot1*deg);
-rotmPentagon[10].rotateZ(-arbrot1*deg);
-rotmPentagon[11].rotateZ(arbrot1*deg);
+rotmPentagon[0].rotateZ(-180*deg);
+rotmPentagon[7].rotateZ(rot1);
+rotmPentagon[8].rotateZ(rot1);
+rotmPentagon[9].rotateZ(rot1);
+rotmPentagon[10].rotateZ(rot1);
+rotmPentagon[11].rotateZ(rot1);
 
 
 for(G4int i=0; i<numberOf_Pentagons; i++){
 	
 	positionPentagon[i] = SpherToCatG4three(distToPentagonHalf, framePentagon_theta[i], framePentagon_phi[i]); 
-
-	rotmPentagon[i].rotateZ(-90*deg);
 	rotmPentagon[i].rotateY(framePentagon_theta[i]); 
 	rotmPentagon[i].rotateZ(framePentagon_phi[i]);
 }
 
-double arbrot = (90.-72.)/2.;
-
 rotmHexagon[0].rotateZ(90*deg);
 rotmHexagon[4].rotateZ(90*deg);
 
-rotmHexagon[17].rotateZ(30*deg);
-rotmHexagon[18].rotateZ(-30*deg);
+rotmHexagon[1].rotateZ(30*deg);
+rotmHexagon[2].rotateZ(30*deg);
+rotmHexagon[3].rotateZ(30*deg);
 
+rotmHexagon[5].rotateZ(30*deg);
 rotmHexagon[6].rotateZ(30*deg);
 rotmHexagon[7].rotateZ(30*deg);
-
+rotmHexagon[8].rotateZ(30*deg);
+rotmHexagon[9].rotateZ(30*deg);
+rotmHexagon[10].rotateZ(30*deg);
 rotmHexagon[11].rotateZ(30*deg);
 rotmHexagon[12].rotateZ(30*deg);
-
-
-rotmHexagon[1].rotateZ(arbrot*deg);
-rotmHexagon[3].rotateZ(-arbrot*deg);
-
-rotmHexagon[16].rotateZ(-arbrot*deg);
-rotmHexagon[19].rotateZ(arbrot*deg);
-
-rotmHexagon[5].rotateZ(-arbrot*deg);
-rotmHexagon[8].rotateZ(-arbrot*deg);
-
-rotmHexagon[10].rotateZ(arbrot*deg);
-rotmHexagon[13].rotateZ(arbrot*deg);
+rotmHexagon[13].rotateZ(30*deg);
+rotmHexagon[14].rotateZ(30*deg);
+rotmHexagon[15].rotateZ(30*deg);
+rotmHexagon[16].rotateZ(30*deg);
+rotmHexagon[17].rotateZ(30*deg);
+rotmHexagon[18].rotateZ(30*deg);
+rotmHexagon[19].rotateZ(30*deg);
 
 for(G4int i=0; i<numberOf_Hexagons; i++){
 	positionHexagon[i] = SpherToCatG4three(distToHexagonHalf, frameHexagon_theta[i], frameHexagon_phi[i]); 
-
-
 	rotmHexagon[i].rotateY(frameHexagon_theta[i]); 
 	rotmHexagon[i].rotateZ(frameHexagon_phi[i]);
 }

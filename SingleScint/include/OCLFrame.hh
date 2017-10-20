@@ -15,15 +15,9 @@
 #include "G4Tubs.hh"
 #include "G4SubtractionSolid.hh"
 
-// #include "G4Colour.hh"
+#include "G4VisAttributes.hh"
+#include "G4Colour.hh"
 
-
-/// Detector construction class to define materials and geometry.
-
-// class G4LogicalVolume;
-// class G4VPhysicalVolume;
-// class G4PVPlacement;
-// class G4Box;
 
 //////////////////////////////////////////////////////////
 //                  Frame SETUP                         //
@@ -47,11 +41,6 @@ public:
 private:
   G4ThreeVector        translatePos;
   G4RotationMatrix     rotation;
-
-  //
-  //
-  //
-  // int test[] = {2,3}; 
 
 
   //
@@ -92,6 +81,11 @@ private:
   G4LogicalVolume*    logicFrameHexagon;
   G4VPhysicalVolume*  physiFrameHexagon;
 
+  //------------------------------------------------------
+  // visualization attributes
+  //------------------------------------------------------
+
+  G4VisAttributes* VisAtt1;
 
 private:
   void CreateSolids();
