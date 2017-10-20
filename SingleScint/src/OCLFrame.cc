@@ -123,7 +123,7 @@ void  OCLFrame::CreateSolids()
 	
 	G4double sideLengthPentagon_z01  = 115.*mm;				
     G4double sideLengthPentagon_z00  = hightPentagon_z00 
-    									/ (tan(pi/5.) * sqrt(5.+2.*sqrt(.5)) );
+    									/ ( tan(pi/5.) * sqrt(5.+2.*sqrt(5)) );
 
 	G4double rOuterPentagon_z01   = sideLengthPentagon_z01  // inradius of the larger side
 									/ (2.*tan(pi/5.));   
