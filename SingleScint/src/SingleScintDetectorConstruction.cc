@@ -30,6 +30,7 @@
 #include "OCLLaBr3.hh"
 #include "OCLCollimator.hh"
 #include "OCLFrame.hh"
+#include "SiRi.hh"
 
 #include "G4SystemOfUnits.hh"
 #include "G4Transform3D.hh"
@@ -161,14 +162,26 @@ G4VPhysicalVolume* SingleScintDetectorConstruction::Construct()
 	//
 	//	Frame
 	//
-	G4RotationMatrix rotmFrame = G4RotationMatrix();
-	G4ThreeVector 	 positionFrame = G4ThreeVector();
+	G4RotationMatrix rotmFrame = G4RotationMatrix(); 	// Check implementation: Need to be empty?
+	G4ThreeVector 	 positionFrame = G4ThreeVector(); 	//  
 
 	OCLFrame* frame;
 	frame = new OCLFrame();
 	frame->SetRotation(rotmFrame);
 	frame->SetPosition(positionFrame);
 	frame->Placement(0,  physiWorld, pSurfChk);
+
+	//
+	//	SiRi
+	//
+	G4RotationMatrix rotmSiRi = G4RotationMatrix(); 	// Check implementation: Need to be empty?
+	G4ThreeVector 	 positionSiRi = G4ThreeVector();	//  
+
+	SiRi* siri;
+	siri = new SiRi();
+	siri->SetRotation(rotmSiRi);
+	siri->SetPosition(positionSiRi);
+	siri->Placement(0,  physiWorld, pSurfChk);
 
 
  	//
