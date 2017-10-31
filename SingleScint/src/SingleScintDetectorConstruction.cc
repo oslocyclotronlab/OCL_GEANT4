@@ -31,6 +31,7 @@
 #include "OCLCollimator.hh"
 #include "OCLFrame.hh"
 #include "SiRi.hh"
+#include "NIFF.hh"
 
 #include "G4SystemOfUnits.hh"
 #include "G4Transform3D.hh"
@@ -182,6 +183,19 @@ G4VPhysicalVolume* SingleScintDetectorConstruction::Construct()
 	siri->SetRotation(rotmSiRi);
 	siri->SetPosition(positionSiRi);
 	siri->Placement(0,  physiWorld, pSurfChk);
+
+	//
+	//	NIFF
+	//
+	// G4RotationMatrix rotmNIFF = G4RotationMatrix(); 	// Check implementation: Need to be empty?
+	// G4ThreeVector 	 positionNIFF = G4ThreeVector();	//  
+
+	NIFF* niff;
+	niff = new NIFF();
+	// niff->SetRotation(rotmNIFF);
+	// niff->SetPosition(positionNIFF);
+	niff->Placement(0,  physiWorld, pSurfChk);
+
 
 
  	//
