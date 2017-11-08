@@ -15,6 +15,7 @@ class G4LogicalVolume;
 class G4VPhysicalVolume;
 class G4PVPlacement;
 class G4Box;
+
 class OCLLaBr3;
 class OCLCollimator;
 

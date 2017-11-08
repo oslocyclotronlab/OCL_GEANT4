@@ -32,6 +32,7 @@
 #include "OCLFrame.hh"
 #include "SiRi.hh"
 #include "NIFF.hh"
+#include "TChamberAuspuff.hh"
 
 #include "G4SystemOfUnits.hh"
 #include "G4Transform3D.hh"
@@ -171,6 +172,16 @@ G4VPhysicalVolume* SingleScintDetectorConstruction::Construct()
 	frame->SetRotation(rotmFrame);
 	frame->SetPosition(positionFrame);
 	frame->Placement(0,  physiWorld, pSurfChk);
+
+
+	//
+	// Target Chamber
+	//
+
+	TChamberAuspuff* chamber;
+	chamber = new TChamberAuspuff();
+	chamber->Placement(0,  physiWorld, pSurfChk);
+
 
 	//
 	//	SiRi
