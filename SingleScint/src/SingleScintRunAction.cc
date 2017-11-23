@@ -43,9 +43,10 @@ SingleScintRunAction::SingleScintRunAction() : G4UserRunAction()
 
 	  xmin = 0; // in keV
 	  xmax = 12e3; // in keV
-	  binsize = 2; // in keV
+	  binsize = 2.; // in keV
 	  nbins= (int)((xmax-xmin)/binsize);
 	  analysisManager->CreateH1("Histo1","Edep in Crystal", nbins, xmin*keV, xmax*keV);
+	  
 
 	  xmin = 0; //
 	  xmax = 12e3; //
@@ -60,12 +61,20 @@ SingleScintRunAction::SingleScintRunAction() : G4UserRunAction()
 	  nbins= (int)(xmax-xmin)/binsize;
           analysisManager->CreateH1("Histo3","Time of Absorption", nbins, xmin, xmax*ns);
 
+ 	  xmin = 0; // in keV
+	  xmax = 12e3; // in keV
+	  binsize = 2.; // in keV
+	  nbins= (int)((xmax-xmin)/binsize);
+	  analysisManager->CreateH1("Histo4","Folded Edep in Crystal", nbins, xmin*keV, xmax*keV);
+      
+
 	  // Creating ntuple
 	  //
 	  analysisManager->CreateNtuple("B4", "Edep and TrackL...");
 	  analysisManager->CreateNtupleDColumn("Edep");
 	  analysisManager->CreateNtupleDColumn("nAbsPhotons");
 	  analysisManager->CreateNtupleDColumn("absTime");
+	  analysisManager->CreateNtupleDColumn("EdepFolded");
 	  analysisManager->FinishNtuple();
 
 }

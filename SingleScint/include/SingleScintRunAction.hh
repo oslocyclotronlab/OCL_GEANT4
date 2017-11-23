@@ -23,7 +23,7 @@ class SingleScintRunAction : public G4UserRunAction
 
 	G4double xmin;
 	G4double xmax;
-	G4int binsize;
+	G4double binsize;
 	G4int nbins;
 		
 };
