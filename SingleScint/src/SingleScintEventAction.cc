@@ -59,7 +59,7 @@ void SingleScintEventAction::EndOfEventAction(const G4Event* evt)
   //
   G4int eventID = 1 + evt->GetEventID();
   //G4int printModulo = G4RunManager::GetRunManager()->GetPrintProgress();
-  G4int printModulo = 100;
+  G4int printModulo = 1000;
   if ( ( printModulo > 0 ) && ( eventID % printModulo == 0 ) )
   {
     G4cout << "---> End of event: " << eventID << G4endl;
