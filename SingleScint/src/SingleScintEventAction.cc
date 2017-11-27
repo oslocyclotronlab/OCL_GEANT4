@@ -17,7 +17,7 @@ using namespace std;
 using namespace CLHEP;
 
 SingleScintEventAction::SingleScintEventAction(SingleScintRunAction* run)
-:G4UserEventAction(), EdepInCrystal(0.), nAbsPhotons(0.), absTime(0.)
+:G4UserEventAction(), EdepInCrystal(0.), nAbsPhotons(0.), absTime(0.), foldedEdep(0.)
 {}
 
 SingleScintEventAction::~SingleScintEventAction()
@@ -29,6 +29,7 @@ void SingleScintEventAction::BeginOfEventAction(const G4Event*)
 	EdepInCrystal = 0.;
 	nAbsPhotons = 0;
 	absTime = 0;
+	foldedEdep=0.;
 }
 
 void SingleScintEventAction::EndOfEventAction(const G4Event* evt)
@@ -44,18 +45,21 @@ void SingleScintEventAction::EndOfEventAction(const G4Event* evt)
 	  analysisManager->FillH1(1, EdepInCrystal);
 	  analysisManager->FillH1(2, nAbsPhotons);
 	  analysisManager->FillH1(3, absTime);
+	  analysisManager->FillH1(4, (G4RandGauss::shoot(foldedEdep,0.02*sqrt(foldedEdep)))); //Adjust the energy dependent smoothing parameter to fit experimental FWHM values
+
 
 	  // fill ntuple
 	  analysisManager->FillNtupleDColumn(0, EdepInCrystal);
 	  analysisManager->FillNtupleDColumn(1, nAbsPhotons);
 	  analysisManager->FillNtupleDColumn(2, absTime);
+	  analysisManager->FillNtupleDColumn(3, foldedEdep);
 	  analysisManager->AddNtupleRow();
 
   // Print per event (modulo n)
   //
   G4int eventID = 1 + evt->GetEventID();
   //G4int printModulo = G4RunManager::GetRunManager()->GetPrintProgress();
-  G4int printModulo = 100;
+  G4int printModulo = 1000;
   if ( ( printModulo > 0 ) && ( eventID % printModulo == 0 ) )
   {
     G4cout << "---> End of event: " << eventID << G4endl;

@@ -14,7 +14,6 @@
 #include "SingleScintParameters.hh"
 
 #include "G4Event.hh"
-#include "G4ParticleGun.hh"
 #include "G4ParticleTable.hh"
 #include "G4ParticleDefinition.hh"
 
@@ -34,6 +33,9 @@ SingleScintPrimaryGeneratorAction::SingleScintPrimaryGeneratorAction()
 	particleGun = new G4GeneralParticleSource();
 	particleGun->SetCurrentSourceIntensity (1);
 	particleGun->SetParticlePosition(G4ThreeVector());
+  	G4ParticleDefinition* particleDefinition = G4ParticleTable::GetParticleTable()->FindParticle("gamma");
+  	particleGun->SetParticleDefinition(particleDefinition);
+
 	// 	// Source position determined from Parameters.hh
 	// 	particleGun->GetCurrentSource()->GetPosDist()->SetCentreCoords(G4ThreeVector(0., 0., - distSourceHalfCry ));
 }

@@ -42,7 +42,9 @@ void SingleScintSteppingAction::UserSteppingAction(const G4Step* aStep)
 		
 		G4double EdepStep = aStep->GetTotalEnergyDeposit();
 		
-		if (EdepStep > 0.) eventAction->EdepInCrystal = eventAction->EdepInCrystal + EdepStep;
+		if (EdepStep > 0.) {eventAction->EdepInCrystal = eventAction->EdepInCrystal + EdepStep;
+							eventAction->foldedEdep = eventAction->foldedEdep+EdepStep;
+							}
 
 		//count scintillating photons and kill the photons after the first step
 		if (particleName == "opticalphoton"){
