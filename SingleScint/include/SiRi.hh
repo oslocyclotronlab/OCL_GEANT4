@@ -25,12 +25,16 @@
 #include "G4StepPoint.hh"
 #include "G4TouchableHistory.hh"
 
+#include <stdlib.h>     /* exit, EXIT_FAILURE */
 
 #include "CLHEP/Units/PhysicalConstants.h"
 
 /// Detector construction class to define materials and geometry.
 class G4LogicalVolume;
 class G4VPhysicalVolume;
+
+const G4int nFront = 8;
+const G4int nBack = 8;
 
 class SiRi : public G4VUserDetectorConstruction
 {
@@ -43,14 +47,19 @@ class SiRi : public G4VUserDetectorConstruction
     virtual G4VPhysicalVolume* Construct();
     virtual void ConstructSDandField();
 
-	void SetPosition( G4ThreeVector );
-	void SetRotation( G4RotationMatrix );
+	// void SetPosition( G4ThreeVector );
+	// void SetRotation( G4RotationMatrix );
+    void SetAngle(G4double);
 	void Placement(G4int, G4VPhysicalVolume*, G4bool);
 	void CreatePlacementParameters();
 
   private:
     G4ThreeVector        translatePos;
-    G4RotationMatrix     rotation;
+    // G4RotationMatrix     rotation;
+    G4double angle;     // another way to give the angle wrt beam
+    G4double theta;     // another way to give the angle wrt beam
+    G4double anotherAngle;     // another way to give the angle wrt beam
+    G4double pmone;
 
     //
     // Parameters/Constants
@@ -64,6 +73,8 @@ class SiRi : public G4VUserDetectorConstruction
     G4double d_deltaE;
     G4double d_E;
 
+    G4double r_delta;
+
     G4double h_thin;
 
 
@@ -76,25 +87,17 @@ class SiRi : public G4VUserDetectorConstruction
 
 
     // G4LogicalVolume*   deltaE_Log;
+    G4Trd* DE_shape[nFront];
+
     G4LogicalVolume*   E_Log;
-    G4LogicalVolume*   DE_Log1;
-    G4LogicalVolume*   DE_Log2;
-    G4LogicalVolume*   DE_Log3;
-    G4LogicalVolume*   DE_Log4;
-    G4LogicalVolume*   DE_Log5;
-    G4LogicalVolume*   DE_Log6;
-    G4LogicalVolume*   DE_Log7;
-    G4LogicalVolume*   DE_Log8;
+    G4LogicalVolume*   dE_Log;
+    G4LogicalVolume*   DE_Log[nFront];
+    G4LogicalVolume*   pad_Log;
     
     G4VPhysicalVolume*  E_phys;
-    G4VPhysicalVolume*  DE_phys1;
-    G4VPhysicalVolume*  DE_phys2;
-    G4VPhysicalVolume*  DE_phys3;
-    G4VPhysicalVolume*  DE_phys4;
-    G4VPhysicalVolume*  DE_phys5;
-    G4VPhysicalVolume*  DE_phys6;
-    G4VPhysicalVolume*  DE_phys7;
-    G4VPhysicalVolume*  DE_phys8;
+    G4VPhysicalVolume*  dE_phys_strip;
+    G4VPhysicalVolume*  dE_phys;
+    G4VPhysicalVolume*  pad_phys;
 
 
   private:
