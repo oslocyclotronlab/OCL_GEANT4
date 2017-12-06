@@ -156,7 +156,7 @@ G4VPhysicalVolume* SingleScintDetectorConstruction::Construct()
 		collimator[i] = new OCLCollimator();
 		collimator[i]->SetRotation(rotmOCLLaBr3[i]); // same rotation as Detector
 		collimator[i]->SetPosition(positionCollimator[i]);
-		collimator[i]->Placement(copynumber,  physiWorld, pSurfChk);
+		// collimator[i]->Placement(copynumber,  physiWorld, pSurfChk);
 		}
 	}
 
@@ -186,13 +186,16 @@ G4VPhysicalVolume* SingleScintDetectorConstruction::Construct()
 	//
 	//	SiRi
 	//
-	G4RotationMatrix rotmSiRi = G4RotationMatrix(); 	// Check implementation: Need to be empty?
-	G4ThreeVector 	 positionSiRi = G4ThreeVector();	//  
+	// G4RotationMatrix rotmSiRi = G4RotationMatrix(); 	// Check implementation: Need to be empty?
+	// G4ThreeVector 	 positionSiRi = G4ThreeVector();	//  
 
 	SiRi* siri;
 	siri = new SiRi();
-	siri->SetRotation(rotmSiRi);
-	siri->SetPosition(positionSiRi);
+	// siri->SetAngle(137*deg); // backward
+	siri->SetAngle(43*deg); // forward
+	
+	// siri->SetRotation(rotmSiRi);
+	// siri->SetPosition(positionSiRi);
 	siri->Placement(0,  physiWorld, pSurfChk);
 
 	//
@@ -203,9 +206,9 @@ G4VPhysicalVolume* SingleScintDetectorConstruction::Construct()
 
 	NIFF* niff;
 	niff = new NIFF();
-	// niff->SetRotation(rotmNIFF);
-	// niff->SetPosition(positionNIFF);
-	niff->Placement(0,  physiWorld, pSurfChk);
+	// // niff->SetRotation(rotmNIFF);
+	// // niff->SetPosition(positionNIFF);
+	// niff->Placement(0,  physiWorld, pSurfChk);
 
 
 
