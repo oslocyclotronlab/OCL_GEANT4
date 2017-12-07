@@ -63,6 +63,8 @@ class SingleScintEventAction : public G4UserEventAction
 	G4double  EdepInCrystal31;
 	G4double  EdepInCrystal32;
 
+	G4double  EdepInCrystalTest[32];
+
 	G4double foldedEdep;
    
   private:
