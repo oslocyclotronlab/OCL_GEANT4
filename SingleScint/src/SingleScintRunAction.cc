@@ -45,8 +45,38 @@ SingleScintRunAction::SingleScintRunAction() : G4UserRunAction()
 	  xmax = 12e3; // in keV
 	  binsize = 2.; // in keV
 	  nbins= (int)((xmax-xmin)/binsize);
-	  analysisManager->CreateH1("Histo1","Edep in Crystal", nbins, xmin*keV, xmax*keV);
-	  
+	  analysisManager->CreateH1("hedep1","Edep in Crystal1", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep2","Edep in Crystal2", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep3","Edep in Crystal3", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep4","Edep in Crystal4", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep5","Edep in Crystal5", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep6","Edep in Crystal6", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep7","Edep in Crystal7", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep8","Edep in Crystal8", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep9","Edep in Crystal9", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep10","Edep in Crystal10", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep11","Edep in Crystal11", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep12","Edep in Crystal12", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep13","Edep in Crystal13", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep14","Edep in Crystal14", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep15","Edep in Crystal15", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep16","Edep in Crystal16", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep17","Edep in Crystal17", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep18","Edep in Crystal18", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep19","Edep in Crystal19", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep20","Edep in Crystal20", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep21","Edep in Crystal21", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep22","Edep in Crystal22", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep23","Edep in Crystal23", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep24","Edep in Crystal24", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep25","Edep in Crystal25", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep26","Edep in Crystal26", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep27","Edep in Crystal27", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep28","Edep in Crystal28", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep29","Edep in Crystal29", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep30","Edep in Crystal30", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep31","Edep in Crystal31", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hedep32","Edep in Crystal32", nbins, xmin*keV, xmax*keV);
 
 	  xmin = 0; //
 	  xmax = 12e3; //
@@ -66,6 +96,39 @@ SingleScintRunAction::SingleScintRunAction() : G4UserRunAction()
 	  binsize = 2.; // in keV
 	  nbins= (int)((xmax-xmin)/binsize);
 	  analysisManager->CreateH1("Histo4","Folded Edep in Crystal", nbins, xmin*keV, xmax*keV);
+
+	  analysisManager->CreateH1("hefolded1","Edep folded in Crystal1", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded2","Edep folded in Crystal2", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded3","Edep folded in Crystal3", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded4","Edep folded in Crystal4", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded5","Edep folded in Crystal5", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded6","Edep folded in Crystal6", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded7","Edep folded in Crystal7", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded8","Edep folded in Crystal8", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded9","Edep folded in Crystal9", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded10","Edep folded  in Crystal10", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded11","Edep folded  in Crystal11", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded12","Edep folded  in Crystal12", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded13","Edep folded  in Crystal13", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded14","Edep folded  in Crystal14", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded15","Edep folded  in Crystal15", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded16","Edep folded  in Crystal16", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded17","Edep folded  in Crystal17", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded18","Edep folded  in Crystal18", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded19","Edep folded  in Crystal19", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded20","Edep folded  in Crystal20", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded21","Edep folded  in Crystal21", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded22","Edep folded  in Crystal22", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded23","Edep folded  in Crystal23", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded24","Edep folded  in Crystal24", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded25","Edep folded  in Crystal25", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded26","Edep folded  in Crystal26", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded27","Edep folded  in Crystal27", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded28","Edep folded  in Crystal28", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded29","Edep folded  in Crystal29", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded30","Edep folded  in Crystal30", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded31","Edep folded  in Crystal31", nbins, xmin*keV, xmax*keV);
+	  analysisManager->CreateH1("hefolded32","Edep folded  in Crystal32", nbins, xmin*keV, xmax*keV);
       
 
 	  // Creating ntuple
