@@ -244,36 +244,42 @@ void SingleScintDetectorConstruction::SetPlacementParameters()
 
 G4double distColltoDet = 10*mm; // Distance between Collimator and Detector (surface to Surf)
 
+//Det. number 3 at OCL:
 OCLLaBr3_presence[ 0]		= true;             
 OCLCollimator_presence[ 0]	= true;             
 OCLLaBr3_Distance[ 0]		= 20*cm;             
 OCLLaBr3_theta[ 0]			= 142.622528*deg;             
 OCLLaBr3_phi[ 0]			= 144.000134*deg;
-             
+
+//Det. number 4 at OCL             
 OCLLaBr3_presence[ 1]		= true;             
 OCLCollimator_presence[ 1]	= true;             
 OCLLaBr3_Distance[ 1]		= 20*cm;             
 OCLLaBr3_theta[ 1]			= 142.622561*deg;             
 OCLLaBr3_phi[ 1]			= 216.000153*deg;
              
+//Det. number 5 at OCL  
 OCLLaBr3_presence[ 2]		= true;             
 OCLCollimator_presence[ 2]	= true;             
 OCLLaBr3_Distance[ 2]		= 20*cm;             
 OCLLaBr3_theta[ 2]			= 142.622535*deg;             
 OCLLaBr3_phi[ 2]			= 288.000000*deg;
-             
+
+//Det. number 1 at OCL:            
 OCLLaBr3_presence[ 3]		= true;             
 OCLCollimator_presence[ 3]	= true;             
 OCLLaBr3_Distance[ 3]		= 20*cm;             
 OCLLaBr3_theta[ 3]			= 142.622561*deg;             
 OCLLaBr3_phi[ 3]			= 359.999847*deg;
-             
+
+//Det. number 2 at OCL             
 OCLLaBr3_presence[ 4]		= true;             
 OCLCollimator_presence[ 4]	= true;             
 OCLLaBr3_Distance[ 4]		= 20*cm;             
 OCLLaBr3_theta[ 4]			= 142.622528*deg;             
 OCLLaBr3_phi[ 4]			= 71.999866*deg;
-             
+
+        
 OCLLaBr3_presence[ 5]		= true;             
 OCLCollimator_presence[ 5]	= true;             
 OCLLaBr3_Distance[ 5]		= 20*cm;             
@@ -303,7 +309,7 @@ OCLCollimator_presence[ 9]	= true;
 OCLLaBr3_Distance[ 9]		= 20*cm;             
 OCLLaBr3_theta[ 9]			= 100.812175*deg;             
 OCLLaBr3_phi[ 9]			= 288.000000*deg;
-             
+            
 OCLLaBr3_presence[10]		= true;             
 OCLCollimator_presence[10]	= true;             
 OCLLaBr3_Distance[10]		= 20*cm;             
