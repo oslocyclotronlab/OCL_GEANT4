@@ -65,12 +65,6 @@ SingleScintRunAction::SingleScintRunAction() : G4UserRunAction()
 	  analysisManager->CreateNtupleDColumn("EdepInCrystal28");
 	  analysisManager->CreateNtupleDColumn("EdepInCrystal29");
 	  analysisManager->CreateNtupleDColumn("EdepInCrystal30");
-	  analysisManager->CreateNtupleDColumn("EdepInCrystal31");
-	  analysisManager->CreateNtupleDColumn("EdepInCrystal32");
-
-	  analysisManager->CreateNtupleDColumn("EdepInCrystal32", "EdepInCrystal32");
-
-	  // analysisManager->CreateNtupleDColumn("EdepInCrystal2","EdepInCrystal1");
 
 	  analysisManager->FinishNtuple();
 
