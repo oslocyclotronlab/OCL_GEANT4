@@ -441,11 +441,11 @@ OCLLaBr3_theta[27]			= 37.377294*deg;
 OCLLaBr3_phi[27]			= 36.000153*deg;
 
 //Det. number 28           
-OCLLaBr3_presence[15]		= true;             
-OCLCollimator_presence[15]	= true;             
-OCLLaBr3_Distance[15]		= 20*cm;             
-OCLLaBr3_theta[15]			= 37.377321*deg;             
-OCLLaBr3_phi[15]			= 108.000000*deg;
+OCLLaBr3_presence[28]		= true;             
+OCLCollimator_presence[28]	= true;             
+OCLLaBr3_Distance[28]		= 20*cm;             
+OCLLaBr3_theta[28]			= 37.377321*deg;             
+OCLLaBr3_phi[28]			= 108.000000*deg;
  
 //Det. number 29             
 OCLLaBr3_presence[29]		= true;             
