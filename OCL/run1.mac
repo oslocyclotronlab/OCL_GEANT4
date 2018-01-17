@@ -6,10 +6,10 @@
 /gps/number 1
 
 # Source not hardcoded any longer
-/gps/pos/centre  0 0 -22 cm
+#/gps/pos/centre  0 0 -22 cm
 /gps/energy 500. keV
-/gps/direction 0 0 1
-#/gps/ang/type iso
+#/gps/direction 0 0 1
+/gps/ang/type iso
 #/gps/ang/mintheta 160. degree
 #/gps/ang/maxtheta 180. degree
 

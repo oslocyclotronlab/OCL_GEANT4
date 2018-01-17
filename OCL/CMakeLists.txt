@@ -50,7 +50,7 @@ set(OCLSCRIPTS
   vis_VRML.mac
   run1.mac
   run100.mac
-
+  run1779keV.mac
   )
 
 foreach(_script ${OCLSCRIPTS})
