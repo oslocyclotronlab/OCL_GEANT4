@@ -25,6 +25,7 @@ SingleScintPhysicsList::SingleScintPhysicsList() : G4VModularPhysicsList()
 	// EM Physics
 	RegisterPhysics(new G4EmStandardPhysics());
 	
+	/*
 	// this whole block can be commented to speed up the simulation
 	// Optical Physics
 	G4OpticalPhysics* opticalPhysics = new G4OpticalPhysics();
@@ -38,7 +39,7 @@ SingleScintPhysicsList::SingleScintPhysicsList() : G4VModularPhysicsList()
     opticalPhysics->SetScintillationExcitationRatio(0.);
 
 	opticalPhysics->SetTrackSecondariesFirst(kScintillation,true);
-	
+	*/
 }
 
 
