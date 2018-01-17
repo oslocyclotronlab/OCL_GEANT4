@@ -12,10 +12,10 @@
 //
 /////////////////////////////////////////////////////////////////////////
 
-#include "SingleScintSteppingAction.hh"
-#include "SingleScintEventAction.hh"
+#include "OCLSteppingAction.hh"
+#include "OCLEventAction.hh"
 #include "G4SteppingManager.hh"
-#include "SingleScintAnalysis.hh"
+#include "OCLAnalysis.hh"
 
 #include "G4RunManager.hh"
 
@@ -24,14 +24,14 @@
 
 using namespace std;	 
 
-SingleScintSteppingAction::SingleScintSteppingAction(SingleScintEventAction* EvAct)
+OCLSteppingAction::OCLSteppingAction(OCLEventAction* EvAct)
 :eventAction(EvAct)
 { }
 
-SingleScintSteppingAction::~SingleScintSteppingAction()
+OCLSteppingAction::~OCLSteppingAction()
 { }
 
-void SingleScintSteppingAction::UserSteppingAction(const G4Step* aStep)
+void OCLSteppingAction::UserSteppingAction(const G4Step* aStep)
 {
 
 	G4StepPoint* point = aStep->GetPreStepPoint();

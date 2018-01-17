@@ -1,11 +1,11 @@
 
 
-#include "SingleScintDetectorConstruction.hh"
-#include "SingleScintPhysicsList.hh"
-#include "SingleScintPrimaryGeneratorAction.hh"
-#include "SingleScintRunAction.hh"
-#include "SingleScintEventAction.hh"
-#include "SingleScintSteppingAction.hh"
+#include "OCLDetectorConstruction.hh"
+#include "OCLPhysicsList.hh"
+#include "OCLPrimaryGeneratorAction.hh"
+#include "OCLRunAction.hh"
+#include "OCLEventAction.hh"
+#include "OCLSteppingAction.hh"
 
 #ifdef G4MULTITHREADED
 #include "G4MTRunManager.hh"
@@ -54,7 +54,7 @@ int main(int argc,char** argv)
 
   // Set mandatory initialization classes
   // Detector construction
-  runManager->SetUserInitialization(new SingleScintDetectorConstruction());
+  runManager->SetUserInitialization(new OCLDetectorConstruction());
 
   // Physics list
   G4PhysListFactory *physListFactory = new G4PhysListFactory();
@@ -64,20 +64,20 @@ int main(int argc,char** argv)
   runManager->SetUserInitialization(physicsList);
 
   
-  // runManager->SetUserInitialization(new SingleScintPhysicsList);
+  // runManager->SetUserInitialization(new OCLPhysicsList);
 
 	// set aditional user action classes
-    SingleScintRunAction* run = new SingleScintRunAction;
+    OCLRunAction* run = new OCLRunAction;
 	runManager->SetUserAction(run);
 	
-	SingleScintEventAction* event = new SingleScintEventAction(run);
+	OCLEventAction* event = new OCLEventAction(run);
 	runManager->SetUserAction(event);
 	
-	SingleScintSteppingAction* step = new SingleScintSteppingAction(event);
+	OCLSteppingAction* step = new OCLSteppingAction(event);
 	runManager->SetUserAction(step);
 	
 	// set mandatory user action class
-	runManager->SetUserAction(new SingleScintPrimaryGeneratorAction);
+	runManager->SetUserAction(new OCLPrimaryGeneratorAction);
 
 
 

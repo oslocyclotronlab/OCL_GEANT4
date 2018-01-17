@@ -1,17 +1,17 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 //
-// Apr/2015  E. Nacher --> SingleScintPrimaryGeneratorAction.cc
+// Apr/2015  E. Nacher --> OCLPrimaryGeneratorAction.cc
 //
 // Based on the /gps method. This simplifies life, but...
-// The SingleScintPrimaryGeneratorAction must be instantiated after initialization of the
+// The OCLPrimaryGeneratorAction must be instantiated after initialization of the
 // runManager in the main.cc:  
 //                          runManager->Initialize();
-//                          runManager->SetUserAction(new SingleScintPrimaryGeneratorAction);
+//                          runManager->SetUserAction(new OCLPrimaryGeneratorAction);
 //
 ///////////////////////////////////////////////////////////////////////////////////////
 
-#include "SingleScintPrimaryGeneratorAction.hh"
-#include "SingleScintParameters.hh"
+#include "OCLPrimaryGeneratorAction.hh"
+#include "OCLParameters.hh"
 
 #include "G4Event.hh"
 #include "G4ParticleTable.hh"
@@ -25,7 +25,7 @@
 #include "iomanip"
 #include "G4GeneralParticleSource.hh" 
 
-SingleScintPrimaryGeneratorAction::SingleScintPrimaryGeneratorAction()
+OCLPrimaryGeneratorAction::OCLPrimaryGeneratorAction()
 {
 	
 	// Default values  
@@ -40,12 +40,12 @@ SingleScintPrimaryGeneratorAction::SingleScintPrimaryGeneratorAction()
 	// 	particleGun->GetCurrentSource()->GetPosDist()->SetCentreCoords(G4ThreeVector(0., 0., - distSourceHalfCry ));
 }
 
-SingleScintPrimaryGeneratorAction::~SingleScintPrimaryGeneratorAction()
+OCLPrimaryGeneratorAction::~OCLPrimaryGeneratorAction()
 {
 	delete particleGun;
 }
 
-void SingleScintPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
+void OCLPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
 	//create vertex
 	

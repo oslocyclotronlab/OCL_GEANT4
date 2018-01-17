@@ -1,6 +1,6 @@
 
-#ifndef SingleScintDetectorConstruction_h
-#define SingleScintDetectorConstruction_h 1
+#ifndef OCLDetectorConstruction_h
+#define OCLDetectorConstruction_h 1
 
 #include "G4VUserDetectorConstruction.hh"
 #include "globals.hh"
@@ -21,12 +21,12 @@ class OCLCollimator;
 
 const G4int numberOf_OCLLaBr3=32;
 
-class SingleScintDetectorConstruction : public G4VUserDetectorConstruction
+class OCLDetectorConstruction : public G4VUserDetectorConstruction
 {
   public:
 
-    SingleScintDetectorConstruction();
-    ~SingleScintDetectorConstruction();
+    OCLDetectorConstruction();
+    ~OCLDetectorConstruction();
 
   public:
     virtual G4VPhysicalVolume* Construct();

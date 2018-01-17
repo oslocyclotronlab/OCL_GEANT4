@@ -1,4 +1,4 @@
 for macrofile in sim*.mac;
-do ./SingleScint $macrofile;
+do ./OCL $macrofile;
 cp ../data/Edep.root ../data/${macrofile}.root;
 done

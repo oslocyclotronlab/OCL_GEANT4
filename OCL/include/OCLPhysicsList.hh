@@ -1,15 +1,15 @@
- #ifndef SingleScintPhysicsList_h
- #define SingleScintPhysicsList_h 1
+ #ifndef OCLPhysicsList_h
+ #define OCLPhysicsList_h 1
  
  #include "G4VModularPhysicsList.hh"
  #include "globals.hh"
  
- class SingleScintPhysicsList: public G4VModularPhysicsList
+ class OCLPhysicsList: public G4VModularPhysicsList
  {
 	   public:
 	 
-         SingleScintPhysicsList();
-         virtual ~SingleScintPhysicsList();
+         OCLPhysicsList();
+         virtual ~OCLPhysicsList();
 	 
 	   public:
 	 

@@ -4,8 +4,8 @@
 //
 ///////////////////////////////////////////
 
-#include "SingleScintRunAction.hh"
-#include "SingleScintAnalysis.hh"
+#include "OCLRunAction.hh"
+#include "OCLAnalysis.hh"
 
 #include "G4RunManager.hh"
 #include "G4UnitsTable.hh"
@@ -16,7 +16,7 @@
 
 #include <iomanip>
 
-SingleScintRunAction::SingleScintRunAction() : G4UserRunAction()
+OCLRunAction::OCLRunAction() : G4UserRunAction()
 {
 	  // Create analysis manager
 	  // The choice of analysis technology is done via selecting of a namespace
@@ -71,12 +71,12 @@ SingleScintRunAction::SingleScintRunAction() : G4UserRunAction()
 
 }
 
-SingleScintRunAction::~SingleScintRunAction()
+OCLRunAction::~OCLRunAction()
 {
 	delete G4AnalysisManager::Instance();
 }
 
-void SingleScintRunAction::BeginOfRunAction(const G4Run*)
+void OCLRunAction::BeginOfRunAction(const G4Run*)
 {
 	  //inform the runManager to save random number seed
 	  //G4RunManager::GetRunManager()->SetRandomNumberStore(true);
@@ -90,7 +90,7 @@ void SingleScintRunAction::BeginOfRunAction(const G4Run*)
 	  analysisManager->OpenFile(fileName);
 }
 
-void SingleScintRunAction::EndOfRunAction(const G4Run*)
+void OCLRunAction::EndOfRunAction(const G4Run*)
 {
 	  // print histogram statistics
 	  //

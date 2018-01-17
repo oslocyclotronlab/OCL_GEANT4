@@ -25,8 +25,8 @@
 //
 
 
-#include "SingleScintDetectorConstruction.hh"
-#include "SingleScintParameters.hh"
+#include "OCLDetectorConstruction.hh"
+#include "OCLParameters.hh"
 #include "OCLLaBr3.hh"
 #include "OCLCollimator.hh"
 #include "OCLFrame.hh"
@@ -53,20 +53,20 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
-SingleScintDetectorConstruction::SingleScintDetectorConstruction()
+OCLDetectorConstruction::OCLDetectorConstruction()
 :
      solidWorld(0), WorldLog(0), physiWorld(0)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
-SingleScintDetectorConstruction::~SingleScintDetectorConstruction()
+OCLDetectorConstruction::~OCLDetectorConstruction()
 {}
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
-G4VPhysicalVolume* SingleScintDetectorConstruction::Construct()
+G4VPhysicalVolume* OCLDetectorConstruction::Construct()
 {
 
    // vacuum (non-STP)
@@ -239,7 +239,7 @@ G4ThreeVector SpherToCatG4three(G4double r,G4double theta,G4double phi){
 					   cos(theta));
 }
 
-void SingleScintDetectorConstruction::SetPlacementParameters()
+void OCLDetectorConstruction::SetPlacementParameters()
 {
 
 G4double distColltoDet = 10*mm; // Distance between Collimator and Detector (surface to Surf)

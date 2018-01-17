@@ -1,9 +1,9 @@
-#include "SingleScintEventAction.hh"
-#include "SingleScintAnalysis.hh"
+#include "OCLEventAction.hh"
+#include "OCLAnalysis.hh"
 //#include "Randomize.hh" // do we really need this?
 #include <iomanip>
 
-#include "SingleScintRunAction.hh"
+#include "OCLRunAction.hh"
 
 #include "G4Event.hh"
 #include "G4EventManager.hh"
@@ -16,14 +16,14 @@
 using namespace std;
 using namespace CLHEP;
 
-SingleScintEventAction::SingleScintEventAction(SingleScintRunAction* run)
+OCLEventAction::OCLEventAction(OCLRunAction* run)
 :G4UserEventAction(), EdepInCrystalTest{0.7,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.,9.}, nAbsPhotons(0.), absTime(0.)
 {}
 
-SingleScintEventAction::~SingleScintEventAction()
+OCLEventAction::~OCLEventAction()
 {}
 
-void SingleScintEventAction::BeginOfEventAction(const G4Event*)
+void OCLEventAction::BeginOfEventAction(const G4Event*)
 {
 	// initialisation per event
 	nAbsPhotons = 0;
@@ -32,7 +32,7 @@ void SingleScintEventAction::BeginOfEventAction(const G4Event*)
 	for(G4int k=0; k<32; k++) EdepInCrystalTest[k]=0.;
 }
 
-void SingleScintEventAction::EndOfEventAction(const G4Event* evt)
+void OCLEventAction::EndOfEventAction(const G4Event* evt)
 {
 
 	  // Accumulate statistics

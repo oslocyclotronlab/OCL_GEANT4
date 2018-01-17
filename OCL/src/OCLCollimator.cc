@@ -26,7 +26,7 @@
 
 
 #include "OCLCollimator.hh"
-#include "SingleScintParameters.hh"
+#include "OCLParameters.hh"
 
 #include "G4NistManager.hh"
 

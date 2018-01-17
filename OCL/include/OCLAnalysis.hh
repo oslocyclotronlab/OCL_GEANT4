@@ -28,8 +28,8 @@
 /// \file B4Analysis.hh
 /// \brief Selection of the analysis technology
 
-#ifndef SingleScintAnalysis_h
-#define SingleScintAnalysis_h 1
+#ifndef OCLAnalysis_h
+#define OCLAnalysis_h 1
 
 #include "g4root.hh"
 //#include "g4xml.hh"

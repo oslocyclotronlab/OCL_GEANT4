@@ -9,8 +9,8 @@
  *      Author: fabiobz
  */
 
-#ifndef SingleScintPARAMETERS__HH_
-#define SingleScintPARAMETERS__HH_
+#ifndef OCLPARAMETERS__HH_
+#define OCLPARAMETERS__HH_
 
 #include "G4SystemOfUnits.hh"
 
