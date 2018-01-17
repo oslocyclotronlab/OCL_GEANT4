@@ -14,7 +14,9 @@
 #endif
 
 #include "G4UImanager.hh"
-//#include "QBBC.hh"
+
+#include "G4PhysListFactory.hh"
+#include "QGSP_BIC_HP.hh"
 
 #ifdef G4VIS_USE
 #include "G4VisExecutive.hh"
@@ -55,10 +57,14 @@ int main(int argc,char** argv)
   runManager->SetUserInitialization(new SingleScintDetectorConstruction());
 
   // Physics list
-//  G4VModularPhysicsList* physicsList = new QBBC;
-//  physicsList->SetVerboseLevel(1);
-//  runManager->SetUserInitialization(physicsList);
-  runManager->SetUserInitialization(new SingleScintPhysicsList);
+  G4PhysListFactory *physListFactory = new G4PhysListFactory();
+  G4VUserPhysicsList *physicsList =
+            physListFactory->GetReferencePhysList("QGSP_BIC_HP");
+  physicsList->SetVerboseLevel(1);
+  runManager->SetUserInitialization(physicsList);
+
+  
+  // runManager->SetUserInitialization(new SingleScintPhysicsList);
 
 	// set aditional user action classes
     SingleScintRunAction* run = new SingleScintRunAction;
