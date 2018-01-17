@@ -1,14 +1,10 @@
-     =========================================================
-     Geant4 - Simulation of OSCAR @ OCL 
-     =========================================================
 
-                            Simple Detector
-                              -----------
-
+Geant4 Simulation of OSCAR @ OCL
+=========================================================
  This simluation implements OSCARS LaBr3:Ce Scint. Detectors  
  The energy spectra are saved in a root tree. 
 	
- 1- GEOMETRY DEFINITION
+ # 1- GEOMETRY DEFINITION
 	
    The general geometry is constructed in the DetectorConstruction class, with 
    a helper class for each element (LaBr3s, Frame, SiRi ...)
@@ -39,7 +35,7 @@
    Most for the detector geometry definition have been moved 
    as /const/ values to Parameters.hh.
 		
- 2- PHYSICS LIST
+# 2- PHYSICS LIST
  
   We now use QGSP_BIC_HP, such that the simulation can eg be used for neutrons 
   without modifications. To get scintillation processes, you can eg use the 
@@ -51,13 +47,13 @@
   -- 12/10/15 One should review/set the ScintillationExcitationRatio, the ratio for the 
   fast&slow excitation ratio.
  	
- 3- AN EVENT : THE PRIMARY GENERATOR
+# 3- AN EVENT : THE PRIMARY GENERATOR
  
   The Primary Generator is defined in the PrimaryGeneratorAction  via 
   the G4GeneralParticleSource. The type of the particle and its energy 
   (and possible biases/shape...) are via macro.
         
- 4- DETECTOR RESPONSE
+# 4- DETECTOR RESPONSE
 
    The detector response is simulated via UserSteppingAction in the 
    SteppingAction class. More precisely, the number and time of absorbed photons 
@@ -82,12 +78,10 @@
    to save the results.
    
    
-   ///////////////////////////////////////////
-   ///////////////////////////////////////////
- The following paragraphs are common to 
- all basic examples (where this has been taken from)
-   ///////////////////////////////////////////
- A- VISUALISATION
+___
+### The following paragraphs are common to 
+### all basic examples (where this has been taken from)
+### A- VISUALISATION
 
    The visualization manager is set via the G4VisExecutive class
    in the main() function in exampleB1.cc.    
@@ -132,7 +126,7 @@
    The tracks are automatically drawn at the end of each event, accumulated
    for all events and erased at the beginning of the next run.
 
- B- USER INTERFACES
+ ### B- USER INTERFACES
  
    The user command interface is set via the G4UIExecutive class
    in the main() function in exampleB1.cc 
@@ -140,13 +134,12 @@
    according to the Geant4 configuration or it can be done explicitly via 
    the third argument of the G4UIExecutive constructor (see exampleB4a.cc). 
  
- C- HOW TO RUN
+### C- HOW TO RUN
 
     - Execute OCL in the 'interactive mode' with visualization:
         % ./OCL
-      and type in the commands from run1.mac line by line:  
-        Idle> /control/verbose 2
-        Idle> /tracking/verbose 1
+      and type in the commands from run1.mac line by line:
+      	Idle> /control/execute run1.mac
         Idle> /run/beamOn 10 
         Idle> ...
         Idle> exit
@@ -157,7 +150,7 @@
 
     - Execute OCL  in the 'batch' mode from macro files 
       (without visualization)
-        % ./OCL run2.mac
+        % ./OCL run1.mac
         % ./OCL OCL.in > OCL.out
    ///////////////////////////////////////////
    ///////////////////////////////////////////
