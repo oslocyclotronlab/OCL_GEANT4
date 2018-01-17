@@ -92,27 +92,10 @@ void OCLRunAction::BeginOfRunAction(const G4Run*)
 
 void OCLRunAction::EndOfRunAction(const G4Run*)
 {
-	  // print histogram statistics
+	  // save ntuples
 	  //
 	  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-	  if ( analysisManager->GetH1(1) ) {
-	    G4cout << G4endl << " ----> print histograms statistic ";
-	    if(isMaster) {
-	      G4cout << "for the entire run " << G4endl << G4endl;
-	    }
-	    else {
-	      G4cout << "for the local thread " << G4endl << G4endl;
-	    }
 
-	    G4cout << G4endl << " EAbs : mean = "
-	       << G4BestUnit(analysisManager->GetH1(1)->mean(), "Energy")
-	       << " rms = "
-	       << G4BestUnit(analysisManager->GetH1(1)->rms(),  "Energy") << G4endl;
-
-	  }
-
-	  // save histograms & ntuple
-	  //
 	  analysisManager->Write();
 	  analysisManager->CloseFile();
 
