@@ -1,79 +1,74 @@
-fabiobz 0 2017-09-05 17:03 README.txt
-
-
      =========================================================
-     Geant4 - Simulation of LaBr3:Ce Scint. Detectors 
+     Geant4 - Simulation of OSCAR @ OCL 
      =========================================================
 
                             Simple Detector
                               -----------
 
- This simluation implements a single scintillation detector with a PMT. 
- The timing information, energy spectrum and number of absorbed photon per
- event is saved as a histogram. 
- 
- //Test of small change
+ This simluation implements OSCARS LaBr3:Ce Scint. Detectors  
+ The energy spectra are saved in a root tree. 
 	
  1- GEOMETRY DEFINITION
 	
-   The geometry is constructed in the DetectorConstruction class.
+   The general geometry is constructed in the DetectorConstruction class, with 
+   a helper class for each element (LaBr3s, Frame, SiRi ...)
 
-   The detectors and collimators are called form their own classes.
+   You can chose which detectors should be present by setting them to TRUE/FALSE
+   in the DetectorConstruction class 
 
-   The setup consists of a cylinder containing the LaBr3 crystal, and outer ring with
-   shielding, a lit in front side of the detector and collimator. The shielding is composed 
-   as a    boolean solid to include the conical front. The detector s optically coupled to 
+   The LaBr3 setup consists of a cylinder containing the LaBr3 crystal, and 
+   outer ring with shielding, a lit in front side of the detector and 
+   if chosen, a collimator. The shielding is composed as a boolean solid to
+   include the conical front. The detector os optically coupled to 
    a bialkali photocathode through a Borosilicate PMT Window.
 
    -- 12/10/15 Currently we assumed a MgO reflector in accordance with 
    the workshop example.
    
-   The collimator currently designed such that it aims to stop gammas that reach less then the
-   half length of the detector. This is easily changeable by a parameter called "ratioInCrystal".
+   The collimator currently designed such that it aims to stop gammas that reach
+   less then the half length of the detector. This is easily changeable by a 
+   parameter called "ratioInCrystal".
 
-   The dimensions and materials have been chosen as close as possible to our set-up. Where
-   no manufacturer information was available, we used assumptions based e.g. other studies.
-   The is an arbitrary mix of materials created with the NIST manager and by hand.
-   Additionally, we defined the optical properties and Surfaces and boundary processes for the 
-   Scintillation process.
+   The dimensions and materials have been chosen as close as possible to our 
+   set-up. Where no manufacturer information was available, we used assumptions 
+   based e.g. other studies. The is an arbitrary mix of materials created with 
+   the NIST manager and by hand. Additionally, we defined the optical properties
+   and Surfaces and boundary processes for the Scintillation process.
+   (only if activated in physics list)
    
-   All parameters for the detector geometry definition have been moved as /const/ values to
-   Parameters.hh. 
+   Most for the detector geometry definition have been moved 
+   as /const/ values to Parameters.hh.
 		
  2- PHYSICS LIST
  
-  The physic processes are set in the PhysicsList class. Currently implemented are
-  G4EmStandardPhysics and G4OpticalPhysics (the latter is necessary for scintillation).
-  
+  We now use QGSP_BIC_HP, such that the simulation can eg be used for neutrons 
+  without modifications. To get scintillation processes, you can eg use the 
+  physics described in the src/PhysicsList file.
+ 
+  If activating G4OpticalPhysics:
   To speed-up the simulations one can either set the ScinillationYieldFactor to a low value
   (for example 0.0008) or uncomment the scintillation physics part totally.
-  
   -- 12/10/15 One should review/set the ScintillationExcitationRatio, the ratio for the 
   fast&slow excitation ratio.
  	
-  // In addition the build-in interactive command:
-  //             /process/(in)activate processName
-  // allows to activate/inactivate the processes one by one.
-   
  3- AN EVENT : THE PRIMARY GENERATOR
  
   The Primary Generator is defined in the PrimaryGeneratorAction  via 
-  the G4GeneralParticleSource. The type of the particle and its energy (and possible 
-  biases/shape...) are via macro. Currently run1.mac uses a particle 
-  which hits the detector perpendicular to the input face (or isotropic emission).
-  
-  The source distance is linked to the collimator length and has therefore been hard-
-  coded taken the parameters from Parameters.hh  .
+  the G4GeneralParticleSource. The type of the particle and its energy 
+  (and possible biases/shape...) are via macro.
         
  4- DETECTOR RESPONSE
 
-   The PMT response is simulated via UserSteppingAction in the SteppingAction class.
-   More precisely, the number and time of absorbed photons in the PMT cathode is recorded;
-   the broadening due to the PMT has to be modelled separately and is not implemented here.
-   
-   The total energy deposited is taken from the crystal volume. Important: Geant4 does not 
-   conserve energy for optical photons! Check the results with easy configurations!
-   (The main problem previously seems to have been the creation of the histograms)
+   The detector response is simulated via UserSteppingAction in the 
+   SteppingAction class. More precisely, the number and time of absorbed photons 
+   in the PMT cathode is recorded; the broadening due to the PMT has to be
+   modelled separately and is not implemented here.
+  
+   The total energy deposited is taken from the crystal volume. 
+   Important for optical physics: Geant4 does not conserve energy for optical 
+   photons! Check the results with easy configurations!
+   (The main problem previously seems to have been the creation of the 
+   histograms)
    
    The energy deposited is collected step by step for a selected volume
    in SteppingAction and accumulated event by event in EventAction.
@@ -81,9 +76,10 @@ fabiobz 0 2017-09-05 17:03 README.txt
    At end of event, the value accumulated in EventAction is added in Run
    and summed over the whole run (see EventAction::EndOfevent()).
    
-   The histograms are exported as root files to the data folder. To ensure that this works,
-   one has to have a data folder on the same level as the build folder! Currently one has to re-
-   name the file after each run to save the results.
+   The ntuples are exported as a tree to root files to the data folder. 
+   To ensure that this works, one has to have a data folder on the same level 
+   as the build folder! Currently one has to rename the file after each run 
+   to save the results.
    
    
    ///////////////////////////////////////////
@@ -146,8 +142,8 @@ fabiobz 0 2017-09-05 17:03 README.txt
  
  C- HOW TO RUN
 
-    - Execute exampleB1 in the 'interactive mode' with visualization:
-        % ./exampleB1
+    - Execute OCL in the 'interactive mode' with visualization:
+        % ./OCL
       and type in the commands from run1.mac line by line:  
         Idle> /control/verbose 2
         Idle> /tracking/verbose 1
@@ -159,26 +155,9 @@ fabiobz 0 2017-09-05 17:03 README.txt
         ....
         Idle> exit
 
-    - Execute exampleB1  in the 'batch' mode from macro files 
+    - Execute OCL  in the 'batch' mode from macro files 
       (without visualization)
-        % ./exampleB1 run2.mac
-        % ./exampleB1 exampleB1.in > exampleB1.out
-        
-  NB. Numbering scheme for histograms:
-  layer     : from 1 to NbOfLayers (inclued)
-  absorbers : from 1 to NbOfAbsor (inclued)
-  planes    : from 1 to NbOfLayers*NbOfAbsor + 1 (inclued)
-  
- One can control the binning of the histo with the command:
-  /analysis/h1/set   idAbsor  nbin  Emin  Emax  unit 
-  where unit is the desired energy unit for that histo (see TestEm3.in).
-         
-  One can control the name of the histograms file with the command:
-  /analysis/setFileName  name  (default testem3)
-   
-  It is possible to choose the format of the histogram file : root (default),
-  xml, csv, by using namespace in HistoManager.hh 
-   	
- It is also possible to print selected histograms on an ascii file:
- /analysis/h1/setAscii id
- All selected histos will be written on a file name.ascii  (default testem3)
+        % ./OCL run2.mac
+        % ./OCL OCL.in > OCL.out
+   ///////////////////////////////////////////
+   ///////////////////////////////////////////
