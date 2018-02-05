@@ -40,12 +40,13 @@ void AnalyseSims::Loop()
 
    if (fChain == 0) return; //aborts if it cannot find the tree/chain of trees
 
-   TH1D *h1 = new TH1D("h1","Simulated electron energy deposition",2000,0,10);
-   TH1D *h2 = new TH1D("h2","Simulated and folded energy deposition",2000,0,10); 
+   TH1D *h1 = new TH1D("h1","Simulated electron energy deposition",3000,0,15);
+   TH1D *h2 = new TH1D("h2","Simulated and folded energy deposition",3000,0,15); 
 
    Double_t smoothingFactor = 0.00019;
 
-   TRandom *r3 = new TRandom3(0.);
+   // generate a random number
+   TRandom *r3 = new TRandom3(0.); // initiated with random seed
 
    Long64_t nentries = fChain->GetEntriesFast();
 
@@ -86,6 +87,7 @@ void AnalyseSims::Loop()
       if(EdepInCrystal29 > 0.) h1->Fill(EdepInCrystal29);
       if(EdepInCrystal30 > 0.) h1->Fill(EdepInCrystal30);
 
+                                        // use the random numb generator to sample from a gaussian with the parameters below
       if(EdepInCrystal1  > 0.) h2->Fill(r3->Gaus(EdepInCrystal1 , sqrt(smoothingFactor*EdepInCrystal1 )));
       if(EdepInCrystal2  > 0.) h2->Fill(r3->Gaus(EdepInCrystal2 , sqrt(smoothingFactor*EdepInCrystal2 )));
       if(EdepInCrystal3  > 0.) h2->Fill(r3->Gaus(EdepInCrystal3 , sqrt(smoothingFactor*EdepInCrystal3 )));
