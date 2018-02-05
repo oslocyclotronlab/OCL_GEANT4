@@ -1,6 +1,9 @@
 
 Geant4 Simulation of OSCAR @ OCL
 =========================================================
+[![DOI](https://zenodo.org/badge/44380221.svg)](https://zenodo.org/badge/latestdoi/44380221)
+(DOI for the latest release. Earlier verions can be cited by a specific "version" DOI, if necessary)
+
  This simluation implements OSCARS LaBr3:Ce Scint. Detectors  
  The energy spectra are saved in a root tree. 
 	
