@@ -43,7 +43,7 @@ void AnalyseSims::Loop()
    TH1D *h1 = new TH1D("h1","Simulated electron energy deposition",3000,0,15);
    TH1D *h2 = new TH1D("h2","Simulated and folded energy deposition",3000,0,15); 
 
-   Double_t smoothingFactor = 0.00019;
+   Double_t cSmooth[] = {2.03936976e-04, 6.82322078e-23,  3.76053110e-05}; // make sure cal is in same units (MeVor keV)
 
    // generate a random number
    TRandom *r3 = new TRandom3(0.); // initiated with random seed
@@ -88,36 +88,36 @@ void AnalyseSims::Loop()
       if(EdepInCrystal30 > 0.) h1->Fill(EdepInCrystal30);
 
                                         // use the random numb generator to sample from a gaussian with the parameters below
-      if(EdepInCrystal1  > 0.) h2->Fill(r3->Gaus(EdepInCrystal1 , sqrt(smoothingFactor*EdepInCrystal1 )));
-      if(EdepInCrystal2  > 0.) h2->Fill(r3->Gaus(EdepInCrystal2 , sqrt(smoothingFactor*EdepInCrystal2 )));
-      if(EdepInCrystal3  > 0.) h2->Fill(r3->Gaus(EdepInCrystal3 , sqrt(smoothingFactor*EdepInCrystal3 )));
-      if(EdepInCrystal4  > 0.) h2->Fill(r3->Gaus(EdepInCrystal4 , sqrt(smoothingFactor*EdepInCrystal4 )));
-      if(EdepInCrystal5  > 0.) h2->Fill(r3->Gaus(EdepInCrystal5 , sqrt(smoothingFactor*EdepInCrystal5 )));
-      if(EdepInCrystal6  > 0.) h2->Fill(r3->Gaus(EdepInCrystal6 , sqrt(smoothingFactor*EdepInCrystal6 )));
-      if(EdepInCrystal7  > 0.) h2->Fill(r3->Gaus(EdepInCrystal7 , sqrt(smoothingFactor*EdepInCrystal7 )));
-      if(EdepInCrystal8  > 0.) h2->Fill(r3->Gaus(EdepInCrystal8 , sqrt(smoothingFactor*EdepInCrystal8 )));
-      if(EdepInCrystal9  > 0.) h2->Fill(r3->Gaus(EdepInCrystal9 , sqrt(smoothingFactor*EdepInCrystal9 )));
-      if(EdepInCrystal10 > 0.) h2->Fill(r3->Gaus(EdepInCrystal10, sqrt(smoothingFactor*EdepInCrystal10)));
-      if(EdepInCrystal11 > 0.) h2->Fill(r3->Gaus(EdepInCrystal11, sqrt(smoothingFactor*EdepInCrystal11)));
-      if(EdepInCrystal12 > 0.) h2->Fill(r3->Gaus(EdepInCrystal12, sqrt(smoothingFactor*EdepInCrystal12)));
-      if(EdepInCrystal13 > 0.) h2->Fill(r3->Gaus(EdepInCrystal13, sqrt(smoothingFactor*EdepInCrystal13)));
-      if(EdepInCrystal14 > 0.) h2->Fill(r3->Gaus(EdepInCrystal14, sqrt(smoothingFactor*EdepInCrystal14)));
-      if(EdepInCrystal15 > 0.) h2->Fill(r3->Gaus(EdepInCrystal15, sqrt(smoothingFactor*EdepInCrystal15)));
-      if(EdepInCrystal16 > 0.) h2->Fill(r3->Gaus(EdepInCrystal16, sqrt(smoothingFactor*EdepInCrystal16)));
-      if(EdepInCrystal17 > 0.) h2->Fill(r3->Gaus(EdepInCrystal17, sqrt(smoothingFactor*EdepInCrystal17)));
-      if(EdepInCrystal18 > 0.) h2->Fill(r3->Gaus(EdepInCrystal18, sqrt(smoothingFactor*EdepInCrystal18)));
-      if(EdepInCrystal19 > 0.) h2->Fill(r3->Gaus(EdepInCrystal19, sqrt(smoothingFactor*EdepInCrystal19)));
-      if(EdepInCrystal20 > 0.) h2->Fill(r3->Gaus(EdepInCrystal20, sqrt(smoothingFactor*EdepInCrystal20)));
-      if(EdepInCrystal21 > 0.) h2->Fill(r3->Gaus(EdepInCrystal21, sqrt(smoothingFactor*EdepInCrystal21)));
-      if(EdepInCrystal22 > 0.) h2->Fill(r3->Gaus(EdepInCrystal22, sqrt(smoothingFactor*EdepInCrystal22)));
-      if(EdepInCrystal23 > 0.) h2->Fill(r3->Gaus(EdepInCrystal23, sqrt(smoothingFactor*EdepInCrystal23)));
-      if(EdepInCrystal24 > 0.) h2->Fill(r3->Gaus(EdepInCrystal24, sqrt(smoothingFactor*EdepInCrystal24)));
-      if(EdepInCrystal25 > 0.) h2->Fill(r3->Gaus(EdepInCrystal25, sqrt(smoothingFactor*EdepInCrystal25)));
-      if(EdepInCrystal26 > 0.) h2->Fill(r3->Gaus(EdepInCrystal26, sqrt(smoothingFactor*EdepInCrystal26)));
-      if(EdepInCrystal27 > 0.) h2->Fill(r3->Gaus(EdepInCrystal27, sqrt(smoothingFactor*EdepInCrystal27)));
-      if(EdepInCrystal28 > 0.) h2->Fill(r3->Gaus(EdepInCrystal28, sqrt(smoothingFactor*EdepInCrystal28)));
-      if(EdepInCrystal29 > 0.) h2->Fill(r3->Gaus(EdepInCrystal29, sqrt(smoothingFactor*EdepInCrystal29)));
-      if(EdepInCrystal30 > 0.) h2->Fill(r3->Gaus(EdepInCrystal30, sqrt(smoothingFactor*EdepInCrystal30)));
+      if(EdepInCrystal1  > 0.) h2->Fill(r3->Gaus(EdepInCrystal1 , sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal1  + cSmooth[2]*EdepInCrystal1 *EdepInCrystal1 )));
+      if(EdepInCrystal2  > 0.) h2->Fill(r3->Gaus(EdepInCrystal2 , sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal2  + cSmooth[2]*EdepInCrystal2 *EdepInCrystal2 )));
+      if(EdepInCrystal3  > 0.) h2->Fill(r3->Gaus(EdepInCrystal3 , sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal3  + cSmooth[2]*EdepInCrystal3 *EdepInCrystal3 )));
+      if(EdepInCrystal4  > 0.) h2->Fill(r3->Gaus(EdepInCrystal4 , sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal4  + cSmooth[2]*EdepInCrystal4 *EdepInCrystal4 )));
+      if(EdepInCrystal5  > 0.) h2->Fill(r3->Gaus(EdepInCrystal5 , sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal5  + cSmooth[2]*EdepInCrystal5 *EdepInCrystal5 )));
+      if(EdepInCrystal6  > 0.) h2->Fill(r3->Gaus(EdepInCrystal6 , sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal6  + cSmooth[2]*EdepInCrystal6 *EdepInCrystal6 )));
+      if(EdepInCrystal7  > 0.) h2->Fill(r3->Gaus(EdepInCrystal7 , sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal7  + cSmooth[2]*EdepInCrystal7 *EdepInCrystal7 )));
+      if(EdepInCrystal8  > 0.) h2->Fill(r3->Gaus(EdepInCrystal8 , sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal8  + cSmooth[2]*EdepInCrystal8 *EdepInCrystal8 )));
+      if(EdepInCrystal9  > 0.) h2->Fill(r3->Gaus(EdepInCrystal9 , sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal9  + cSmooth[2]*EdepInCrystal9 *EdepInCrystal9 )));
+      if(EdepInCrystal10 > 0.) h2->Fill(r3->Gaus(EdepInCrystal10, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal10 + cSmooth[2]*EdepInCrystal10*EdepInCrystal10)));
+      if(EdepInCrystal11 > 0.) h2->Fill(r3->Gaus(EdepInCrystal11, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal11 + cSmooth[2]*EdepInCrystal11*EdepInCrystal11)));
+      if(EdepInCrystal12 > 0.) h2->Fill(r3->Gaus(EdepInCrystal12, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal12 + cSmooth[2]*EdepInCrystal12*EdepInCrystal12)));
+      if(EdepInCrystal13 > 0.) h2->Fill(r3->Gaus(EdepInCrystal13, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal13 + cSmooth[2]*EdepInCrystal13*EdepInCrystal13)));
+      if(EdepInCrystal14 > 0.) h2->Fill(r3->Gaus(EdepInCrystal14, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal14 + cSmooth[2]*EdepInCrystal14*EdepInCrystal14)));
+      if(EdepInCrystal15 > 0.) h2->Fill(r3->Gaus(EdepInCrystal15, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal15 + cSmooth[2]*EdepInCrystal15*EdepInCrystal15)));
+      if(EdepInCrystal16 > 0.) h2->Fill(r3->Gaus(EdepInCrystal16, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal16 + cSmooth[2]*EdepInCrystal16*EdepInCrystal16)));
+      if(EdepInCrystal17 > 0.) h2->Fill(r3->Gaus(EdepInCrystal17, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal17 + cSmooth[2]*EdepInCrystal17*EdepInCrystal17)));
+      if(EdepInCrystal18 > 0.) h2->Fill(r3->Gaus(EdepInCrystal18, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal18 + cSmooth[2]*EdepInCrystal18*EdepInCrystal18)));
+      if(EdepInCrystal19 > 0.) h2->Fill(r3->Gaus(EdepInCrystal19, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal19 + cSmooth[2]*EdepInCrystal19*EdepInCrystal19)));
+      if(EdepInCrystal20 > 0.) h2->Fill(r3->Gaus(EdepInCrystal20, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal20 + cSmooth[2]*EdepInCrystal20*EdepInCrystal20)));
+      if(EdepInCrystal21 > 0.) h2->Fill(r3->Gaus(EdepInCrystal21, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal21 + cSmooth[2]*EdepInCrystal21*EdepInCrystal21)));
+      if(EdepInCrystal22 > 0.) h2->Fill(r3->Gaus(EdepInCrystal22, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal22 + cSmooth[2]*EdepInCrystal22*EdepInCrystal22)));
+      if(EdepInCrystal23 > 0.) h2->Fill(r3->Gaus(EdepInCrystal23, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal23 + cSmooth[2]*EdepInCrystal23*EdepInCrystal23)));
+      if(EdepInCrystal24 > 0.) h2->Fill(r3->Gaus(EdepInCrystal24, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal24 + cSmooth[2]*EdepInCrystal24*EdepInCrystal24)));
+      if(EdepInCrystal25 > 0.) h2->Fill(r3->Gaus(EdepInCrystal25, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal25 + cSmooth[2]*EdepInCrystal25*EdepInCrystal25)));
+      if(EdepInCrystal26 > 0.) h2->Fill(r3->Gaus(EdepInCrystal26, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal26 + cSmooth[2]*EdepInCrystal26*EdepInCrystal26)));
+      if(EdepInCrystal27 > 0.) h2->Fill(r3->Gaus(EdepInCrystal27, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal27 + cSmooth[2]*EdepInCrystal27*EdepInCrystal27)));
+      if(EdepInCrystal28 > 0.) h2->Fill(r3->Gaus(EdepInCrystal28, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal28 + cSmooth[2]*EdepInCrystal28*EdepInCrystal28)));
+      if(EdepInCrystal29 > 0.) h2->Fill(r3->Gaus(EdepInCrystal29, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal29 + cSmooth[2]*EdepInCrystal29*EdepInCrystal29)));
+      if(EdepInCrystal30 > 0.) h2->Fill(r3->Gaus(EdepInCrystal30, sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal30 + cSmooth[2]*EdepInCrystal30*EdepInCrystal30)));
 
       // if (Cut(ientry) < 0) continue;
    }
