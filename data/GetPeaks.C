@@ -10,6 +10,7 @@
 #include <TROOT.h>
 // #include <TSystem.h>
 #include <iostream>
+#include <iomanip>
 #include <cstdio>
 #include "TFile.h"
 
@@ -19,12 +20,15 @@
 #pragma link C++ defined_in “AnalyseSims.C”;
 #endif
 
+#include "th22mama_hist.C"
+
 #include <vector>
 using namespace std;
 
 ////////////////////////////
 // Parameters
-double threshold = 0.3; // Detector threshold in MeV
+double threshold = 300.; // Detector threshold in MeV
+double smoothingFactor = 100.; // smoothing for the mama output 
 ////////////////////////////
 
 
@@ -121,13 +125,112 @@ double GetBinWoBG(TH1D* h1,double xValueofBin ,Int_t nChannelsBG)
     sum += h1->GetBinContent(ch);
   }
   // a little messy -- this accounts also for thaat counts can come in the bin below/above
-  double cntbg = (sum - cntsInPeak) /((2.*nChannelsBG)-3);
+  int nchTot = 2*nChannelsBG +1;
+  int nchBGonly = nchTot -3;
+  double cntbg = (sum - cntsInPeak) / nchBGonly; // bg per channel
   double cntWobg = cntsInPeak - cntbg*3.;
   return cntWobg;
 
 }
 
 
+TH1D* CreateMamaSpectrum(TH1D* h, double EgFE, int nChannelsBG=3)
+{
+  TH1D* h1 = (TH1D*) h->Clone(); // create output spectrum as a clone
+  h1->SetTitle("hmama");
+  h1->SetName("hmama");
+
+  vector<double> peaks;
+  if(EgFE>=1022.)
+  {
+  peaks.insert(peaks.end(), {EgFE, EgFE-511., EgFE-2.*511., 511.});
+  }
+  else
+  {
+  peaks.insert(peaks.end(), {EgFE});
+  }
+
+  TAxis *xaxis = h1->GetXaxis();
+  TAxis *yaxis = h1->GetYaxis();
+
+
+  for(auto Eg : peaks)
+  {
+    Int_t  binx     = xaxis->FindBin(Eg);
+    double binvalue = h1->GetBinContent(binx);
+
+    double cntsInPeak = binvalue;
+    cntsInPeak += h1->GetBinContent(binx+1) + h1->GetBinContent(binx-1);
+
+    // get BG
+    Int_t min = binx - nChannelsBG;
+    Int_t max = binx + nChannelsBG;
+    // cout << "Subtract BG from " <<  h1->GetXaxis()->GetBinCenter(min)
+    // << "to " <<  h1->GetXaxis()->GetBinCenter(max) << endl;
+    double sum = 0;
+    for(int ch=min;ch<max+1;ch++ ){
+      sum += h1->GetBinContent(ch);
+    }
+    // a little messy -- this accounts also for thaat counts can come in the bin below/above
+    int nchTot = 2*nChannelsBG +1;
+    int nchBGonly = nchTot -3;
+    double cntbg = (sum - cntsInPeak) / nchBGonly; // bg per channel
+
+    // set all counts equal to bg
+    for(int ch=min;ch<max+1;ch++ ){
+      h1->SetBinContent(ch,cntbg);
+    }
+  }
+
+  return h1;
+}
+
+// // generate a random number
+// TRandom *r3 = new TRandom3(0.); // initiated with random seed
+
+// TH1D* SmoothSpectrum(TH1D* h, double smoothingFactor){
+
+//   TH1D* h1 = (TH1D*) h->Clone(); // create output spectrum as a clone
+//   int xstart = 0;
+//   double E;
+//   // for(int i=xstart;i<h1->GetSize();i++){
+//   //   h1->SetBinContent(i,0);
+//   // }
+//   for(int i=xstart;i<h1->GetSize();i++){
+//     E = h1->GetBinCenter(i); 
+//     h1->Fill(r3->Gaus(E , sqrt(smoothingFactor*E )));
+//     if(i<50)
+//       {cout << r3->Gaus(E , sqrt(smoothingFactor*E ))<< endl;}
+//   }
+//   return h1;
+// }
+
+
+template <typename T>
+std::string to_string_with_precision(const T a_value, const int n = 2)
+{
+    std::ostringstream out;
+    out << std::setprecision(n) << a_value;
+    return out.str();
+}
+
+
+
+TH1D* ScaleX(TH1D* h, double scaleFactor){
+  // Scale histogram X axis 
+  // double ScaleX = 1.e3; //
+
+  int nBinsx = h->GetXaxis()->GetNbins();
+  double xmin = h->GetXaxis()->GetXmin();
+  double xmax = h->GetXaxis()->GetXmax();
+  cout << "h before scaling"<< endl;;
+  cout << "xmin: " << xmin << "; xmax:" << xmax << endl;
+  xmax *= scaleFactor;
+  h->GetXaxis()->Set(nBinsx,xmin,xmax);
+  cout << "h after scaling" << endl;;
+  cout << "xmin: " << xmin << "; xmax:" << xmax << endl;
+    return h;
+}
 
 
 
@@ -144,15 +247,22 @@ vector<double> cntFE ;
 vector<double> cntSE ;
 vector<double> cntDE ;
 vector<double> cnt511;
-vector<double> cntCompt;
+vector<double> cntRest;
+vector<double> cntRestNoThres;
 Int_t nChannelsBG;// # of channels, symmetric, to choose to average out the BG around the peaks
 int xstart; // dummy for startbin
 int xstop; // dummy for stop bin
 double sum; // dummy for a sum
 
+TH1D* hmama; // output spectrum for mama
+TH1D* hmama_raw; // before smoothing
+
+
 std::vector<string> fnames;
 
 string fout_name = "Peaks.dat";
+system("xterm -e 'mkdir mama_spectra'"); // create dir for mama spectra, if not already existend
+string outdir = "mama_spectra";
 
 //////////////////////
 
@@ -172,7 +282,7 @@ while(tmpfile>>fname_tmp)
 
 // additional files to be analyzed
 // fnames.insert(fnames.end(), { "myfile1.mac", "myfile2.mac" });
-// fnames.insert(fnames.end(), { "sim10.mac"});
+// fnames.insert(fnames.end(), { "sim29.mac"});
 
 for(auto fname : fnames)
 {
@@ -188,7 +298,7 @@ for(auto fname : fnames)
   string checkValue="keV";
   double EgFE = GetValueFromConfigs(configValues, searchKey, checkPos, checkValue);
   cout << "Full energy peak at:" << EgFE << " " << checkValue << endl;
-  EgFE /=1000.; //  keV to MeV
+  // EgFE /=1000.; //  keV to MeV
   Eg.push_back(EgFE);
 
   // read in root file
@@ -207,6 +317,7 @@ for(auto fname : fnames)
   // get the histogram from AnalyseSims
 
   TH1D *h1 = (TH1D*)gDirectory->GetList()->FindObject("h1");
+  h1=ScaleX(h1, 1e3);
   h1->Draw();
   //
 
@@ -214,31 +325,47 @@ for(auto fname : fnames)
   cntFE.push_back(GetBinWoBG(h1,EgFE,nChannelsBG));
 
   // get peaks on top of bg -- 
-  nChannelsBG = 4;
-  cntSE.push_back(GetBinWoBG(h1,EgFE-0.511,nChannelsBG));
-  cntDE.push_back(GetBinWoBG(h1,EgFE-2.*0.511,nChannelsBG));
-  cnt511.push_back(GetBinWoBG(h1,0.511,nChannelsBG));
-  if(EgFE<1.22){
+  nChannelsBG = 3;
+  cntSE.push_back(GetBinWoBG(h1,EgFE-511.,nChannelsBG));
+  cntDE.push_back(GetBinWoBG(h1,EgFE-2.*511.,nChannelsBG));
+  cnt511.push_back(GetBinWoBG(h1,511.,nChannelsBG));
+  if(EgFE<1022.){
     cntSE.back()=0;
     cntDE.back()=0;
     cnt511.back()=0;
   }
-
   nCounts.push_back(h1->GetEntries());
 
   // assume that compton is all but the peaks; staring at threshold
   xstart = h1->GetXaxis()->FindBin(threshold);
   sum = 0;
-  for(int i=xstart;i<h1->GetSize();i++)
+  for(int i=xstart;i<h1->GetSize();i++){
     sum += h1->GetBinContent(i);
-  cntCompt.push_back(sum - ( cntFE.back() + cntSE.back() + cntDE.back() + cnt511.back()));
-
+  }
+  cntRest.push_back(sum - ( cntFE.back() + cntSE.back() + cntDE.back() + cnt511.back()));
 
   // find number of Events simulatd in total
   searchKey = "/run/beamOn";
   checkPos = -1;
   checkValue="dummy//dummy";
   nEvents.push_back(GetValueFromConfigs(configValues, searchKey, checkPos, checkValue));
+
+  // Create spectra of "compton" BG, here= everything that was not peaks
+  hmama = CreateMamaSpectrum(h1, EgFE, nChannelsBG);
+  hmama->Smooth(smoothingFactor);
+  hmama->Draw();
+
+  cntRestNoThres.push_back(hmama->GetEffectiveEntries());
+
+  // string Egpp = to_string_with_precision(EgFE/1000, 0);
+  string Egpp = to_string(int(EgFE));
+
+  auto fname_mamaStr = outdir + "/" + "cmp" + Egpp;
+  const char *fname_mama = fname_mamaStr.c_str();
+  th22mama_hist(hmama, fname_mama);
+
+  // cout << nCounts.back() - cntFE.back() -  cntSE.back() - cntDE.back() - cnt511.back() << "\t" << cntRestNoThres.back() << endl;
+
 }
 
 // print all of them
@@ -259,8 +386,9 @@ fout << "# Eg[MeV?]" << "\t"
 << "cntFE" << "\t"
 << "cntSE" << "\t"
 << "cntDE" << "\t"
-<< "cnt511" << "\t" <<
-"cntCompt=Rest" << endl;
+<< "cnt511" << "\t"
+<< "cntRest" << "\t" <<
+"cntRestNoThres" << endl;
 for(vector<double>::size_type i = 0; i != cntFE.size(); i++) {
     fout 
     << Eg[i] << "\t"
@@ -270,7 +398,8 @@ for(vector<double>::size_type i = 0; i != cntFE.size(); i++) {
     << cntSE[i] << "\t" 
     << cntDE[i] << "\t" 
     << cnt511[i] << "\t" 
-    << cntCompt[i] << endl;
+    << cntRest[i] << "\t" 
+    << cntRestNoThres[i] << endl;
 }
 fout.close();
 
