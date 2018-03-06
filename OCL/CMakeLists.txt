@@ -51,7 +51,6 @@ set(OCLSCRIPTS
   run1.mac
   run100.mac
   run1779keV.mac
-  runsims.sh
   PrintSimMacs.cpp
   manyruns.sh
   )
