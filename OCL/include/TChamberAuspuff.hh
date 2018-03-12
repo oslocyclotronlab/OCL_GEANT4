@@ -8,7 +8,9 @@
 #include "G4Material.hh"
 #include "G4NistManager.hh"
 #include "G4Polycone.hh"
+#include "G4Box.hh"
 #include "G4LogicalVolume.hh"
+#include "G4SubtractionSolid.hh"
 #include "G4PVPlacement.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4Transform3D.hh"
@@ -64,6 +66,9 @@ class TChamberAuspuff
     G4double thicknessEndCaps     ;
     G4double halfLengthEndCaps    ;
 
+    G4double pX2LadderHolder;
+    G4double pY2LadderHolder;
+    G4double pZ2LadderHolder;
 
 	//
 	// Geometries
@@ -73,6 +78,10 @@ class TChamberAuspuff
     G4LogicalVolume* logicChamberTube;
     G4VPhysicalVolume* physiChamberTube;
 
+    G4Box* solidLadderHolder;
+    G4SubtractionSolid* subtractLadderHolder;
+    G4LogicalVolume*  logicLadderHolder;
+    G4VPhysicalVolume*  physiLadderHolder;
 
 };
 
