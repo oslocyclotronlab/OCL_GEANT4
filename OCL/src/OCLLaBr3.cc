@@ -91,7 +91,7 @@ OCLLaBr3::OCLLaBr3()
 	LaBr3_Ce->AddElement(Ce,      fractionmass=5.*perCent);
 
 	// MgO reflector
-	density = 2.0*g/cm3;
+	density = 3.6*g/cm3;
 	MgO = new G4Material("MgO", density, ncomponents=2);
 	MgO->AddElement(Mg, natoms=1);
 	MgO->AddElement(O, natoms=1);
