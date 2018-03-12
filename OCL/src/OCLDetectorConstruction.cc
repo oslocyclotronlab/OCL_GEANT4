@@ -33,6 +33,7 @@
 #include "SiRi.hh"
 #include "NIFF.hh"
 #include "TChamberAuspuff.hh"
+#include "OCLTarget.hh"
 
 #include "G4SystemOfUnits.hh"
 #include "G4Transform3D.hh"
@@ -70,7 +71,7 @@ G4VPhysicalVolume* OCLDetectorConstruction::Construct()
 {
 
    // vacuum (non-STP)
-
+	
     G4Material* vacuum = 
     	new G4Material("Vacuum",       				//name as String
 						1,		                    //atomic number (use 1 for Hydrogen)
@@ -182,6 +183,14 @@ G4VPhysicalVolume* OCLDetectorConstruction::Construct()
 	chamber = new TChamberAuspuff();
 	chamber->Placement(0,  physiWorld, pSurfChk);
 
+	//
+	// Target
+	//
+
+	OCLTarget* target;
+	target = new OCLTarget();
+	target->Placement(0,  physiWorld, pSurfChk);
+
 
 	//
 	//	SiRi
@@ -191,8 +200,8 @@ G4VPhysicalVolume* OCLDetectorConstruction::Construct()
 
 	SiRi* siri;
 	siri = new SiRi();
-	// siri->SetAngle(137*deg); // backward
-	siri->SetAngle(43*deg); // forward
+	siri->SetAngle(137*deg); // backward
+	// siri->SetAngle(43*deg); // forward
 	
 	// siri->SetRotation(rotmSiRi);
 	// siri->SetPosition(positionSiRi);
