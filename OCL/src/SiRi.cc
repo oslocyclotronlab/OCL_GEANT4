@@ -15,6 +15,8 @@ SiRi::SiRi()
 
   G4NistManager* nist = G4NistManager::Instance();
   silicon = nist->FindOrBuildMaterial("G4_Si");
+  copper = nist->FindOrBuildMaterial("G4_Cu");
+  aluminum = nist->FindOrBuildMaterial("G4_Al");
   
   
    // vacuum (non-STP)
@@ -103,6 +105,10 @@ void  SiRi::CreateSolids() {
 
   r_delta = 0.01*mm;      // distance between thin and thick detector
 
+  // Support structure that holds SiRi
+  rInSiriHolder =  50.* mm; // approx.
+  thicknessSiriHolder =  1.5* mm; // approx.
+  halfLengthSiriHolder = 5.*cm/2.; // approx length
   
   //
   //  thick detector
@@ -147,7 +153,38 @@ void  SiRi::CreateSolids() {
   G4Trd* pad_shape = new G4Trd("dE_det", .5*a, .5*b, .5*(d_deltaE+d_E+r_delta), .5*(d_deltaE+d_E+r_delta), .5*h);
   pad_Log = new G4LogicalVolume(pad_shape, vacuum, "SiRi_pad");
 
+  // Support structure that holds SiRi
+  G4Tubs* solidSiriHolder = new G4Tubs("SiriHolder",      //pName,
+                                     rInSiriHolder,            //pRMin,
+                                     rInSiriHolder+thicknessSiriHolder,        //pRMax,
+                                     halfLengthSiriHolder, //pDz,
+                                     0*deg,           //pSPhi,
+                                     360*deg     );    //pDPhi)
+  logSiriHolder = new G4LogicalVolume(solidSiriHolder, aluminum, "SiriHolder");
 
+  // Cabels
+  rCableCu = 0.5*cm/2.;
+  rCableAl = 1.*cm/2.;
+
+  halfLengthCable = (45.5/2.*cm)/2;
+  zTransCable = 0.8*cm; // arbitrary
+  // halfLengthCable -= 2*cm; // arb red
+
+  G4Tubs* solidCableCu = new G4Tubs("SiRiCableCu",      //pName,
+                                     0*cm,            //pRMin,
+                                     rCableCu,        //pRMax,
+                                     halfLengthCable, //pDz,
+                                     0*deg,           //pSPhi,
+                                     360*deg     );    //pDPhi)
+  logCableCu = new G4LogicalVolume(solidCableCu, copper, "SiRiCableCu");
+
+  G4Tubs* solidCableAl = new G4Tubs("SiRiCableAl",      //pName,
+                                     0*cm,            //pRMin,
+                                     rCableAl,        //pRMax,
+                                     halfLengthCable, //pDz,
+                                     0*deg,           //pSPhi,
+                                     360*deg     );    //pDPhi)
+  logCable = new G4LogicalVolume(solidCableAl, aluminum, "SiRiCableAl");
 }
 
 
@@ -204,6 +241,25 @@ void SiRi::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool checkO
                               0, 
                               checkOverlaps);
 
+   physSiriHolder = new G4PVPlacement(0,  
+                              translatePos+G4ThreeVector(0,0,pmone * (halfLengthSiriHolder-h/2.)),
+                              "SiRiHolder", 
+                              logSiriHolder, 
+                              physiMother,
+                              false,
+                              0, 
+                              checkOverlaps);
+
+
+   physCableCu = new G4PVPlacement(0,  
+                              G4ThreeVector(0,0,0),
+                              logCableCu, 
+                              "SiRiCableCu", 
+                              logCable,
+                              false,
+                              0, 
+                              checkOverlaps);
+
   // place the pads
   for (G4int ipad = 0; ipad < nb_pads ; ipad++) {
     G4double phi = ipad*dPhi;
@@ -223,7 +279,20 @@ void SiRi::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool checkO
     
                             
    new G4PVPlacement(G4Transform3D(rotm,posE), "SiRi_pad", pad_Log, physiMother, false, ipad, checkOverlaps);
-
+   
+   // Cables'
+    uz = G4ThreeVector(std::cos(phi),
+                       std::sin(phi),
+                       0);
+    posE = R_E*uz;
+    posE += translatePos;
+    posE += G4ThreeVector(std::cos(phi),
+                       std::sin(phi),
+                       pmone*(halfLengthCable+zTransCable));
+    rotm  = G4RotationMatrix();    // global rotation matrix
+    // rotm.rotateX(anotherAngle); // rotation along theta
+    rotm.rotateZ(rot_angle); // rotation along phi
+   new G4PVPlacement(G4Transform3D(rotm,posE), "SiRiCable", logCable, physiMother, false, ipad, checkOverlaps);
   } //ipad-loop
 
   

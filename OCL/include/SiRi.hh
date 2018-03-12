@@ -8,8 +8,8 @@
 #include "G4RunManager.hh"
 #include "G4Material.hh"
 #include "G4NistManager.hh"
-#include "G4Box.hh"
 #include "G4Trd.hh"
+#include "G4Tubs.hh"
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
 #include "G4SystemOfUnits.hh"
@@ -28,6 +28,8 @@
 #include <stdlib.h>     /* exit, EXIT_FAILURE */
 
 #include "CLHEP/Units/PhysicalConstants.h"
+
+#include "G4Sphere.hh"
 
 /// Detector construction class to define materials and geometry.
 class G4LogicalVolume;
@@ -77,6 +79,14 @@ class SiRi : public G4VUserDetectorConstruction
 
     G4double h_thin;
 
+    G4double rInSiriHolder;
+    G4double thicknessSiriHolder;
+    G4double halfLengthSiriHolder;
+
+    G4double rCableCu;
+    G4double rCableAl;
+    G4double halfLengthCable;
+    G4double zTransCable;
 
     //
     // Materials
@@ -84,6 +94,8 @@ class SiRi : public G4VUserDetectorConstruction
 
     G4Material* silicon;
     G4Material* vacuum;
+    G4Material* copper;
+    G4Material* aluminum;
 
 
     // G4LogicalVolume*   deltaE_Log;
@@ -98,6 +110,16 @@ class SiRi : public G4VUserDetectorConstruction
     G4VPhysicalVolume*  dE_phys_strip;
     G4VPhysicalVolume*  dE_phys;
     G4VPhysicalVolume*  pad_phys;
+
+    G4Tubs*  solidSiriHolder;
+    G4LogicalVolume*  logSiriHolder;
+    G4VPhysicalVolume*  physSiriHolder;
+
+    G4Tubs*  solidCableCu;
+    G4LogicalVolume*  logCableCu;
+    G4LogicalVolume*  logCable;
+    G4VPhysicalVolume*  physCableCu;
+    G4VPhysicalVolume*  physCable;
 
 
   private:
