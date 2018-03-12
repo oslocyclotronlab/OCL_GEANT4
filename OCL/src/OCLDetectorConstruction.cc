@@ -170,8 +170,8 @@ G4VPhysicalVolume* OCLDetectorConstruction::Construct()
 
 	OCLFrame* frame;
 	frame = new OCLFrame();
-	frame->SetRotation(rotmFrame);
-	frame->SetPosition(positionFrame);
+	// frame->SetRotation(rotmFrame);
+	// frame->SetPosition(positionFrame);
 	frame->Placement(0,  physiWorld, pSurfChk);
 
 

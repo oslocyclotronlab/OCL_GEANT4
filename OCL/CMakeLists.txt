@@ -24,6 +24,9 @@ endif()
 include(${Geant4_USE_FILE})
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
+#----------------------------------------------------------------------------
+# CADMesh
+find_package(cadmesh)
 
 #----------------------------------------------------------------------------
 # Locate sources and headers for this project
@@ -37,6 +40,7 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 #
 add_executable(OCL OCL.cc ${sources} ${headers})
 target_link_libraries(OCL ${Geant4_LIBRARIES})
+target_link_libraries(OCL ${cadmesh_LIBRARIES})
 
 #----------------------------------------------------------------------------
 # Copy all scripts to the build directory, i.e. the directory in which we

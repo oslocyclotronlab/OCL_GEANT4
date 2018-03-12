@@ -33,59 +33,78 @@ public:
   ~OCLFrame();
 
 public:
-  void SetPosition( G4ThreeVector );
-  void SetRotation( G4RotationMatrix );
+  // void SetPosition( G4ThreeVector );
+  // void SetRotation( G4RotationMatrix );
   void Placement(G4int, G4VPhysicalVolume*, G4bool);
-  void CreatePlacementParameters();
 
 private:
-  G4ThreeVector        translatePos;
-  G4RotationMatrix     rotation;
+  // G4ThreeVector        translatePos;
+  // G4RotationMatrix     rotation;
 
 
   //
-  // Rotations
+  // Parameters
   //
 
-  G4double frameHexagon_theta[numberOf_Hexagons];
-  G4double frameHexagon_phi[numberOf_Hexagons];
-  G4double frameHexagon_psi[numberOf_Hexagons];
-  G4RotationMatrix rotmHexagon[numberOf_Hexagons];
-  G4ThreeVector positionHexagon[numberOf_Hexagons];
+  G4double dx_from_center; // Distance of global model "centre" to centre of ball/OSCAR
 
-  G4double framePentagon_theta[numberOf_Pentagons];
-  G4double framePentagon_phi[numberOf_Pentagons];
-  G4double framePentagon_psi[numberOf_Pentagons];
-  G4RotationMatrix rotmPentagon[numberOf_Pentagons];
-  G4ThreeVector positionPentagon[numberOf_Pentagons];
+  G4double dx_FrameRing;  // arb number at the moment
+  G4double dz_FrameRing; // arb number at the moment
+  G4double dRot;
+
+  G4double dx_FrameTopBase; // arb number at the moment
+  G4double dy_FrameTopBase; // arb number at the moment
+  G4double dRotFrameTopBase;
+
+  //
+  // Rotations and Transofrmations
+  //
+  G4ThreeVector offsetFrameBall;
+  G4RotationMatrix rotmFrameBallCAD[2];
+  G4ThreeVector translatFrameBallCAD[2];
+  G4Transform3D transformFrameBallCAD[2];
+
+  G4ThreeVector offsetFrameRing;
+  G4RotationMatrix rotmFrameRingCAD[2];
+  G4ThreeVector translatFrameRingCAD[2];
+  G4Transform3D transformFrameRingCAD[2];
+
+  G4ThreeVector offsetFrameTopBase;
+  G4RotationMatrix rotmFrameTopBaseCAD[2];
+  G4ThreeVector translatFrameTopBaseCAD[2];
+  G4Transform3D transformFrameTopBaseCAD[2];
 
   //
   // Elements & Materials
   //
 
-  G4Material* Aluminium;
+  G4Material* G4_Al_Material;
 
   //
   // Frame (Ball) Solids & Volumes
   //
 
-  G4Tubs*             solidFrameHoles;
 
-  G4Polyhedra*        solidPentagon;
-  G4SubtractionSolid* subtractFramePentagon;
-  G4LogicalVolume*    logicFramePentagon;
-  G4VPhysicalVolume*  physiFramePentagon;
+  G4VSolid * FrameBallCADSolid;
+  G4LogicalVolume * FrameBallCADlog;
+  G4VPhysicalVolume * FrameBallCADphys[2];
 
-  G4Polyhedra*        solidHexagon;
-  G4SubtractionSolid* subtractFrameHexagon;
-  G4LogicalVolume*    logicFrameHexagon;
-  G4VPhysicalVolume*  physiFrameHexagon;
+
+  G4VSolid * FrameRingCADSolid;
+  G4LogicalVolume * FrameRingCADlog;
+  G4VPhysicalVolume * FrameRingCADphys[2];
+
+  G4VSolid * FrameTopBaseCADSolid;
+  G4LogicalVolume * FrameTopBaseCADlog;
+  G4VPhysicalVolume * FrameTopBaseCADphys[2];
 
   //------------------------------------------------------
   // visualization attributes
   //------------------------------------------------------
 
-  G4VisAttributes* VisAtt1;
+  G4VisAttributes* FrameBallCAD_VisAtt;
+  G4VisAttributes* FrameRingCAD_VisAtt;
+  G4VisAttributes* FrameTopBaseCAD_VisAtt;
 
 private:
   void CreateSolids();

@@ -20,7 +20,7 @@
     // World
     //
 
-	const G4double world_sizeXYZ = 90*cm;
+	const G4double world_sizeXYZ = 270*cm;
     //
     // Detector & Shielding
     //
