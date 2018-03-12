@@ -71,6 +71,7 @@ private:
   G4Material* B2O3;
 
   G4Material* LaBr3;
+  G4Material* CeBr3;
   G4Material* MgO;
   G4Material* LaBr3_Ce;
   G4Material* vacuum;

@@ -84,11 +84,21 @@ OCLLaBr3::OCLLaBr3()
 	LaBr3->AddElement(La, natoms=1);
 	LaBr3->AddElement(Br, natoms=3);
 
+	//CeBr3
+	CeBr3 =   new G4Material("LaBr3", density = 5.07*g/cm3, ncomponents=2);
+	CeBr3->AddElement(Ce, natoms=1);
+	CeBr3->AddElement(Br, natoms=3);
+
 	//LaBr3_Ce
 	//with 5% dopping, see technical note "BrilLanCe Scintillators Performance Summary"
+	// -- didn't fint the doping there any longer, however, adopted the numbers (and doping "method")
+	//from http://dx.doi.org/10.1063/1.4810848 now.
+	// Potentially it should 5% of the molecules, and not of the weight. However, as CeBr3 has
+	// almost the same weight as LaBr3, this shoudln't make a big difference.
+
 	LaBr3_Ce = new G4Material("LaBr3_Ce", density = 5.08*g/cm3, ncomponents=2);
 	LaBr3_Ce->AddMaterial(LaBr3,  fractionmass=95.*perCent);
-	LaBr3_Ce->AddElement(Ce,      fractionmass=5.*perCent);
+	LaBr3_Ce->AddMaterial(CeBr3,   fractionmass=5.*perCent);
 
 	// MgO reflector
 	density = 3.6*g/cm3;
