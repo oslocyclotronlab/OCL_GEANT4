@@ -52,9 +52,9 @@ private:
   G4double dz_FrameRing; // arb number at the moment
   G4double dRot;
 
-  G4double dx_FrameTopBase; // arb number at the moment
-  G4double dy_FrameTopBase; // arb number at the moment
-  G4double dRotFrameTopBase;
+  G4double dx_FrameBase; // arb number at the moment
+  G4double dy_FrameBase; // arb number at the moment
+  G4double dRotFrameBase;
 
   //
   // Rotations and Transofrmations
@@ -69,15 +69,28 @@ private:
   G4ThreeVector translatFrameRingCAD[2];
   G4Transform3D transformFrameRingCAD[2];
 
-  G4ThreeVector offsetFrameTopBase;
-  G4RotationMatrix rotmFrameTopBaseCAD[2];
-  G4ThreeVector translatFrameTopBaseCAD[2];
-  G4Transform3D transformFrameTopBaseCAD[2];
+  G4ThreeVector offsetFrameBase;
+  G4RotationMatrix rotmFrameBaseCAD[2];
+  G4ThreeVector translatFrameBaseCAD[2];
+  G4Transform3D transformFrameBaseCAD[2];
 
   //
   // Elements & Materials
   //
 
+  G4Element* C ;
+  G4Element* Mn;
+  G4Element* Si;
+  G4Element* P ;
+  G4Element* S ;
+  G4Element* N ;
+  G4Element* Cu;
+  G4Element* Cr;
+  G4Element* Ni;
+  G4Element* Fe;
+
+  G4Material* SteelAISI304; // SteelAISI304 (Stainless Steel)
+  G4Material* SteelS235JR; // SteelS235JR (Carbon Steel)
   G4Material* G4_Al_Material;
 
   //
@@ -94,9 +107,9 @@ private:
   G4LogicalVolume * FrameRingCADlog;
   G4VPhysicalVolume * FrameRingCADphys[2];
 
-  G4VSolid * FrameTopBaseCADSolid;
-  G4LogicalVolume * FrameTopBaseCADlog;
-  G4VPhysicalVolume * FrameTopBaseCADphys[2];
+  G4VSolid * FrameBaseCADSolid;
+  G4LogicalVolume * FrameBaseCADlog;
+  G4VPhysicalVolume * FrameBaseCADphys[2];
 
   //------------------------------------------------------
   // visualization attributes
@@ -104,7 +117,7 @@ private:
 
   G4VisAttributes* FrameBallCAD_VisAtt;
   G4VisAttributes* FrameRingCAD_VisAtt;
-  G4VisAttributes* FrameTopBaseCAD_VisAtt;
+  G4VisAttributes* FrameBaseCAD_VisAtt;
 
 private:
   void CreateSolids();
