@@ -21,6 +21,7 @@
 #include "G4OpticalSurface.hh"
 #include "G4Colour.hh"
 
+#include "CADMesh.hh"
 
 /// Detector construction class to define materials and geometry.
 
@@ -59,9 +60,23 @@ private:
   G4Element* Sb ;
   G4Element* Cs ;
   G4Element* Mg ;
+
+  G4Element* C ;
+  G4Element* Mn;
+  G4Element* Si;
+  G4Element* P ;
+  G4Element* S ;
+  G4Element* N ;
+  G4Element* Cu;
+  G4Element* Cr;
+  G4Element* Ni;
+  G4Element* Fe;
+
+  G4Material* SteelAISI304; // SteelAISI304 (Stainless Steel)
   
   G4Material* Aluminium;
   G4Material* PlexiGlass;
+  G4Material* G4_Air;
 
   G4Material* Sili;
   G4Material* SiO2;
@@ -94,6 +109,16 @@ private:
   //
   // Detector Solids & Volumes
   //
+
+  G4ThreeVector offsetLaBr3Housing;
+  G4VSolid* LaBr3HousingCADSolid;
+  G4LogicalVolume* LaBr3HousingCADlog;
+  G4VPhysicalVolume* physiLaBr3HousingCAD;
+
+  G4ThreeVector offsetLaBr3Spacers;
+  G4VSolid* LaBr3SpacersCADSolid;
+  G4LogicalVolume* LaBr3SpacersCADlog;
+  G4VPhysicalVolume* physiLaBr3SpacersCAD;
 
   G4Tubs* solidOCLDetector;
   G4LogicalVolume*  logicOCLDetector;

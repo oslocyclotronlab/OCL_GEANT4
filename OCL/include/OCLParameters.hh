@@ -20,10 +20,12 @@
     // World
     //
 
-	const G4double world_sizeXYZ = 270*cm;
+	const G4double world_sizeXYZ = 300*cm;
     //
     // Detector & Shielding
     //
+
+  const G4double housingInnerHalfLength = 405./2.*mm;
 
 	const G4double crystalOuterR = 8.89*cm/2.; // 3.5 in in cm
 	const G4double crystalInnerR = 0.0*mm;
@@ -78,7 +80,7 @@
   // Whole detector incl. PMT (-> Logical unit)
   //
 
-  const G4double detectorHalfinclPMT = shieldingHalfThicknessLid + shieldingConeHalfLength + shieldingHalfLength
+  const G4double detectorHalfinclPMT = coatingHalfLength
                                          + plexiGlasWindowHalfLength + PMTWindowHalfLength + cathodeHalfLength;
 
 

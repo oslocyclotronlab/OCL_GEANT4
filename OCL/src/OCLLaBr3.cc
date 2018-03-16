@@ -67,6 +67,18 @@ OCLLaBr3::OCLLaBr3()
 	Cs = man->FindOrBuildElement("Cs");
 	Mg = man->FindOrBuildElement("Mg");
 
+		// add more elements from NIST database
+	C  = man->FindOrBuildElement("C");
+	Mn = man->FindOrBuildElement("Mn");
+	Si = man->FindOrBuildElement("Si");
+	P  = man->FindOrBuildElement("P");
+	S  = man->FindOrBuildElement("S");
+	N = man->FindOrBuildElement("N");
+	Cu = man->FindOrBuildElement("Cu");
+	Cr = man->FindOrBuildElement("Cr");
+	Ni = man->FindOrBuildElement("Ni");
+	Fe = man->FindOrBuildElement("Fe");
+
 	//
 	// define materials from elements.
 	//
@@ -78,6 +90,7 @@ OCLLaBr3::OCLLaBr3()
 	K2O        = man->FindOrBuildMaterial("G4_POTASSIUM_OXIDE");
 	Al2O3      = man->FindOrBuildMaterial("G4_ALUMINUM_OXIDE");
 	B2O3       = man->FindOrBuildMaterial("G4_BORON_OXIDE");
+	G4_Air  = man->FindOrBuildMaterial("G4_AIR");
 
 	//LaBr3
 	LaBr3 =   new G4Material("LaBr3", density = 5.07*g/cm3, ncomponents=2);
@@ -88,6 +101,20 @@ OCLLaBr3::OCLLaBr3()
 	CeBr3 =   new G4Material("LaBr3", density = 5.07*g/cm3, ncomponents=2);
 	CeBr3->AddElement(Ce, natoms=1);
 	CeBr3->AddElement(Br, natoms=3);
+
+
+	// SteelAISI304 (Stainless Steel)
+	// source: approx. from https://www.azom.com/article.aspx?ArticleID=965
+	SteelAISI304 =   new G4Material("SteelAISI304", density = 8.000*g/cm3, ncomponents=8);
+	SteelAISI304->AddElement(C,  fractionmass=0.01*0.05); // approx avg. of 0.08 and 0.03
+	SteelAISI304->AddElement(Mn, fractionmass=0.01*2.0);
+	SteelAISI304->AddElement(Si, fractionmass=0.01*0.75);
+	SteelAISI304->AddElement(P,  fractionmass=0.01*0.45);
+	SteelAISI304->AddElement(S,  fractionmass=0.01*0.030);
+	SteelAISI304->AddElement(Cr, fractionmass=0.01*19.); // avg. of 19 and 20;
+	SteelAISI304->AddElement(Ni, fractionmass=0.01*9.);  // approx avg. of 8 and 10.5
+	SteelAISI304->AddElement(Fe, fractionmass=0.01*68.72); // Rest
+
 
 	//LaBr3_Ce
 	//with 5% dopping, see technical note "BrilLanCe Scintillators Performance Summary"
@@ -316,42 +343,38 @@ void  OCLLaBr3::CreateSolids()
 	// Detector Geometry
 	//
 
-	// Create a Logical Volume that contains the whole detector unit
+	///////////////////////////////////////////////////////////////////////////////
+	// FrameBall as CAD
+	///////////////////////////////////////////////////////////////////////////////
+
+	G4double dx_from_center = -housingInnerHalfLength; // because it's currently not included in the stl file
+	offsetLaBr3Housing = G4ThreeVector(0, 0, dx_from_center );
+
+	CADMesh* LaBr3Housing = new CADMesh("../OCL/Mesh-Models/Structures/JMC_006_Detector_Adaptor_Assy_Hex-short_Alu_with_cover-modified.stl", "STL", mm, offsetLaBr3Housing, false);
+
+	
+	LaBr3HousingCADSolid = LaBr3Housing->TessellatedMesh();
+    LaBr3HousingCADlog = new G4LogicalVolume(LaBr3HousingCADSolid, Aluminium, "LaBr3Housing", 0, 0, 0);
+
+    // Spacer Rods CAD
+ //    CADMesh* LaBr3Spacers = new CADMesh("../OCL/Mesh-Models/Structures/JMC_006_Detector_Adaptor_Assy_Hex-short_Stainless-modified.stl", "STL", mm,  offsetLaBr3Spacers, false);
+
+	// offsetLaBr3Spacers = G4ThreeVector(0, 0, 0*mm);
+	// LaBr3SpacersCADSolid = LaBr3Spacers->TessellatedMesh();
+ //    LaBr3SpacersCADlog = new G4LogicalVolume(LaBr3SpacersCADSolid, SteelAISI304, "LaBr3Spacers", 0, 0, 0);
+
+	// Create a Logical Volume that contains the whole detector unit (without Shielding)
 	// -> need to specify placement only one logic volume in the world volume later
 	solidOCLDetector = new G4Tubs("OCLDetector",
 	  								0. * mm, // inner radius = 0 because used as mother volume
-	  								shieldingOuterR,
-	  								detectorHalfinclPMT,
+	  								coatingOuterR,
+	  								housingInnerHalfLength,
 	  								startPhi,
 	  								deltaPhi);
 
-    logicOCLDetector = new G4LogicalVolume(solidOCLDetector, vacuum, "OCLDetector");
+    logicOCLDetector = new G4LogicalVolume(solidOCLDetector, G4_Air, "OCLDetector");
 
-  	//
-    // Shielding
-  	//
-
-  	// Main tube
-
-  	solidShieldingMain = new G4Tubs("ShieldingMainTube",
-									 shieldingInnerR,
-									 shieldingOuterR,
-									 shieldingHalfLength,
-									 startPhi,
-									 deltaPhi);
-
-	// concial section
-
-	solidShieldingConical = new G4Cons("ShieldingConnical",
-										shieldingInnerR,   // inner radius = 0 because used as mother volume
-										shieldingConeOuterRFront,
-										shieldingInnerR,   // inner radius = 0 because used as mother volume
-										shieldingConeOuterRBack,
-										shieldingConeHalfLength,
-										startPhi,
-										deltaPhi);
-
-	// lid
+  	// lid
 
   	solidShieldingLid = new G4Tubs("ShieldingLid",
   									shieldingInnerR,
@@ -360,29 +383,7 @@ void  OCLLaBr3::CreateSolids()
   									startPhi,
   									deltaPhi);
 
-  	//
-	// add the shielding parts together
-
-  	// The origin and the coordinates of the combined solid are the same as those of
-  	// the first solid.
-
-	translationUnion1 = G4ThreeVector(0, 0, - (shieldingConeHalfLength + shieldingHalfThicknessLid) );
-    unionShielding1 = 
-    new  G4UnionSolid("unionShielding1",
-						solidShieldingConical,  // 1st object
-						solidShieldingLid,	   	// 2nd object
-                    	0,					  	// no Rotation
-                    	translationUnion1);   	// translation of the 2nd object
-
-	translationUnion2 = G4ThreeVector(0, 0, -(shieldingHalfLength + shieldingConeHalfLength));
-    unionShielding2 = 
-    	new  G4UnionSolid ("unionShielding2",
-							solidShieldingMain,	// 1nd object
-							unionShielding1,	// 2st object
-                    		0,					// no Rotation
-                    		translationUnion2); // translation of the 2nd object
-
-    logicShielding = new G4LogicalVolume(unionShielding2, Aluminium, "ShieldingLid");
+    logicShielding = new G4LogicalVolume(solidShieldingLid, Aluminium, "ShieldingLid");
 
 	//
 	// Detector Crystal (incl. Reflector & Coating)
@@ -500,11 +501,32 @@ void OCLLaBr3::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 	// Detector Geometry
 	//
 
+	// translatLaBr3HousingCAD[i] = G4ThreeVector();
+	// transformLaBr3HousingCAD[i] = G4Transform3D(rotmFrameBallCAD[i],translatFrameBallCAD[i]);
+	physiLaBr3HousingCAD =
+	    new G4PVPlacement(transDetector,
+	                      "LaBr3Housing",       // its name
+	                      LaBr3HousingCADlog,       // its logical volume
+	                      physiMother,         // its mother  volume
+	                      false,           // no boolean operations
+	                      copyNo,               // copy number
+						  true); // checking overlaps
+
+	// physiLaBr3SpacersCAD =
+	//     new G4PVPlacement(transDetector,
+	//                       "LaBr3Spacers",       // its name
+	//                       LaBr3SpacersCADlog,       // its logical volume
+	//                       physiMother,         // its mother  volume
+	//                       false,           // no boolean operations
+	//                       copyNo,               // copy number
+	// 					  true); // checking overlaps
+
+	transDetector = G4Transform3D(G4RotationMatrix(),G4ThreeVector(0,0,0));
 	physiOCLDetector = 
 		new G4PVPlacement(transDetector, 		// Transformation (Rot&Transl)
 							"OCLDetector",		// its name
 							logicOCLDetector, 	// its logical volume
-							physiMother, 		// its physical mother volume
+							physiLaBr3HousingCAD, 		// its physical mother volume
 							false, 				// unknown "pMany"; def: false
 							copyNo , 			// copy number
 							checkOverlaps);		// checkOverlaps
@@ -513,24 +535,22 @@ void OCLLaBr3::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
   	//
     // Shielding
 
-	// lid
-    positionShielding = G4ThreeVector(0.*cm,
-    								  0.*cm,  
-    								  (2.*shieldingHalfThicknessLid 
-    								  	+ 2.*shieldingConeHalfLength 
-    								  	+ shieldingHalfLength)
-			                          - detectorHalfinclPMT
-    												);  	
+	// // lid
+ //    positionShielding = G4ThreeVector(0.*cm,
+ //    								  0.*cm,  
+ //    								  - shieldingHalfThicknessLid
+	// 		                          - detectorHalfinclPMT
+ //    												);  	
    																								   
-	physiShield = 
-		new G4PVPlacement(0, 					// Rotation
-							positionShielding, 	// Transformation (Rot&Transl)
-							"Shielding", 		// its logical volume
-							logicShielding, 	// its name
-							physiOCLDetector, 	// its physical mother volume
-							false, 				// unknown "pMany"; def: false
-							copyNoSub, 			// copy number
-							checkOverlaps);		// checkOverlaps
+	// physiShield = 
+	// 	new G4PVPlacement(0, 					// Rotation
+	// 						positionShielding, 	// Transformation (Rot&Transl)
+	// 						"Shielding", 		// its logical volume
+	// 						logicShielding, 	// its name
+	// 						physiOCLDetector, 	// its physical mother volume
+	// 						false, 				// unknown "pMany"; def: false
+	// 						copyNoSub, 			// copy number
+	// 						checkOverlaps);		// checkOverlaps
 
 
 	//
@@ -539,14 +559,15 @@ void OCLLaBr3::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 
 	// Coating
 	// Coating: Aluminum part
-	positionCoating = G4ThreeVector(0.*cm,0.*cm,-shieldingConeHalfLength); // because of the shift in the coordinate system of the shielding
+	G4double dx_coating = coatingHalfLength-housingInnerHalfLength;
+	positionCoating = G4ThreeVector(0.*cm,0.*cm, dx_coating); // because of the shift in the coordinate system of the shielding
 																		   // (center != origin)
 	physiCoating = 
 		new G4PVPlacement(0,					// Rotation
 							positionCoating,	// Transformation (Rot&Transl)
 							"Coating",			// its logical volume
 							logicCoating,		// its name
-							physiShield,		// its physical mother volume
+							physiOCLDetector,		// its physical mother volume
 							false,				// unknown "pMany"; def: false
 							copyNoSub,			// copy number
 							checkOverlaps);		// checkOverlaps
@@ -596,11 +617,9 @@ void OCLLaBr3::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 
 	// Plexiglas Window on Detector
 
-	positionPlexiWindow = positionShielding 
-	                      + G4ThreeVector(0.*cm,
+	positionPlexiWindow = G4ThreeVector(0.*cm,
 										  0.*cm,
-										  shieldingHalfLength 
-										  + plexiGlasWindowHalfLength);
+										  dx_coating + coatingHalfLength + plexiGlasWindowHalfLength);
 
 	physiPlexiWindow = 
 	 new G4PVPlacement(0,						// Rotation
@@ -746,7 +765,7 @@ void OCLLaBr3::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 
 	// Red color for Shielding
 	VisAtt2 = new G4VisAttributes(G4Colour(1.0,0.0,0.0)); //red
-	logicShielding->SetVisAttributes(VisAtt2);
+	LaBr3HousingCADlog->SetVisAttributes(VisAtt2);
 
 	// Gray color for Coating (Aluminium)
 	VisAtt3= new G4VisAttributes(G4Colour(0.5, 0.5, 0.5));

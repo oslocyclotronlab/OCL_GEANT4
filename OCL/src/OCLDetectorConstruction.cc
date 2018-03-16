@@ -487,10 +487,11 @@ for(G4int i=0; i<numberOf_OCLLaBr3; i++){
 	
 
 	disttoLaBr3Half = OCLLaBr3_Distance[i] 
-					  + detectorHalfinclPMT;
+					  + housingInnerHalfLength;
 	disttoCollHalf =  OCLLaBr3_Distance[i] - offsettoCollimator;
 
 	positionOCLLaBr3[i] = SpherToCatG4three(disttoLaBr3Half, OCLLaBr3_theta[i], OCLLaBr3_phi[i]); 
+	rotmOCLLaBr3[i].rotateZ(30.*deg); 
 	rotmOCLLaBr3[i].rotateY(OCLLaBr3_theta[i]); 
 	rotmOCLLaBr3[i].rotateZ(OCLLaBr3_phi[i]);
 

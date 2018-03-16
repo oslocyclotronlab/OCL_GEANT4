@@ -44,13 +44,13 @@ void OCLSteppingAction::UserSteppingAction(const G4Step* aStep)
 	= aStep->GetTrack()->GetDefinition()->GetParticleName();
 
 	G4int copyNumber;
-	G4int depth = 5; 						// in caes it really is the DetectorVolume
+	G4int depth = 4; 						// in caes it really is the DetectorVolume
 	
 	if (currentPhysicalName == "Crystal"){
 		G4String GrandMotherPhysicalName = touch->GetVolume(depth)->GetName();
 		
 		G4double EdepStep = aStep->GetTotalEnergyDeposit();
-		copyNumber = touch->GetCopyNumber(depth); // of depth=5 mother: "OCLDetector"
+		copyNumber = touch->GetCopyNumber(depth); // of depth=4 mother: "OCLDetector"
 		
 		if (EdepStep > 0. &&GrandMotherPhysicalName =="OCLDetector") {
 
