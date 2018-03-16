@@ -59,7 +59,7 @@
   	const G4double shieldingHalfLength = coatingHalfLength - shieldingConeHalfLength; // without conical Section and Lid
   																						 //  we assume no coating at the back side
 
-  	const G4double plexiGlasWindowOuterR = shieldingOuterR; // currently we just assume a flat window on the top.
+  	const G4double plexiGlasWindowOuterR = coatingOuterR; // currently we just assume a flat window on the top.
   	const G4double plexiGlasWindowHalfLength= 0.5 * 1.*mm;
 
 
