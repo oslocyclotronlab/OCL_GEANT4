@@ -40,8 +40,8 @@ void AnalyseSims::Loop()
 
    if (fChain == 0) return; //aborts if it cannot find the tree/chain of trees
 
-   TH1D *h1 = new TH1D("h1","Simulated electron energy deposition",3000,0,15);
-   TH1D *h2 = new TH1D("h2","Simulated and folded energy deposition",3000,0,15); 
+   TH1D *h1 = new TH1D("h1","Simulated electron energy deposition",4200,0,21);
+   TH1D *h2 = new TH1D("h2","Simulated and folded energy deposition",4200,0,21); 
 
    Double_t cSmooth[] = {2.03936976e-04, 6.82322078e-23,  3.76053110e-05}; // make sure cal is in same units (MeVor keV)
 
