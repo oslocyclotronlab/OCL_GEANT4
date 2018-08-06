@@ -27,8 +27,10 @@ using namespace std;
 
 ////////////////////////////
 // Parameters
-double threshold = 300.; // Detector threshold in MeV
-double smoothingFactor = 100.; // smoothing for the mama output 
+// double threshold = 300.; // Detector threshold in MeV
+double threshold = 0.; // Detector threshold in MeV
+// double smoothingFactor = 100.; // smoothing for the mama output 
+// smoothing now externally: works badly with root, creates spikes!
 ////////////////////////////
 
 
@@ -352,7 +354,7 @@ for(auto fname : fnames)
 
   // Create spectra of "compton" BG, here= everything that was not peaks
   hmama = CreateMamaSpectrum(h1, EgFE, nChannelsBG);
-  hmama->Smooth(smoothingFactor);
+  // hmama->Smooth(smoothingFactor);
   hmama->Draw();
 
   cntRestNoThres.push_back(hmama->GetEffectiveEntries());
