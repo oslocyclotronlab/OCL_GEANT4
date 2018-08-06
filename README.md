@@ -137,7 +137,7 @@ ___
    according to the Geant4 configuration or it can be done explicitly via 
    the third argument of the G4UIExecutive constructor (see exampleB4a.cc). 
  
-### C- HOW TO RUN
+### C- HOW TO RUN the simulations
 
     - Execute OCL in the 'interactive mode' with visualization:
         % ./OCL
@@ -157,3 +157,9 @@ ___
         % ./OCL OCL.in > OCL.out
    ///////////////////////////////////////////
    ///////////////////////////////////////////
+
+
+### Obtaining the response functions
+- Run the simulation for a grid of gamma-ray energies, eg with `runsims.sh`.
+- Analyse the histograms in the data directory with `GetPeaks.dat`. This will create a summary file, `Peaks.dat` and spectra of the compton/rest for unfolding with mama.
+- Smooth the spectra for mama, running the `RunSmooth.py` script.
