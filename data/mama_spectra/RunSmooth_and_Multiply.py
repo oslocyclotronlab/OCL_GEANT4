@@ -11,7 +11,7 @@ def createFolder(directory):
     except OSError:
 		print('Error: Creating directory. ' + directory)
 
-outfolder = "../mama_spectra_smooth/"
+outfolder = "../mama_spectra_smooth_{:.2f}/".format(multFactor)
 
 createFolder(outfolder)
 

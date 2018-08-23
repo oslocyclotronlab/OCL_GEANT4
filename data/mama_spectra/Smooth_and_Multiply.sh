@@ -47,12 +47,12 @@ send "y\r"
 expect "mama>"
 
 # multiplication by "arb." factor
-# sleep $SleepTime
-# send "ar\r"
-# expect "Write your expression:"
-# sleep $SleepTime
-# send "2=2*$multFactor \r"
-# expect "mama>"
+sleep $SleepTime
+send "ar\r"
+expect "Write your expression:"
+sleep $SleepTime
+send "2=2*$multFactor \r"
+expect "mama>"
 
 # write file
 sleep $SleepTime
