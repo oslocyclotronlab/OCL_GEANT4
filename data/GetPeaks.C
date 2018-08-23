@@ -20,7 +20,7 @@
 #pragma link C++ defined_in “AnalyseSims.C”;
 #endif
 
-#include "th22mama_hist.C"
+#include "th12mama.C"
 
 #include <vector>
 using namespace std;
@@ -364,7 +364,7 @@ for(auto fname : fnames)
 
   auto fname_mamaStr = outdir + "/" + "cmp" + Egpp;
   const char *fname_mama = fname_mamaStr.c_str();
-  th22mama_hist(hmama, fname_mama);
+  th12mama(hmama, fname_mama);
 
   // cout << nCounts.back() - cntFE.back() -  cntSE.back() - cntDE.back() - cnt511.back() << "\t" << cntRestNoThres.back() << endl;
 
