@@ -34,6 +34,7 @@
 #include "NIFF.hh"
 #include "TChamberAuspuff.hh"
 #include "OCLTarget.hh"
+#include "OCLTarget_RadSource.hh"
 
 #include "G4SystemOfUnits.hh"
 #include "G4Transform3D.hh"
@@ -189,6 +190,7 @@ G4VPhysicalVolume* OCLDetectorConstruction::Construct()
 
 	OCLTarget* target;
 	target = new OCLTarget();
+	// target = new OCLTarget_RadSource();
 	target->Placement(0,  physiWorld, pSurfChk);
 
 

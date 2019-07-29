@@ -7,7 +7,7 @@ using namespace std;
 /***************** Written by Gry in december 2015 *******************
 ****************** changes made in january 2016
 This file generates a macros for runnin GEANT4 simulations with
-N gamma rays of a given gamma ray energy Egamma isotropically distributed 
+N gamma rays of a given gamma ray energy Egamma isotropically distributed
 between the theta angles thetamin and thetamax.
 
 To generate a set of macros run the bash script generatemacros.sh like this
@@ -21,19 +21,18 @@ Int_t N = 1e6; //Number of gammas to be simulated
 // Double_t mintheta = 160.; //smallest theta angle to be used for the gamma distribution [deg]
 // Double_t maxtheta = 180.; //largest theta angle
 Double_t Egammalow = 200.; //Lowest gamma energy to be simulated
-Double_t Egammastep = 200.; //Steps of gamma energy 
+Double_t Egammastep = 200.; //Steps of gamma energy
 Double_t Egammastep_high = 2000.; //Step of gamma energy at higher energies
 int nSteps = 54; // Number of Steps to simulate
 int nSteps_high = 5; // Number of Steps to simulate
 // Double_t Egammahigh = 3000.; //Highest gamma energy to be simulated
-Double_t Egamma = 0.; 
+Double_t Egamma = 0.;
 ofstream macfile;
 string fout; // basename
 
 Egamma = Egammalow;
 
-for(int k=0;k<nSteps;k++)
- {
+for(int k=0;k<nSteps;k++) {
 	fout = "sim" + to_string(k) + ".mac";
 	macfile.open(fout);
 
@@ -64,20 +63,14 @@ for(int k=0;k<nSteps;k++)
 
 	if(Egamma > 1.1e3 && Egamma < 2.2e3 ){
 		macfile <<"/run/beamOn "<< N*10 <<endl;
-	}
-	else {
-	macfile <<"/run/beamOn "<< N <<endl;
-	}
+	   }
+	else { macfile <<"/run/beamOn "<< N <<endl; }
 
 	macfile.close();
 
-
-	if(k > nSteps-nSteps_high-1){
-	Egammastep = Egammastep_high;
-	}
+  if(k > nSteps-nSteps_high-1){Egammastep = Egammastep_high;}
 	Egamma += Egammastep;
-
  }
-   
+
  return 0;
 }

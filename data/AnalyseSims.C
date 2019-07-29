@@ -3,15 +3,17 @@
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
+#include <iostream>
+#include <fstream>
 
 void AnalyseSims::Loop()
 {
 //*****************************************************************************//
 // Example class for analysing OSCAR-data simulated with GEANT4. As long as the
-// NTuple for storing data is not changed, you can use this script as a starting point. 
+// NTuple for storing data is not changed, you can use this script as a starting point.
 // As an example, the script now plots the electron energy deposited in the detectors
-// and the folded energy together. 
-//   
+// and the folded energy together.
+//
 //   In a ROOT session, you can do:
 //      root> .L AnalyseSims.C
 //      root> AnalyseSims t
@@ -41,7 +43,7 @@ void AnalyseSims::Loop()
    if (fChain == 0) return; //aborts if it cannot find the tree/chain of trees
 
    TH1D *h1 = new TH1D("h1","Simulated electron energy deposition",4200,0,21);
-   TH1D *h2 = new TH1D("h2","Simulated and folded energy deposition",4200,0,21); 
+   TH1D *h2 = new TH1D("h2","Simulated and folded energy deposition",4200,0,21);
 
    Double_t cSmooth[] = {2.03936976e-04, 6.82322078e-23,  3.76053110e-05}; // make sure cal is in same units (MeVor keV)
 
@@ -125,4 +127,29 @@ void AnalyseSims::Loop()
    h1->SetLineStyle(4);
    h1->Draw("hist");
    h2->Draw("same hist");
+
+   ////////////
+   cout << "Writing histograms to file" << endl;
+
+   ofstream myfile;
+   myfile.open ("h1.txt");
+   myfile << "# E(MeV) counts\n";
+   Int_t n = h1->GetNbinsX();
+   for (Int_t i=1; i<=n; i++) {
+      myfile << h1->GetBinLowEdge(i)+h1->GetBinWidth(i)/2 << "\t"
+             << h1->GetBinContent(i)
+             << "\n";
+   }
+   myfile.close();
+
+   myfile.open ("h2.txt");
+   myfile << "# E(MeV) counts\n";
+   n = h2->GetNbinsX();
+   for (Int_t i=1; i<=n; i++) {
+      myfile << h2->GetBinLowEdge(i)+h2->GetBinWidth(i)/2 << "\t"
+             << h2->GetBinContent(i)
+             << "\n";
+   }
+   myfile.close();
+
 }
