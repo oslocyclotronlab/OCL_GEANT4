@@ -6,6 +6,7 @@
 
 #include "OCLRunAction.hh"
 #include "OCLAnalysis.hh"
+#include "OCLRunMessenger.hh"
 
 #include "G4RunManager.hh"
 #include "G4UnitsTable.hh"
@@ -16,7 +17,9 @@
 
 #include <iomanip>
 
-OCLRunAction::OCLRunAction() : G4UserRunAction()
+OCLRunAction::OCLRunAction() : G4UserRunAction(),
+															 fRunMessenger(0),
+															 fOutName("../data/Edep.root")
 {
 	  // Create analysis manager
 	  // The choice of analysis technology is done via selecting of a namespace
@@ -68,7 +71,7 @@ OCLRunAction::OCLRunAction() : G4UserRunAction()
 
 	  analysisManager->FinishNtuple();
 
-
+	  fRunMessenger = new OCLRunMessenger(this);
 }
 
 OCLRunAction::~OCLRunAction()
@@ -86,8 +89,7 @@ void OCLRunAction::BeginOfRunAction(const G4Run*)
 
 	  // Open an output file
 	  //
-	  G4String fileName = "../data/Edep.root";
-	  analysisManager->OpenFile(fileName);
+	  analysisManager->OpenFile(fOutName);
 }
 
 void OCLRunAction::EndOfRunAction(const G4Run*)
@@ -99,6 +101,12 @@ void OCLRunAction::EndOfRunAction(const G4Run*)
 	  analysisManager->Write();
 	  analysisManager->CloseFile();
 
+}
+
+void OCLRunAction::SetOutName(G4String nameChoice)
+{
+  // search the material by its name
+  fOutName = nameChoice;
 }
 
 
