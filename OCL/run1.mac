@@ -13,7 +13,7 @@
 #/gps/ang/mintheta 160. degree
 #/gps/ang/maxtheta 180. degree
 
-/process/inactivate Cerenkov
+#/process/inactivate Cerenkov
 
 ## Number of events to run
 /run/beamOn 1

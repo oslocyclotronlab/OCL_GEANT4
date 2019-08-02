@@ -1,4 +1,4 @@
-# Macro file for the visualization setting in the initialization phase 
+# Macro file for the visualization setting in the initialization phase
 # of the SiRi example when running in interactive mode
 #
 
@@ -32,8 +32,8 @@
 /event/verbose 0
 /tracking/verbose 0
 #
-# Draw geometry:
-/vis/drawVolume
+# Draw geometry og all worlds:
+/vis/drawVolume worlds
 #
 # Specify view angle:
 /vis/viewer/set/viewpointVector -1 0 0

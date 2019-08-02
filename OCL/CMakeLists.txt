@@ -44,15 +44,8 @@ target_link_libraries(OCL ${Geant4_LIBRARIES})
 # relies on these scripts being in the current working directory.
 #
 set(OCLSCRIPTS
-  init.mac
-  init_vis.mac
-  vis.mac
-  vis_VRML.mac
-  run1.mac
-  run100.mac
-  run1779keV.mac
   PrintSimMacs.cpp
-  manyruns.sh
+  manyruns.sh 
   )
 
 foreach(_script ${OCLSCRIPTS})
@@ -63,7 +56,12 @@ foreach(_script ${OCLSCRIPTS})
     )
 endforeach()
 
-#----------------------------------------------------------------------------
+file(GLOB MACROS "${PROJECT_SOURCE_DIR}/*.mac")
+file(COPY ${MACROS} DESTINATION ${PROJECT_BINARY_DIR})
+
+
+
+#--------------------------------------------------------------------------
 #
 # Checks whether a "data" directory exists at the place GEANT4 wants to save
 # the root files. 

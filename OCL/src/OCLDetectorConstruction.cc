@@ -97,20 +97,20 @@ G4VPhysicalVolume* OCLDetectorConstruction::Construct()
 
 	solidWorld = 					 //size (defined through half-sizes)
 		new G4Box("World",
-	               world_sizeXYZ/2, 
-	               world_sizeXYZ/2, 
-	               world_sizeXYZ/2); 
+	               world_sizeXYZ/2,
+	               world_sizeXYZ/2,
+	               world_sizeXYZ/2);
 
-	WorldLog =  
+	WorldLog =
 		new G4LogicalVolume(solidWorld,        	//solid defining the World
 	                    	vacuum,           	//material of the World
-	                    	"World");         	//name
+	                    	"World_mass_log");         	//name
 
-	physiWorld = 
+	physiWorld =
 		new G4PVPlacement(0,                    //specifies rotation: 0 = no rotation
 	                  	  G4ThreeVector(),     	//at (0,0,0)
 	                  	  WorldLog,            	//logical volume
-						  "World",              //name
+						  "World_mass_phys",              //name
 						  0,                    //mother  volume
 						  false,                //no boolean operation
 						  0);                   //copy number
@@ -143,7 +143,7 @@ G4VPhysicalVolume* OCLDetectorConstruction::Construct()
 		labr3[i]->Placement(copynumber,  physiWorld, pSurfChk);
 		}
 	}
-	 
+
 
 	///////////
 
@@ -164,10 +164,10 @@ G4VPhysicalVolume* OCLDetectorConstruction::Construct()
 
 
 	//
-	//	Frame
+	//	Frame (Ball)
 	//
 	G4RotationMatrix rotmFrame = G4RotationMatrix(); 	// Check implementation: Need to be empty?
-	G4ThreeVector 	 positionFrame = G4ThreeVector(); 	//  
+	G4ThreeVector 	 positionFrame = G4ThreeVector(); 	//
 
 	OCLFrame* frame;
 	frame = new OCLFrame();
@@ -177,20 +177,21 @@ G4VPhysicalVolume* OCLDetectorConstruction::Construct()
 
 
 	//
-	// Target Chamber
+	// Old Target Chamber
 	//
 
-	TChamberAuspuff* chamber;
-	chamber = new TChamberAuspuff();
-	chamber->Placement(0,  physiWorld, pSurfChk);
+	// TChamberAuspuff* chamber;
+	// chamber = new TChamberAuspuff();
+	// chamber->Placement(0,  physiWorld, pSurfChk);
 
 	//
 	// Target
 	//
 
-	OCLTarget* target;
-	target = new OCLTarget();
-	// target = new OCLTarget_RadSource();
+	// OCLTarget* target;
+	// target = new OCLTarget();
+	OCLTarget_RadSource* target;
+	target = new OCLTarget_RadSource();
 	target->Placement(0,  physiWorld, pSurfChk);
 
 
@@ -198,13 +199,13 @@ G4VPhysicalVolume* OCLDetectorConstruction::Construct()
 	//	SiRi
 	//
 	// G4RotationMatrix rotmSiRi = G4RotationMatrix(); 	// Check implementation: Need to be empty?
-	// G4ThreeVector 	 positionSiRi = G4ThreeVector();	//  
+	// G4ThreeVector 	 positionSiRi = G4ThreeVector();	//
 
 	SiRi* siri;
 	siri = new SiRi();
 	siri->SetAngle(137*deg); // backward
 	// siri->SetAngle(43*deg); // forward
-	
+
 	// siri->SetRotation(rotmSiRi);
 	// siri->SetPosition(positionSiRi);
 	siri->Placement(0,  physiWorld, pSurfChk);
@@ -213,10 +214,10 @@ G4VPhysicalVolume* OCLDetectorConstruction::Construct()
 	//	NIFF
 	//
 	// G4RotationMatrix rotmNIFF = G4RotationMatrix(); 	// Check implementation: Need to be empty?
-	// G4ThreeVector 	 positionNIFF = G4ThreeVector();	//  
+	// G4ThreeVector 	 positionNIFF = G4ThreeVector();	//
 
-	NIFF* niff;
-	niff = new NIFF();
+	// NIFF* niff;
+	// niff = new NIFF();
 	// // niff->SetRotation(rotmNIFF);
 	// // niff->SetPosition(positionNIFF);
 	// niff->Placement(0,  physiWorld, pSurfChk);
@@ -486,16 +487,16 @@ G4double offsettoCollimator = distColltoDet + collimatorHalfLength;
 
 
 for(G4int i=0; i<numberOf_OCLLaBr3; i++){
-	
-	disttoLaBr3Half = OCLLaBr3_Distance[i] 
+
+	disttoLaBr3Half = OCLLaBr3_Distance[i]
 					  + detectorHalfinclPMT;
 	disttoCollHalf =  OCLLaBr3_Distance[i] - offsettoCollimator;
 
-	positionOCLLaBr3[i] = SpherToCatG4three(disttoLaBr3Half, OCLLaBr3_theta[i], OCLLaBr3_phi[i]); 
-	rotmOCLLaBr3[i].rotateY(OCLLaBr3_theta[i]); 
+	positionOCLLaBr3[i] = SpherToCatG4three(disttoLaBr3Half, OCLLaBr3_theta[i], OCLLaBr3_phi[i]);
+	rotmOCLLaBr3[i].rotateY(OCLLaBr3_theta[i]);
 	rotmOCLLaBr3[i].rotateZ(OCLLaBr3_phi[i]);
 
-	positionCollimator[i] = SpherToCatG4three(disttoCollHalf, OCLLaBr3_theta[i], OCLLaBr3_phi[i]); 
+	positionCollimator[i] = SpherToCatG4three(disttoCollHalf, OCLLaBr3_theta[i], OCLLaBr3_phi[i]);
 }
 
 }

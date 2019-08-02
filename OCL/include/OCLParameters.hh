@@ -20,7 +20,7 @@
     // World
     //
 
-	const G4double world_sizeXYZ = 90*cm;
+	const G4double world_sizeXYZ = 290*cm;
     //
     // Detector & Shielding
     //
@@ -92,7 +92,7 @@
 	// when you change the Collimator length and distance to Source, check that it's still inside the World Volume!
     //  Keeping the sum of distSourceCol and 2*collimatorHalfLength >= 20 cm.
 	const G4double distSourceCol =   18.*cm; 		// Distance from source to Collimator (beginning)
-	
+
 
 	// Distance from collimator Half point to Crystal Half point (or fraction r in crystal length)
 	const G4double distHalfColHalfCry = collimatorHalfLength + 2.*shieldingHalfThicknessLid + coatingThicknessFront
