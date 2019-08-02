@@ -1,0 +1,24 @@
+## save random number
+#/random/setSavingFlag
+
+## Particle type, position, energy...
+#/gps/particle gamma
+#/gps/number 1
+#/gps/energy 500. keV
+
+/gps/particle ion
+/gps/energy 0 keV
+/gps/ion 27 60 0 0
+#/grdm/nucleusLaimits 60 60 27 27
+
+# Source not hardcoded any longer
+/gps/pos/centre  0 0 1 mm
+#/gps/direction 0 0 1
+/gps/ang/type iso
+#/gps/ang/mintheta 160. degree
+#/gps/ang/maxtheta 180. degree
+
+#/process/inactivate Cerenkov
+
+## Number of events to run
+/run/beamOn 1000000

@@ -63,8 +63,8 @@ void  OCLTarget_RadSource::CreateSolids() {
   //
 
   // Target
-  pX2Target = 16./2.*mm;
-  pY2Target = 16./2.*mm;
+  pX2Target = 24./2.*mm;
+  pY2Target = 11./2.*mm;
   pZ2Target = 2/2.*mm; // approximation! with a 4mg/cm^2 Si target / density of silicon
 
   // pX2TargetHole = 16./2.*mm;
@@ -98,16 +98,16 @@ void  OCLTarget_RadSource::CreateSolids() {
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 void OCLTarget_RadSource::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool checkOverlaps)
 {
-   // double pmone = -1; // in principal one can adjust for forward/backward angles placement
+   double pmone = -1; // in principal one can adjust for forward/backward angles placement
 
-   // physTarget = new G4PVPlacement(0,
-   //                                G4ThreeVector(0,0,-pmone*pZ2Target),
-   //                                "Target",
-   //                                logTarget,
-   //                                physiMother,
-   //                                false,
-   //                                0,
-   //                                checkOverlaps);
+   physTarget = new G4PVPlacement(0,
+                                  G4ThreeVector(0,0,-pmone*pZ2Target),
+                                  "Target",
+                                  logTarget,
+                                  physiMother,
+                                  false,
+                                  0,
+                                  checkOverlaps);
 
       // physTarget = new G4PVPlacement(0,
       //                             G4ThreeVector(0,0,0),
