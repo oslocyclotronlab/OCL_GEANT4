@@ -38,9 +38,17 @@ void OCLParallelWorldTargetChamber::Construct()
 
     // Colors
     G4VisAttributes* VisAtt = new G4VisAttributes(G4Colour(0.85,0.91,0.97, 0.5));
+
     CADWorldLog->SetVisAttributes(VisAtt);
     for (int i=0; i < CADWorldLog->GetNoDaughters(); i++){
-      CADWorldLog->GetDaughter(i)->GetLogicalVolume ()->SetVisAttributes(VisAtt);
+      G4LogicalVolume* daughterLog = CADWorldLog->GetDaughter(i)->GetLogicalVolume();
+
+      // colors for the plexi glass
+      if (daughterLog->GetName() == "Target_Ball_Plexi_Lower"
+          || daughterLog->GetName() == "Target_Ball_Plexi_Upper"){
+        daughterLog->SetVisAttributes(G4VisAttributes(G4Colour(0.80,0.90,0.90, 0.1)));
+      }
+      else { daughterLog->SetVisAttributes(VisAtt);}
     }
 
     new G4PVPlacement(0, G4ThreeVector(), CADWorldLog,
