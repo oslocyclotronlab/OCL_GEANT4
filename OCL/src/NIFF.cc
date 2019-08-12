@@ -6,89 +6,32 @@
 */
 
 #include "NIFF.hh"
+#include "OCLMaterials.hh"
 
 
 
 NIFF::NIFF()
 : G4VUserDetectorConstruction()
 
-{ 
+{
 
   //----------------------------------------------------
   // Material definitions
   //----------------------------------------------------
 
+  OCLMaterials* fMat = OCLMaterials::GetInstance();
+  aluminium = fMat->GetMaterial("G4_Al");
+  isobutane = fMat->GetMaterial("isoC4H10");
+  isobutane_ppac = fMat->GetMaterial("isoC4H10_PPAC");
+  Mylar = fMat->GetMaterial("Mylar");
+  vacuum = fMat->GetMaterial("Vacuum");
 
-  // Get nist material manager
-  G4NistManager* nist = G4NistManager::Instance();
-  
-  // Define Materials
-  
-  aluminium = nist->FindOrBuildMaterial("G4_Al");
+  /*
 
-  G4double a, z;
-  
-  a = 1.01*g/mole;
-  G4Element* elH  = new G4Element("Hydrogen", "H", z= 1., a);
-    
-  a = 12.01*g/mole;
-  G4Element* elC = new G4Element("Carbon", "C", z=6., a);
-    
-  a = 16.00*g/mole;
-  G4Element* elO  = new G4Element("Oxygen"  ,"O" , z= 8., a);
-  
-  // iso-Butane (methylpropane), STP (Standard Temperature and Pressure)
+    The density of vacuum cannot be 0, hence we use some very small number.
+    Temperature and pressure needs to be specified for correct dE/dx calculation in case of non-STP gases.
 
-  G4int nel, ncomponents;
-  G4double fractionmass;
-  
-  G4double density = 2.67*mg/cm3;
-  isobutane = new G4Material("isoC4H10",density,nel=2);
-  isobutane->AddElement(elC,4);
-  isobutane->AddElement(elH,10);
-  
-  /* 
-     iso-butane with conditions specific for NIFF module at OCL
-     use conditions: T = 293 K, p = 5 mbar (= 500 Pa)
-     To make live easier, we will consider ideal gas law to calculate the density.
   */
-  G4double iso_pressure = 500*hep_pascal; //5.e-3*bar;
-  G4double iso_Temperature = 293*kelvin;
-  G4double iso_molarMass = 58.12*g/mole;
-  // G4double gas_cte = CLHEP::k_Boltzmann * CLHEP::Avogadro;
-  G4double gas_cte = 8.3144598 * joule / kelvin / mole;
-  G4cout << gas_cte << G4endl;
-  G4double iso_density = iso_pressure*iso_molarMass/gas_cte/iso_Temperature; // in g/m3
-  G4cout << iso_density << G4endl;
-  isobutane_ppac = new G4Material("isoC4H10_PPAC", iso_density, ncomponents = 1, kStateGas, iso_Temperature, iso_pressure);
-    isobutane_ppac->AddMaterial(isobutane, fractionmass = 1.);
-    
-    
-  // Mylar
-
-  density = 1.39*g/cm3;
-  Mylar = new G4Material("Mylar", density, nel=3);
-  Mylar->AddElement(elO,2);
-  Mylar->AddElement(elC,5);
-  Mylar->AddElement(elH,4);
-
-  
-  // vacuum (non-STP)
- 
-  vacuum = new G4Material("Vacuum",       //name as String
-              1,          //atomic number (use 1 for Hydrogen)
-              1.008*g/mole,   //molar mass (use 1.008*g/mole for Hydoren) 
-              1.e-25*g/cm3,   //density
-              kStateGas,    //kStateGas - the material is gas (see G4State)
-              2.73*kelvin,  //Temperature 
-              1.e-25*g/cm3);  //pressure
-              
-              /*
-              
-                The density of vacuum cannot be 0, hence we use some very small number.
-                Temperature and pressure needs to be specified for correct dE/dx calculation in case of non-STP gases.
-              
-              */
 
   //
   // Create the solids.....
@@ -107,7 +50,7 @@ NIFF::~NIFF()
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 // Dummy class -- doesn't compile otherwise
 G4VPhysicalVolume* NIFF::Construct()
-{  
+{
 }
 
 
@@ -123,8 +66,8 @@ G4VPhysicalVolume* NIFF::Construct()
 
 // //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
-// void NIFF::SetRotation(G4RotationMatrix thisRot) { 
-//   rotation = thisRot; 
+// void NIFF::SetRotation(G4RotationMatrix thisRot) {
+//   rotation = thisRot;
 // }
 
 
@@ -132,50 +75,50 @@ G4VPhysicalVolume* NIFF::Construct()
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 void  NIFF::CreateSolids() {
 
-									
+
   // Define the detector
-  /*	
+  /*
   	We define the NIFF module as a hollow trapezoid (disjunction of 2 trapezoids).
   	Dimensions of the outer shell:
   						bottom base x1 = 77 mm
   						upper base  x2 = 20 mm
   						side length  b = 55 mm
-  	Thickness of module:   5.5 mm  
-  	
+  	Thickness of module:   5.5 mm
+
   	G4 defines trapezoid as: (bottom_lenght_X, upper_length_X, bottom_length_Y, upper_length_Y, height_Z).
-  	Hence we need to first compute the height of our trapezoid.  	
+  	Hence we need to first compute the height of our trapezoid.
   */
-  
+
   pos1 = G4ThreeVector(0, 0, 0);					// position of the shape
   // G4RotationMatrix rMat;									// rotation matrix around X axis
   G4double phiX = 180. *deg;
   G4double phiZ = 45. *deg;
   //  	rMat.rotateX(phiX);
   rMat.rotateZ(phiZ);
-  	
-  	
+
+
   // set dimensions of outer trapezoid
   G4double outer_b = 60.*mm;
   G4double outer_x1 = 77.*mm;
   G4double outer_x2 = 20.*mm;
   G4double thickness = 5.5*mm;
-    
+
   // compute dimensions of inner trapezoid
   G4double inner_x1 = outer_x1 - thickness;		// in mm
   G4double inner_x2 = outer_x2 - thickness;		// in mm
-  
+
   // compute height
   G4double height = sqrt(pow(outer_b,2.) - 2.*pow((outer_x1 - outer_x2)/2.,2.));
-  
+
   // define outer trapezoid, all dimensions have to be set as half-lengths!
   G4Trd* outer_trap = new G4Trd("Outer", .5*outer_x1, .5*outer_x2, .5*outer_x1, .5*outer_x2, .5*height);
-  
+
   // define inner trapezoid, all dimensions have to be set as half-lengths!
   G4Trd* inner_trap = new G4Trd("Inner", .5*inner_x1, .5*inner_x2, .5*inner_x1, .5*inner_x2, .5*height);
-  
+
   // subtract the two solids
   G4SubtractionSolid *trapezoid = new G4SubtractionSolid("Outer-Inner", outer_trap, inner_trap, 0, pos1);
-   
+
   // add alufoil (10 micron thick), height is the same as for the gas part
   G4double out_alu_x1 = inner_x1;
   G4double out_alu_x2 = inner_x2;
@@ -199,10 +142,10 @@ void  NIFF::CreateSolids() {
   G4Trd* out_trap_Mylar = new G4Trd("Out_Mylar", .5*out_Mylar_x1, .5*out_Mylar_x2, .5*out_Mylar_x1, .5*out_Mylar_x2, .5*height);
   G4Trd* in_trap_Mylar = new G4Trd("In_Mylar", .5*in_Mylar_x1, .5*in_Mylar_x2, .5*in_Mylar_x1, .5*in_Mylar_x2, .5*height);
   G4SubtractionSolid *trap_Mylar = new G4SubtractionSolid("Out-In_Mylar", out_trap_Mylar, in_trap_Mylar, 0, pos1);
-   
+
   // create the module
-  trapLog = new G4LogicalVolume(trapezoid, isobutane, "NIFF");     
-  
+  trapLog = new G4LogicalVolume(trapezoid, isobutane, "NIFF");
+
   // Alu and Mylar layers
   trapAlLog = new G4LogicalVolume(trap_alu, aluminium, "NIFF_Al");
   trapMylarLog = new G4LogicalVolume(trap_Mylar, Mylar, "NIFF_Mylar");
@@ -230,12 +173,12 @@ void NIFF::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool checkO
   worldVisAtt1->SetVisibility(true);
   trapAlLog->SetVisAttributes(worldVisAtt1);
 
-  G4VisAttributes* worldVisAtt2 = new G4VisAttributes(G4Colour(0.0,0.0,1.0)); 
+  G4VisAttributes* worldVisAtt2 = new G4VisAttributes(G4Colour(0.0,0.0,1.0));
   worldVisAtt2->SetVisibility(true);
   trapMylarLog->SetVisAttributes(worldVisAtt2);
 
 
-} 
-  
-                      
+}
+
+
 

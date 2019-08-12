@@ -26,6 +26,7 @@
 
 
 #include "OCLDetectorConstruction.hh"
+#include "OCLMaterials.hh"
 #include "OCLParameters.hh"
 #include "OCLLaBr3.hh"
 #include "OCLCollimator.hh"
@@ -41,7 +42,6 @@
 #include "G4PhysicalConstants.hh"
 
 #include "G4Material.hh"
-#include "G4NistManager.hh"
 #include "G4VisAttributes.hh"
 #include "G4LogicalBorderSurface.hh"
 #include "G4OpticalSurface.hh"
@@ -71,17 +71,9 @@ OCLDetectorConstruction::~OCLDetectorConstruction()
 G4VPhysicalVolume* OCLDetectorConstruction::Construct()
 {
 
-   // vacuum (non-STP)
-	
-    G4Material* vacuum = 
-    	new G4Material("Vacuum",       				//name as String
-						1,		                    //atomic number (use 1 for Hydrogen)
-                    	1.008*g/mole, 	            //molar mass (use 1.008*g/mole for Hydoren)
-						1.e-25*g/cm3,  	            //density
-						kStateGas,		            //kStateGas - the material is gas (see G4State)
-                    	2.73*kelvin,	            //Temperature
-						1.e-25*g/cm3);	            //pressure
-
+  // Get materials
+  OCLMaterials* fMat = OCLMaterials::GetInstance();
+  G4Material* air = fMat->GetMaterial("Air");
 
 	//------------------------------------------------------
 	// Detector geometry
@@ -103,17 +95,17 @@ G4VPhysicalVolume* OCLDetectorConstruction::Construct()
 
 	WorldLog =
 		new G4LogicalVolume(solidWorld,        	//solid defining the World
-	                    	vacuum,           	//material of the World
+	                    	air,           	//material of the World
 	                    	"World_mass_log");         	//name
 
 	physiWorld =
 		new G4PVPlacement(0,                    //specifies rotation: 0 = no rotation
-	                  	  G4ThreeVector(),     	//at (0,0,0)
-	                  	  WorldLog,            	//logical volume
-						  "World_mass_phys",              //name
-						  0,                    //mother  volume
-						  false,                //no boolean operation
-						  0);                   //copy number
+	                  	G4ThreeVector(),     	//at (0,0,0)
+	                  	WorldLog,            	//logical volume
+										  "World_mass_phys",    //name
+										  0,                    //mother  volume
+										  false,                //no boolean operation
+										  0);                   //copy number
 
 
 	////////////////////////

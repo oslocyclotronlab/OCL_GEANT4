@@ -2,28 +2,22 @@
 	OCLTarget module
 */
 
+#include "OCLMaterials.hh"
 #include "OCLTarget.hh"
 
 OCLTarget::OCLTarget()
-{  
-  
+{
+
   //----------------------------------------------------
   // Material definitions
   //----------------------------------------------------
 
-  G4NistManager* nist = G4NistManager::Instance();
-  silicon = nist->FindOrBuildMaterial("G4_Si");
-  aluminum = nist->FindOrBuildMaterial("G4_Al");
+  // Get materials
+  OCLMaterials* fMat = OCLMaterials::GetInstance();
 
-  // vacuum (non-STP)
- 
-  vacuum = new G4Material("Vacuum",       //name as String
-              1,          //atomic number (use 1 for Hydrogen)
-                            1.008*g/mole,   //molar mass (use 1.008*g/mole for Hydoren) 
-              1.e-25*g/cm3,   //density
-              kStateGas,    //kStateGas - the material is gas (see G4State)
-                            2.73*kelvin,  //Temperature 
-              1.e-25*g/cm3);  //pressure
+  silicon = fMat->GetMaterial("G4_Si");
+  aluminum = fMat->GetMaterial("G4_Al");
+  vacuum = fMat->GetMaterial("Vacuum");
 
 
   //
@@ -96,34 +90,34 @@ void OCLTarget::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool c
 {
    double pmone = -1; // in principal one can adjust for forward/backward angles placement
 
-   physTarget = new G4PVPlacement(0,  
+   physTarget = new G4PVPlacement(0,
                                   G4ThreeVector(0,0,-pmone*pZ2Target),
                                   "Target",
-                                  logTarget, 
+                                  logTarget,
                                   physiMother,
                                   false,
-                                  0, 
+                                  0,
                                   checkOverlaps);
 
-   physTargetHole = new G4PVPlacement(0,  
+   physTargetHole = new G4PVPlacement(0,
                                       G4ThreeVector(0,0,0),
-                                      logTargetHole, 
-                                      "TargetHole", 
+                                      logTargetHole,
+                                      "TargetHole",
                                       logTargetHolder,
                                       false,
-                                      0, 
+                                      0,
                                       checkOverlaps);
 
-   physTargetHolder = new G4PVPlacement(0,  
+   physTargetHolder = new G4PVPlacement(0,
                                         G4ThreeVector(0,0,pmone*pZ2TargetHolder),
                                         "TargetHolder",
-                                        logTargetHolder, 
+                                        logTargetHolder,
                                         physiMother,
                                         false,
-                                        0, 
+                                        0,
                                         checkOverlaps);
 
 }
-  
-                      
+
+
 

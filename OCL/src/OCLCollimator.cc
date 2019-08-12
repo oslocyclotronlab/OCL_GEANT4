@@ -24,11 +24,9 @@
 // ********************************************************************
 //
 
-
 #include "OCLCollimator.hh"
+#include "OCLMaterials.hh"
 #include "OCLParameters.hh"
-
-#include "G4NistManager.hh"
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
@@ -42,22 +40,11 @@ OCLCollimator::OCLCollimator()
 	//----------------------------------------------------
 	// Material definitions
 	//----------------------------------------------------
-
-	G4double a, z;                    //a=mass of a mole;
-	G4double density;                 //z=mean number of protons;
-
-	G4int ncomponents, natoms;
-	G4double abundance, fractionmass;
-
-	// load NIST material database manager
-	G4NistManager * man = G4NistManager::Instance();
-
-	//
-	// Define Elements
-	//
+	// Get materials
+	OCLMaterials* fMat = OCLMaterials::GetInstance();
 
 	//Lead
-	lead =    man->FindOrBuildMaterial("G4_Pb");
+	lead = fMat->GetMaterial("G4_Pb");
 
 	////////////////////////////////////////////////////////
 
@@ -100,7 +87,7 @@ void  OCLCollimator::CreateSolids()
 
 	// Collimator geometry
 
-	solidCollimator = 
+	solidCollimator =
 		new G4Cons("ShieldingConnical",
 					colRmin1,   // inner radius = 0 because used as mother volume
 					colRmax1,
@@ -126,7 +113,7 @@ void OCLCollimator::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bo
 	//
 
 	G4Transform3D transCollimator = G4Transform3D(rotation,translatePos);
-	physiCollimator = 
+	physiCollimator =
 		new G4PVPlacement(transCollimator,		// Transformation (Rot&Transl)
 							"Collimator",		// its name
 							logicCollimator,	// its logical volume
