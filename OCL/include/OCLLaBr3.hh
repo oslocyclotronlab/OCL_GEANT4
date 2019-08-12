@@ -45,21 +45,10 @@ private:
   G4ThreeVector        translatePos;
   G4RotationMatrix     rotation;
 
-
   //
   // Elements & Materials
   //
 
-  G4Element* Br;
-  G4Element* La;
-  G4Element* Ce;
-
-  G4Element* O  ;
-  G4Element* K  ;
-  G4Element* Sb ;
-  G4Element* Cs ;
-  G4Element* Mg ;
-  
   G4Material* Aluminium;
   G4Material* PlexiGlass;
 
@@ -120,12 +109,12 @@ private:
   G4Tubs* solidCoatingPlexi;
   G4LogicalVolume* logicCoatingPlexi;
   G4VPhysicalVolume* physiCoatingPlexi;
-  
+
   G4ThreeVector positionReflector;
   G4Tubs* solidReflector;
   G4LogicalVolume* logicReflector;
   G4VPhysicalVolume* physiReflector;
-  
+
   G4ThreeVector positionCrystal;
   G4Tubs* solidCrystal;
   G4LogicalVolume* logicCrystal;

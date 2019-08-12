@@ -1,8 +1,3 @@
-build/*.*
-build/*
-data/*.vec
-data/*.root
-data/*.png
 .settings
 .cproject
 .project

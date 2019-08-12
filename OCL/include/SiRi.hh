@@ -92,20 +92,22 @@ class SiRi : public G4VUserDetectorConstruction
     // Materials
     //
 
+    G4Material* aluminum;
+    G4Material* copper;
     G4Material* silicon;
     G4Material* vacuum;
-    G4Material* copper;
-    G4Material* aluminum;
 
 
     // G4LogicalVolume*   deltaE_Log;
     G4Trd* DE_shape[nFront];
+    G4Trd* dE_shape;
+    G4Trd* pad_shape;
 
     G4LogicalVolume*   E_Log;
     G4LogicalVolume*   dE_Log;
     G4LogicalVolume*   DE_Log[nFront];
     G4LogicalVolume*   pad_Log;
-    
+
     G4VPhysicalVolume*  E_phys;
     G4VPhysicalVolume*  dE_phys_strip;
     G4VPhysicalVolume*  dE_phys;
@@ -115,6 +117,7 @@ class SiRi : public G4VUserDetectorConstruction
     G4LogicalVolume*  logSiriHolder;
     G4VPhysicalVolume*  physSiriHolder;
 
+    G4Tubs* solidCableAl;
     G4Tubs*  solidCableCu;
     G4LogicalVolume*  logCableCu;
     G4LogicalVolume*  logCable;

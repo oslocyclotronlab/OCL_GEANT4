@@ -24,8 +24,8 @@
 // ********************************************************************
 //
 
-
 #include "OCLLaBr3.hh"
+#include "OCLMaterials.hh"
 #include "OCLParameters.hh"
 
 #include "G4NistManager.hh"
@@ -49,100 +49,29 @@ OCLLaBr3::OCLLaBr3()
 	G4int ncomponents, natoms;
 	G4double abundance, fractionmass;
 
-	// load NIST material database manager
-	G4NistManager * man = G4NistManager::Instance();
+  // // Get materials
+  OCLMaterials* fMat = OCLMaterials::GetInstance();
 
-	//
-	// Define Elements
-	//
+  // //Lead
+	Al2O3      = fMat->GetMaterial("G4_ALUMINUM_OXIDE");
+	Aluminium  = fMat->GetMaterial("G4_Al");
+	B2O3       = fMat->GetMaterial("G4_BORON_OXIDE");
+	K2O        = fMat->GetMaterial("G4_POTASSIUM_OXIDE");
+	Na2O       = fMat->GetMaterial("G4_SODIUM_MONOXIDE");
+	PlexiGlass = fMat->GetMaterial("G4_PLEXIGLASS");
+	SiO2       = fMat->GetMaterial("G4_SILICON_DIOXIDE");
 
-	Br = new G4Element("Bromium",    "Br",   z=35.,  a=79.904*g/mole);
-	La = new G4Element("Lanthanum",  "La",   z=57.,  a=138.90547*g/mole);
-	Ce = new G4Element("Cerium",     "Cl",   z=58.,  a=140.116*g/mole);
-
-	// add more elements from NIST database
-	O  = man->FindOrBuildElement("O");
-	K  = man->FindOrBuildElement("K");
-	Sb = man->FindOrBuildElement("Sb");
-	Cs = man->FindOrBuildElement("Cs");
-	Mg = man->FindOrBuildElement("Mg");
-
-	//
-	// define materials from elements.
-	//
-
-	Aluminium  = man->FindOrBuildMaterial("G4_Al");
-	PlexiGlass = man->FindOrBuildMaterial("G4_PLEXIGLASS");
-	SiO2       = man->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
-	Na2O       = man->FindOrBuildMaterial("G4_SODIUM_MONOXIDE");
-	K2O        = man->FindOrBuildMaterial("G4_POTASSIUM_OXIDE");
-	Al2O3      = man->FindOrBuildMaterial("G4_ALUMINUM_OXIDE");
-	B2O3       = man->FindOrBuildMaterial("G4_BORON_OXIDE");
-
-	//LaBr3
-	LaBr3 =   new G4Material("LaBr3", density = 5.07*g/cm3, ncomponents=2);
-	LaBr3->AddElement(La, natoms=1);
-	LaBr3->AddElement(Br, natoms=3);
-
-	//CeBr3
-	CeBr3 =   new G4Material("CeBr3", density = 5.07*g/cm3, ncomponents=2);
-	CeBr3->AddElement(Ce, natoms=1);
-	CeBr3->AddElement(Br, natoms=3);
-
-	//LaBr3_Ce
-	//with 5% dopping, see technical note "BrilLanCe Scintillators Performance Summary"
-	// -- didn't fint the doping there any longer, however, adopted the numbers (and doping "method")
-	//from http://dx.doi.org/10.1063/1.4810848 now.
-	// Potentially it should 5% of the molecules, and not of the weight. However, as CeBr3 has
-	// almost the same weight as LaBr3, this shoudln't make a big difference.
-
-	LaBr3_Ce = new G4Material("LaBr3_Ce", density = 5.08*g/cm3, ncomponents=2);
-	LaBr3_Ce->AddMaterial(LaBr3,  fractionmass=95.*perCent);
-	LaBr3_Ce->AddMaterial(CeBr3,   fractionmass=5.*perCent);
+	LaBr3_Ce = fMat->GetMaterial("LaBr3_Ce");
 
 	// MgO reflector
-	density = 3.6*g/cm3;
-	MgO = new G4Material("MgO", density, ncomponents=2);
-	MgO->AddElement(Mg, natoms=1);
-	MgO->AddElement(O, natoms=1);
+	MgO = fMat->GetMaterial("MgO");
 
 	// vacuum (non-STP)
-
-	vacuum = new G4Material("Vacuum",       //name as String
-							1,		                    //atomic number (use 1 for Hydrogen)
-	                		1.008*g/mole, 	            //molar mass (use 1.008*g/mole for Hydoren)
-							1.e-25*g/cm3,  	            //density
-							kStateGas,		            //kStateGas - the material is gas (see G4State)
-	                		2.73*kelvin,	            //Temperature
-							1.e-25*g/cm3);	            //pressure
-
-
-	// Steel as non-NIST material
-	// elFe = G4NistManager::Instance()->FindOrBuildElement("Fe");
-	// elNi = G4NistManager::Instance()->FindOrBuildElement("Ni");
-	// elCr = G4NistManager::Instance()->FindOrBuildElement("Cr");
-	// iron = new G4Material("StainlessSteel", 7.80 * g/cm3, 3 /* components */);
-	// iron -> AddElement(elFe, 70 * perCent);
-	// iron -> AddElement(elCr, 18 * perCent);
-	// iron -> AddElement(elNi, 12 * perCent);
-
-	// PMT-materials
+	vacuum = fMat->GetMaterial("Vacuum");
 
 	// Borosilicate
-	Borosilicate = new G4Material("Borosilicate glass", density= 2.23*g/cm3, ncomponents=5);
-	Borosilicate->AddMaterial(SiO2,   fractionmass=80.6 * perCent);
-	Borosilicate->AddMaterial(B2O3,  fractionmass=13.0 * perCent);
-	Borosilicate->AddMaterial(Na2O,  fractionmass=2.   * perCent); // 1/2 of wt% for (Na20+K20)
-	Borosilicate->AddMaterial(K2O,   fractionmass=2.   * perCent); // 1/2 of wt% for (Na20+K20)
-	Borosilicate->AddMaterial(Al2O3, fractionmass=2.31  * perCent);
-
-	// Bialkali
-	// (Bialkali KCsSb,  Density=?, Thickness=?)?
-	Bialkali = new G4Material("Bialkali", density= 2.*g/cm3, ncomponents=3);
-	Bialkali->AddElement(K,  natoms=2);
-	Bialkali->AddElement(Cs, natoms=1);
-	Bialkali->AddElement(Sb, natoms=1);
-
+	Borosilicate = fMat->GetMaterial("Borosilicate glass");
+	Bialkali = fMat->GetMaterial("Bialkali");
 
 	//------------------------------------------------------
 	// Optical properties
@@ -150,10 +79,10 @@ OCLLaBr3::OCLLaBr3()
 
 
 	// at the moment taken from the Scintiallator example
-		const G4int nEntries = 2;
+	const G4int nEntries = 2;
 
 	// 1eV -> 1.2399 µm; 7eV -> 0.1771µm // TODO more detailed; adopt all of them
-	G4double PhotonEnergy[nEntries] = {1.0*eV,7.0*eV}; 
+	G4double PhotonEnergy[nEntries] = {1.0*eV,7.0*eV};
 
 	// MgO reflector
 
@@ -200,8 +129,6 @@ OCLLaBr3::OCLLaBr3()
 	LaBr3MPT->AddConstProperty("SCINTILLATIONYIELD",63./keV);     // manifact. info
 
 	LaBr3_Ce->SetMaterialPropertiesTable(LaBr3MPT);
-
-
 
 	// PlexiGlas
 
@@ -301,8 +228,8 @@ void OCLLaBr3::SetPosition(G4ThreeVector thisPos) {
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
-void OCLLaBr3::SetRotation(G4RotationMatrix thisRot) { 
-	rotation = thisRot; 
+void OCLLaBr3::SetRotation(G4RotationMatrix thisRot) {
+	rotation = thisRot;
 }
 
 
@@ -367,7 +294,7 @@ void  OCLLaBr3::CreateSolids()
   	// the first solid.
 
 	translationUnion1 = G4ThreeVector(0, 0, - (shieldingConeHalfLength + shieldingHalfThicknessLid) );
-    unionShielding1 = 
+    unionShielding1 =
     new  G4UnionSolid("unionShielding1",
 						solidShieldingConical,  // 1st object
 						solidShieldingLid,	   	// 2nd object
@@ -375,7 +302,7 @@ void  OCLLaBr3::CreateSolids()
                     	translationUnion1);   	// translation of the 2nd object
 
 	translationUnion2 = G4ThreeVector(0, 0, -(shieldingHalfLength + shieldingConeHalfLength));
-    unionShielding2 = 
+    unionShielding2 =
     	new  G4UnionSolid ("unionShielding2",
 							solidShieldingMain,	// 1nd object
 							unionShielding1,	// 2st object
@@ -392,7 +319,7 @@ void  OCLLaBr3::CreateSolids()
 
 	// Coating: Aluminum part
 
-	solidCoating = 
+	solidCoating =
 		new G4Tubs("Coating",
 	  				0. * mm, // inner radius = 0 because used as mother volume
 	  				coatingOuterR,
@@ -403,7 +330,7 @@ void  OCLLaBr3::CreateSolids()
 	logicCoating = new G4LogicalVolume(solidCoating, Aluminium, "Coating");
 
 	// Coating: PlexiGlass part
-	solidCoatingPlexi = 
+	solidCoatingPlexi =
 		new G4Tubs("CoatingPlexiGlas",
 	  				0. * mm, // inner radius = 0 because used as mother volume
 	  				coatingOuterR-coatingThickness,
@@ -418,19 +345,19 @@ void  OCLLaBr3::CreateSolids()
 	// Assumption: We (currently) don't know whether we really have a Reflector/Material properties
 	//             the specifications are taken from the Scintillation example
 
-	solidReflector = 
+	solidReflector =
 		new G4Tubs("Reflector",
-					reflectorInnerR, 
-					reflectorOuterR, 
+					reflectorInnerR,
+					reflectorOuterR,
 					reflectorHalfLength,
 					startPhi,
 					deltaPhi);
 
 	logicReflector = new G4LogicalVolume(solidReflector, MgO, "Reflector");
-	
+
 	// Crystal
 
-  	solidCrystal = 
+  	solidCrystal =
   		new G4Tubs("Crystal",
   					crystalInnerR,
   					crystalOuterR,
@@ -442,7 +369,7 @@ void  OCLLaBr3::CreateSolids()
 
 
 	// Plexiglas Window on Detector
-	solidPlexiWindow = 
+	solidPlexiWindow =
 		new G4Tubs("PlexiGlasWindow",
 	  				0. * mm, // inner radius = 0
 	  				plexiGlasWindowOuterR,
@@ -458,7 +385,7 @@ void  OCLLaBr3::CreateSolids()
 
     // PMT window
 
-	solidPMTWindow = 
+	solidPMTWindow =
 		new G4Tubs("PMTWindow",
 					0.*cm,
 					PMTWindowRadius,
@@ -472,7 +399,7 @@ void  OCLLaBr3::CreateSolids()
 
 	// Photocathode
 
-	solidCathode = 
+	solidCathode =
 		new G4Tubs("Cathode",
 					0.*cm,
 					cathodeRadius,
@@ -500,7 +427,7 @@ void OCLLaBr3::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 	// Detector Geometry
 	//
 
-	physiOCLDetector = 
+	physiOCLDetector =
 		new G4PVPlacement(transDetector, 		// Transformation (Rot&Transl)
 							"OCLDetector",		// its name
 							logicOCLDetector, 	// its logical volume
@@ -515,14 +442,14 @@ void OCLLaBr3::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 
 	// lid
     positionShielding = G4ThreeVector(0.*cm,
-    								  0.*cm,  
-    								  (2.*shieldingHalfThicknessLid 
-    								  	+ 2.*shieldingConeHalfLength 
+    								  0.*cm,
+    								  (2.*shieldingHalfThicknessLid
+    								  	+ 2.*shieldingConeHalfLength
     								  	+ shieldingHalfLength)
 			                          - detectorHalfinclPMT
-    												);  	
-   																								   
-	physiShield = 
+    												);
+
+	physiShield =
 		new G4PVPlacement(0, 					// Rotation
 							positionShielding, 	// Transformation (Rot&Transl)
 							"Shielding", 		// its logical volume
@@ -541,7 +468,7 @@ void OCLLaBr3::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 	// Coating: Aluminum part
 	positionCoating = G4ThreeVector(0.*cm,0.*cm,-shieldingConeHalfLength); // because of the shift in the coordinate system of the shielding
 																		   // (center != origin)
-	physiCoating = 
+	physiCoating =
 		new G4PVPlacement(0,					// Rotation
 							positionCoating,	// Transformation (Rot&Transl)
 							"Coating",			// its logical volume
@@ -550,14 +477,14 @@ void OCLLaBr3::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 							false,				// unknown "pMany"; def: false
 							copyNoSub,			// copy number
 							checkOverlaps);		// checkOverlaps
-	
+
 	// Coating: PlexiGlass part
 	positionCoatingPlexi = G4ThreeVector(0.*cm, 0.*cm, 0.5*coatingThicknessFront); // because of the shift in the coordinate system of the coating
 
-	physiCoatingPlexi = 
+	physiCoatingPlexi =
 		new G4PVPlacement(0,					// Rotation
 						  positionCoatingPlexi,	// Transformation (Rot&Transl)
-						  "CoatingPlexiGlas",	// its logical volume		
+						  "CoatingPlexiGlas",	// its logical volume
 						  logicCoatingPlexi,	// its name
 						  physiCoating,			// its physical mother volume
 						  false,				// unknown "pMany"; def: false
@@ -570,7 +497,7 @@ void OCLLaBr3::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 									  0.*cm,
 									  0.5 * coatingPlasticThickness);
 
-	physiReflector = 
+	physiReflector =
 		new G4PVPlacement(0,					// Rotation
 						  positionReflector,	// Transformation (Rot&Transl)
 						  "Reflector",			// its logical volume
@@ -584,7 +511,7 @@ void OCLLaBr3::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 
     positionCrystal = G4ThreeVector(0.*cm, 0.*cm, 0.5*reflectorThickness);
 
-	physiCrystal = 
+	physiCrystal =
 		new G4PVPlacement(0,					// Rotation
 						  positionCrystal,	// Transformation (Rot&Transl)
 						  "Crystal",			// its logical volume
@@ -596,13 +523,13 @@ void OCLLaBr3::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 
 	// Plexiglas Window on Detector
 
-	positionPlexiWindow = positionShielding 
+	positionPlexiWindow = positionShielding
 	                      + G4ThreeVector(0.*cm,
 										  0.*cm,
-										  shieldingHalfLength 
+										  shieldingHalfLength
 										  + plexiGlasWindowHalfLength);
 
-	physiPlexiWindow = 
+	physiPlexiWindow =
 	 new G4PVPlacement(0,						// Rotation
 					   positionPlexiWindow,		// Transformation (Rot&Transl)
 					   "PlexiGlasWindow",		// its logical volume
@@ -619,13 +546,13 @@ void OCLLaBr3::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 
     // PMT window
 
-	positionPMTWindow = positionPlexiWindow 
+	positionPMTWindow = positionPlexiWindow
 						+ G4ThreeVector(0.*cm,
 							        	0.*cm,
-							        	plexiGlasWindowHalfLength 
+							        	plexiGlasWindowHalfLength
 							        	+ PMTWindowHalfLength);
 
-	physiPMTWindow = 
+	physiPMTWindow =
 		new G4PVPlacement(0,					// Rotation
 						  positionPMTWindow,	// Transformation (Rot&Transl)
 						  "PMTWindow",			// its logical volume
@@ -638,12 +565,12 @@ void OCLLaBr3::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 
 	// Photocathode
 
-	positionCathode = positionPMTWindow 
+	positionCathode = positionPMTWindow
 					  + G4ThreeVector(0.*cm,
 					  				  0.*cm,
 					  	              PMTWindowHalfLength + cathodeHalfLength);
 
-	physiCathode = 
+	physiCathode =
 		new G4PVPlacement(0,					// Rotation
 						  positionCathode,		// Transformation (Rot&Transl)
 						  "Cathode",			// its logical volume
@@ -652,7 +579,7 @@ void OCLLaBr3::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 						  false,				// unknown "pMany"; def: false
 						  copyNoSub,			// copy number
 						  checkOverlaps);		// checkOverlaps
-      
+
 
 
 	//------------------------------------------------------
@@ -662,14 +589,14 @@ void OCLLaBr3::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 
 	// Reflector - scintillator surface
 
-	OpCryRefSurface = 
+	OpCryRefSurface =
 		new G4OpticalSurface("CryRefSurface");
 
 	OpCryRefSurface->SetType(dielectric_metal);
 	OpCryRefSurface->SetModel(glisur);
 	OpCryRefSurface->SetFinish(polished);
 
-	CryRefSurface =  
+	CryRefSurface =
 		new G4LogicalBorderSurface("CryRefSurface",
 									physiCrystal,
 							   		physiReflector,
@@ -677,14 +604,14 @@ void OCLLaBr3::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 
 	// scintillator - scintillatorPlexiGlass surface
 
-	OpCryPlexiSurface =	
+	OpCryPlexiSurface =
 		new G4OpticalSurface("CryPlexiSurface");
 
 	OpCryPlexiSurface->SetType(dielectric_dielectric);
 	OpCryPlexiSurface->SetModel(glisur);
 	OpCryPlexiSurface->SetFinish(polished);
 
-	CryPlexiSurface = 
+	CryPlexiSurface =
 		new G4LogicalBorderSurface("CryPlexiSurface",
 									physiCrystal,
 							   		physiCoatingPlexi,
@@ -710,7 +637,7 @@ void OCLLaBr3::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 	OpPlexiPMTWinSurface->SetModel(glisur);
 	OpPlexiPMTWinSurface->SetFinish(polished);
 
-	CryPlexiPMTWinSurface = 
+	CryPlexiPMTWinSurface =
 		new G4LogicalBorderSurface("CryPlexiPMTWinSurface",
 									physiCoatingPlexi,
 									physiPMTWindow,
@@ -724,7 +651,7 @@ void OCLLaBr3::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool ch
 	OpPMTWinCathSurface->SetModel(glisur);
 	OpPMTWinCathSurface->SetFinish(polished);
 
-	PMTWinCathSurface = 
+	PMTWinCathSurface =
 		new G4LogicalBorderSurface("CathodeSurface",
 		                            physiPMTWindow,
 		                            physiCathode,

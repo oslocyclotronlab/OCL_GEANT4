@@ -3,19 +3,18 @@
 */
 
 #include "TChamberAuspuff.hh"
+#include "OCLMaterials.hh"
 
 TChamberAuspuff::TChamberAuspuff()
-{  
-  
+{
+
   //----------------------------------------------------
   // Material definitions
   //----------------------------------------------------
+  // Get materials
+  OCLMaterials* fMat = OCLMaterials::GetInstance();
+  aluminium   = fMat->GetMaterial("G4_Al");
 
-  G4NistManager* man = G4NistManager::Instance();
-
-  aluminium   = man->FindOrBuildMaterial("G4_Al");
-  plexiGlass = man->FindOrBuildMaterial("G4_PLEXIGLASS");
-  
   //
   // Create the solids.....
   //
@@ -38,8 +37,8 @@ TChamberAuspuff::~TChamberAuspuff()
 
 // //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
-// void TChamberAuspuff::SetRotation(G4RotationMatrix thisRot) { 
-//   rotation = thisRot; 
+// void TChamberAuspuff::SetRotation(G4RotationMatrix thisRot) {
+//   rotation = thisRot;
 // }
 
 
@@ -103,12 +102,12 @@ void  TChamberAuspuff::CreateSolids() {
 
 
   //
-  // now define shapes and logical volumes	  
+  // now define shapes and logical volumes
   //
 
   // Main tube
 
-  solidChamberTube = 
+  solidChamberTube =
         new G4Polycone("ChamberTube",
                        startPhi,
                        stopPhi,
@@ -117,9 +116,9 @@ void  TChamberAuspuff::CreateSolids() {
                        rInner,
                        rOuter);
 
-  logicChamberTube = 
-        new G4LogicalVolume(solidChamberTube, 
-                            aluminium, 
+  logicChamberTube =
+        new G4LogicalVolume(solidChamberTube,
+                            aluminium,
                             "ChamberTube");
 
   solidLadderHolder = new G4Box("LadderHolder",
@@ -127,7 +126,7 @@ void  TChamberAuspuff::CreateSolids() {
                             pY2LadderHolder,
                             pZ2LadderHolder);
 
-  subtractLadderHolder = 
+  subtractLadderHolder =
       new  G4SubtractionSolid("Holder - Chamber",
                               solidLadderHolder,      // 1st object
                               solidChamberTube,       // 2nd object
@@ -148,7 +147,7 @@ void TChamberAuspuff::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4
 {
   // Main tube
 
-  physiChamberTube = 
+  physiChamberTube =
     new G4PVPlacement(0,                  // Rotation
                       G4ThreeVector(),    // Transformation (Rot&Transl)
                       "ChamberTube",      // its logical volume
@@ -158,7 +157,7 @@ void TChamberAuspuff::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4
                       0,      // copy number
                       checkOverlaps);   // checkOverlaps
 
-  physiLadderHolder = 
+  physiLadderHolder =
     new G4PVPlacement(0,                  // Rotation
                       G4ThreeVector(-(rInnerTube + thicknessMiddleTube - 0.25*pX2LadderHolder),0,0),    // Transformation (Rot&Transl)
                       "LadderHolder",      // its logical volume
@@ -169,5 +168,5 @@ void TChamberAuspuff::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4
                       checkOverlaps);   // checkOverlaps
 
 }
-                      
+
 

@@ -53,7 +53,6 @@ class TChamberAuspuff
     // Materials
     //
     G4Material* aluminium;
-    G4Material* plexiGlass;
 
     //
     // Geometry
@@ -72,7 +71,7 @@ class TChamberAuspuff
 
 	//
 	// Geometries
-	// 
+	//
 
     G4Polycone* solidChamberTube;
     G4LogicalVolume* logicChamberTube;

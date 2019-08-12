@@ -47,46 +47,19 @@ class OCLTarget_RadSource
     // Parameters/Constants
     //
 
-     G4double pX2Target;
-     G4double pY2Target;
-     G4double pZ2Target;
-
-     // G4double pX2TargetHole;
-     // G4double pY2TargetHole;
-     // G4double pZ2TargetHole;
-
-     // G4double pX2TargetHolder;
-     // G4double pY2TargetHolder;
-     // G4double pZ2TargetHolder;
-
+    G4double pX2Target;
+    G4double pY2Target;
+    G4double pZ2Target;
     //
     // Materials
     //
-
-    G4Material* silicon;
-    G4Material* vacuum;
-    G4Material* copper;
-    G4Material* aluminum;
     G4Material* pyrex;
-
 
     // Shapes
 
-
-     G4Box* solidTarget;
-     // G4Box* solidTargetHole;
-     // G4Box* solidTargetHolder;
-
-     G4LogicalVolume* logTarget;
-     // G4LogicalVolume* logTargetHole;
-     // G4LogicalVolume*  logTargetHolder;
-
-     G4VPhysicalVolume* physTarget;
-     // G4VPhysicalVolume* physTargetHole;
-     // G4VPhysicalVolume* physTargetHolder;
-
-  // private:
-  // void CreateSolids();
+    G4Box* solidTarget;
+    G4LogicalVolume* logTarget;
+    G4VPhysicalVolume* physTarget;
 };
 
 #endif // OCLTarget_RadSource_hh
