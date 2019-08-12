@@ -85,7 +85,7 @@ OCLLaBr3::OCLLaBr3()
 	LaBr3->AddElement(Br, natoms=3);
 
 	//CeBr3
-	CeBr3 =   new G4Material("LaBr3", density = 5.07*g/cm3, ncomponents=2);
+	CeBr3 =   new G4Material("CeBr3", density = 5.07*g/cm3, ncomponents=2);
 	CeBr3->AddElement(Ce, natoms=1);
 	CeBr3->AddElement(Br, natoms=3);
 
