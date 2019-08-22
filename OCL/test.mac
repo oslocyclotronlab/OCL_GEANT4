@@ -1,0 +1,3 @@
+/control/execute setup_rad_source.mac
+/run/initialize
+/control/execute vis.mac

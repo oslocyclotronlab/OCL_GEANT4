@@ -7,6 +7,8 @@
 #include "G4VisAttributes.hh"
 #include "G4Colour.hh"
 
+class G4GenericMessenger;
+
 class OCLParallelWorldFrameOuter : public G4VUserParallelWorld
 {
   public:
@@ -15,7 +17,13 @@ class OCLParallelWorldFrameOuter : public G4VUserParallelWorld
 
   public:
   virtual void Construct();
-  // virtual void ConstructSD();
+
+  void DefineCommands();
+  G4bool GetUse() { return fuseThisParallelWorld; }
+
+  private:
+  G4GenericMessenger* fMessenger;
+  G4bool fuseThisParallelWorld;
 };
 
 #endif

@@ -1,0 +1,11 @@
+/OCL/det/useCSGOldTC  false
+/OCL/det/useCSGOldTarget  false
+/OCL/det/useCSGRadSource  true
+/OCL/det/useCSGSiRi false
+
+/OCL/det/useCADTargetChamber true
+/OCL/det/useCADFrameOuter true
+/OCL/det/useCADSiRi true
+# in Franks measurement, he taped the source directly on the
+# wheel -- no
+/OCL/det/useCADTargetsOnWheel false

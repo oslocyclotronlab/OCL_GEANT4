@@ -1,0 +1,9 @@
+/OCL/det/useCSGOldTC  false
+/OCL/det/useCSGOldTarget  false
+/OCL/det/useCSGRadSource  false
+/OCL/det/useCSGSiRi false
+
+/OCL/det/useCADTargetChamber true
+/OCL/det/useCADFrameOuter true
+/OCL/det/useCADSiRi true
+/OCL/det/useCADTargetsOnWheel true

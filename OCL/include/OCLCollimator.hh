@@ -1,3 +1,4 @@
+/***
 #ifndef OCLCOLLIMATOR_H
 #define OCLCOLLIMATOR_H 1
 
@@ -47,11 +48,11 @@ private:
   //
 
   G4Material* lead ;
-  
+
   //
   // Detector Solids & Volumes
   //
-  
+
   G4ThreeVector positionCollimator;
   G4Cons* solidCollimator;
   G4LogicalVolume* logicCollimator;
@@ -64,3 +65,4 @@ private:
 };
 
 #endif
+***/

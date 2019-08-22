@@ -24,6 +24,7 @@
 // ********************************************************************
 //
 
+/***
 #include "OCLCollimator.hh"
 #include "OCLMaterials.hh"
 #include "OCLParameters.hh"
@@ -82,8 +83,33 @@ void  OCLCollimator::CreateSolids()
 	// Collimator
 	//
 
-    // Parameters are now in the header file "Parameters.hh"
+	// //parameters for collimator as a cone as a function of the parameters above
+	// // 1 is the front (towards source), 2 the backside
+	// G4double colRmin1 = crystalOuterR * (distSourceCol / (distSourceCol + 2.*collimatorHalfLength + distColEndPointToRatioCrsytal) );
+	// G4double colRmax1 = crystalOuterR * (distSourceCol / (distSourceCol + 2.*collimatorHalfLength) );
+	// G4double colRmin2 = crystalOuterR * (distSourceCol + 2*collimatorHalfLength)
+	// 						 / ( distSourceCol + 2*collimatorHalfLength + distColEndPointToRatioCrsytal );
+	// G4double colRmax2 = shieldingConeOuterRFront;
 
+
+  //
+	// Collimator and Source
+  //
+
+    const G4double collimatorHalfLength = 1.*cm; // adapt here for different collimator lengths
+
+	// when you change the Collimator length and distance to Source, check that it's still inside the World Volume!
+    //  Keeping the sum of distSourceCol and 2*collimatorHalfLength >= 20 cm.
+	const G4double distSourceCol =   18.*cm; 		// Distance from source to Collimator (beginning)
+
+
+	// Distance from collimator Half point to Crystal Half point (or fraction r in crystal length)
+	const G4double distHalfColHalfCry = collimatorHalfLength + 2.*shieldingHalfThicknessLid + coatingThicknessFront
+									  + coatingPlasticThickness + reflectorThickness + crystalHalfLength;
+	const G4double distSourceHalfCry =  distSourceCol + 2*collimatorHalfLength + distHalfColHalfCry;
+
+	const G4double ratioInCrystal = 0.5;          // range: [0..1], defines point r from where the gammas can hit the crystal
+	const G4double distColEndPointToRatioCrsytal = distHalfColHalfCry - collimatorHalfLength + ( 2*ratioInCrystal - 1.) * crystalHalfLength;
 
 	// Collimator geometry
 
@@ -123,3 +149,4 @@ void OCLCollimator::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bo
 							checkOverlaps);		// checkOverlaps
 
 }
+***/
