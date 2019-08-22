@@ -5,21 +5,28 @@
 #include "G4PVPlacement.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4GDMLParser.hh"
-// #include "G4GDMLReadSetup.hh"
 #include "G4PhysicalVolumeStore.hh"
+#include "G4GenericMessenger.hh"
+
 
 OCLParallelWorldSiRi::OCLParallelWorldSiRi(G4String worldName)
-:G4VUserParallelWorld(worldName)
-{;}
+: G4VUserParallelWorld(worldName),
+  fMessenger(nullptr),
+  fuseThisParallelWorld(true)
+{
+  DefineCommands();
+}
 
 OCLParallelWorldSiRi::~OCLParallelWorldSiRi()
-{;}
+{
+  delete fMessenger;
+;}
 
 void OCLParallelWorldSiRi::Construct()
 {
-  G4bool useThisParallelWorld = true;
+  G4cout << "Use Parallel World CADSiri: " << fuseThisParallelWorld << G4endl;
 
-  if (useThisParallelWorld) {
+  if (fuseThisParallelWorld) {
     // Get mass world
     G4VPhysicalVolume* ghostWorld = GetWorld();
     G4LogicalVolume* worldLogical = ghostWorld->GetLogicalVolume();
@@ -47,4 +54,24 @@ void OCLParallelWorldSiRi::Construct()
                       "ParallelWorld SiRi", worldLogical, 0, 0);
     }
   else {} // Do nothing
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void OCLParallelWorldSiRi::DefineCommands()
+{
+  // Define command directory using generic messenger class
+  fMessenger = new G4GenericMessenger(this,
+                                      "/OCL/det/",
+                                      "Detector control");
+
+  // define the command
+  auto& useCmd
+    = fMessenger->DeclareProperty("useCADSiRi",
+                                  fuseThisParallelWorld,
+                                  "Set usage of CAD Frame");
+  useCmd.SetStates(G4State_PreInit);
+  useCmd.SetParameterName("bool", true);
+  useCmd.SetDefaultValue("true");
+  useCmd.SetGuidance("Due to the useage of the _HP physics list, we have to set this command before initialization");
 }

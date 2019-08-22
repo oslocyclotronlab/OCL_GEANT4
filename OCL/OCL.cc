@@ -1,5 +1,5 @@
 #include "OCLDetectorConstruction.hh"
-#include "OCLParallelWorldTargetWheel.hh"
+#include "OCLParallelWorldTargetsOnWheel.hh"
 #include "OCLParallelWorldSiRi.hh"
 #include "OCLParallelWorldFrameOuter.hh"
 #include "OCLParallelWorldTargetChamber.hh"
@@ -62,22 +62,22 @@ int main(int argc,char** argv)
   //
   OCLDetectorConstruction* massWorld = new OCLDetectorConstruction;
 
-  // parallel world
-  //
-  // note that the order of initialization is important now:
-  //  "If more than one parallel worlds are defined,
-  //  later-defined world comes on top of others."
+  // // parallel world
+  // //
+  // // note that the order of initialization is important now:
+  // //  "If more than one parallel worlds are defined,
+  // //  later-defined world comes on top of others."
   G4String paraWorldName1 = "ParallelWorld Target Chamber";
   massWorld->RegisterParallelWorld(new OCLParallelWorldTargetChamber(paraWorldName1));
   G4String paraWorldName2 = "ParallelWorld Frame Outer";
   massWorld->RegisterParallelWorld(new OCLParallelWorldFrameOuter(paraWorldName2));
   G4String paraWorldName3 = "ParallelWorld SiRi";
   massWorld->RegisterParallelWorld(new OCLParallelWorldSiRi(paraWorldName3));
-  G4String paraWorldName4 = "ParallelWorld Target Wheel";
-  massWorld->RegisterParallelWorld(new OCLParallelWorldTargetWheel(paraWorldName4));
+  G4String paraWorldName4 = "ParallelWorld Targets on Wheel";
+  massWorld->RegisterParallelWorld(new OCLParallelWorldTargetsOnWheel(paraWorldName4));
 
-  // Set mandatory initialization classes
-  // Detector construction
+  // // Set mandatory initialization classes
+  // // Detector construction
   runManager->SetUserInitialization(massWorld);
 
   // Physics list
@@ -111,14 +111,15 @@ int main(int argc,char** argv)
 
   // Initialize G4 kernel
   //
-  runManager->Initialize();
+  // runManager->Initialize();
 
 #ifdef G4VIS_USE
   // Initialize visualization
-  G4VisManager* visManager = new G4VisExecutive;
+  // G4VisManager* visManager = new G4VisExecutive;
   // G4VisExecutive can take a verbosity argument - see /vis/verbose guidance.
-  // G4VisManager* visManager = new G4VisExecutive("Quiet");
+  G4VisManager* visManager = new G4VisExecutive("Quiet");
   visManager->Initialize();
+  visManager->SetVerboseLevel("warnings");
 #endif
 
   // Get the pointer to the User Interface manager

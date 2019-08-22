@@ -10,7 +10,7 @@
 #/run/numberOfThreads 4
 #
 # Initialize kernel
-/run/initialize
+#/run/initialize
 #
 # Visualization setting
 #/control/execute vis.mac

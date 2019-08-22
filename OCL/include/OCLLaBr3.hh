@@ -14,7 +14,8 @@
 #include "G4Box.hh"
 #include "G4Tubs.hh"
 #include "G4Cons.hh"
-#include "G4UnionSolid.hh"
+#include "G4Polycone.hh"
+#include "G4MultiUnion.hh"
 
 #include "G4VisAttributes.hh"
 #include "G4LogicalBorderSurface.hh"
@@ -29,11 +30,12 @@
 // class G4PVPlacement;
 // class G4Box;
 
+class OCLLaBr3Messenger;
 
 class OCLLaBr3 {
 
 public:
-  OCLLaBr3();
+  OCLLaBr3(OCLLaBr3Messenger*);
   ~OCLLaBr3();
 
 public:
@@ -41,9 +43,15 @@ public:
   void SetRotation( G4RotationMatrix );
   void Placement(G4int, G4VPhysicalVolume*, G4bool);
 
+// public:
+  G4double GetCoatingPlasticThickness() { return coatingPlasticThickness; };
+  // void SetCoatingAlThicknessFront(G4double thick);
+  // void SetCoatingAlThickness(G4double thick);
+  // void SetShieldingHalfThicknessLid(G4double thick);
+
 private:
-  G4ThreeVector        translatePos;
-  G4RotationMatrix     rotation;
+  G4ThreeVector        fTranslatePos;
+  G4RotationMatrix     fRotation;
 
   //
   // Elements & Materials
@@ -63,7 +71,7 @@ private:
   G4Material* CeBr3;
   G4Material* MgO;
   G4Material* LaBr3_Ce;
-  G4Material* vacuum;
+  G4Material* Air;
 
   G4Material* Borosilicate;
   G4Material* Bialkali;
@@ -88,14 +96,12 @@ private:
   G4LogicalVolume*  logicOCLDetector;
   G4VPhysicalVolume* physiOCLDetector;
 
-  G4Tubs* solidShieldingMain;
   G4Cons* solidShieldingConical;
-  G4Tubs* solidShieldingLid ;
 
-  G4ThreeVector translationUnion1;
-  G4UnionSolid* unionShielding1  ;
-  G4ThreeVector translationUnion2;
-  G4UnionSolid* unionShielding2;
+  G4Tubs* solidShieldTubs[4];
+
+  G4MultiUnion* unionShielding;
+
   G4LogicalVolume* logicShielding;
   G4ThreeVector positionShielding;
   G4VPhysicalVolume* physiShield;
@@ -120,6 +126,10 @@ private:
   G4LogicalVolume* logicCrystal;
   G4VPhysicalVolume* physiCrystal;
 
+  G4Tubs* solidPMTandAir;
+  G4LogicalVolume* logicPMTandAir;
+  G4ThreeVector positionPMTandAir;
+  G4VPhysicalVolume* physiPMTandAir;
 
   G4Tubs* solidPlexiWindow;
   G4LogicalVolume* logicPlexiWindow;
@@ -135,6 +145,11 @@ private:
   G4Tubs* solidCathode;
   G4LogicalVolume* logicCathode;
   G4VPhysicalVolume* physiCathode;
+
+  G4ThreeVector positionPMT;
+  G4Polycone* solidPMT;
+  G4LogicalVolume* logicPMT;
+  G4VPhysicalVolume* physiPMT;
 
   //------------------------------------------------------
   // Surfaces and boundary processes
@@ -164,8 +179,77 @@ private:
   G4VisAttributes* VisAtt6;
   G4VisAttributes* VisAtt7;
 
+
+  //
+  // Dimensions
+  //
+
+  G4double startPhi;
+  G4double deltaPhi;
+
+  G4double crystalOuterR;
+  G4double crystalInnerR;
+  G4double crystalHalfLength;
+
+  // Some reflector like MgO
+  G4double reflectorThickness;
+  G4double reflectorHalfLength;
+  G4double reflectorInnerR;
+  G4double reflectorOuterR;
+
+  // Alumium(?) coating
+  G4double coatingAlThickness;
+  G4double coatingAlThicknessFront;
+  G4double coatingOuterR;
+
+  // in between reflector and coating, there will be some plastic
+  G4double coatingPlasticThickness;
+  G4double coatingHalfLength;
+
+  // G4double shieldingThickness1;
+  // G4double shieldingThickness2;
+  // G4double shieldingThickness3;
+
+  G4double dShieldTubs[3];
+  G4double rOuters[3];
+
+  G4double shieldingHalfThicknessLid;
+  G4double shieldingInnerR;
+  G4double shieldingOuterR;
+
+  //in the front, the shielding tube diameter is reduces. It's later modeled by a conical section
+  G4double shieldingConeHalfLength;
+  G4double shieldingConeOuterRFront;
+  G4double shieldingConeOuterRBack;
+  G4double shieldingHalfLength;
+
+  G4double plexiGlasWindowOuterR;
+  G4double plexiGlasWindowHalfLength;
+
+  // PMT
+  G4double PMTWindowHalfLength;
+  G4double PMTWindowRadius;
+  G4double cathodeHalfLength;
+  G4double cathodeRadius;
+
+  G4double PMTStartRadius;
+  G4double PMTMidtRadius;
+  G4double PMTEndRadius;
+  G4double PMTMidtZ;
+  G4double PMTEndZ;
+  G4double PMTHalfLength;
+
+  // Whole detector incl. PMT (-> Logical unit)
+  G4double detectorHalfinclPMT;
+  G4double PMTandAirHalfLength;
+
 private:
+  void GetMaterials();
   void CreateSolids();
+  void SetOpticalProperties();
+  void CalculateGeometryParameters();
+
+  // OCLLaBr3Messenger* fMessenger;
   // void MakeMaterials();
 
 };
