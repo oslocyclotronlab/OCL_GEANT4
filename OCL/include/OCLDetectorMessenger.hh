@@ -50,7 +50,8 @@ class OCLDetectorMessenger: public G4UImessenger
 
   private:
     OCLDetectorConstruction* fDetector;
-    G4UIdirectory* fDirectory;
+    G4UIdirectory* fDetDirectory;
+    G4UIdirectory* fLaBrDirectory;
 
     G4UIcommand*                 fLaBrDistCmd;
     G4UIcommand*                 fLaBrUseCmd;
