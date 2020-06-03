@@ -4,16 +4,23 @@ Geant4 Simulation of OSCAR @ OCL
 [![DOI](https://zenodo.org/badge/44380221.svg)](https://zenodo.org/badge/latestdoi/44380221)
 (DOI for the latest release. Earlier verions can be cited by a specific "version" DOI, if necessary)
 
+Note that the CAD geometry files (see more information below) are stored with [git lfs](https://git-lfs.github.com/). If you don't have git lfs, you will receive an [error like this](https://github.com/oslocyclotronlab/OCL_GEANT4/issues/21).
+
  This simluation implements OSCARS LaBr3:Ce Scint. Detectors  
  The energy spectra are saved in a root tree. 
 	
  # 1- GEOMETRY DEFINITION
 	
    The general geometry is constructed in the DetectorConstruction class, with 
-   a helper class for each element (LaBr3s, Frame, SiRi ...)
+   a helper class for each element (LaBr3s, Frame, SiRi ...). The geoetry is either
+   implemented as Constructed Solids Geometry (CSG), or from the CAD drawings via
+   GDML files. The CSG implementation is less precise, but much faster.
 
-   You can chose which detectors should be present by setting them to TRUE/FALSE
-   in the DetectorConstruction class 
+   You can chose which elements should be present by following commands in the macro:
+
+   Further seetings are available to customize the detector geometry, like
+   `/OCL/det/useCADFrameOuter true` or `/OCL/det/useCADFrameOuter false` to use/exclude
+   the CAD version of the "outer" frame. More commands can be found [here](OCL_macro_cmd.txt).
 
    The LaBr3 setup consists of a cylinder containing the LaBr3 crystal, and 
    outer ring with shielding, a lit in front side of the detector and 
