@@ -53,9 +53,9 @@ OCLDetectorMessenger::OCLDetectorMessenger(OCLDetectorConstruction* Det)
    fUseCSGSiRiCmd(0),
    fUseCSGNiffCmd(0)
 {
-  fDetDirectory = new G4UIdirectory("/OCL/det/oscar/");
+  fDetDirectory = new G4UIdirectory("/OCL/det/");
   fDetDirectory->SetGuidance("UI commands of OCL detector (geometry)");
-  fLaBrDirectory = new G4UIdirectory("/OCL/det/oscar/oscar");
+  fLaBrDirectory = new G4UIdirectory("/OCL/det/oscar/");
   fLaBrDirectory->SetGuidance("UI commands of OSCAR");
 
   fLaBrDistCmd = new G4UIcommand("/OCL/det/oscar/setLaBrDist",this);
