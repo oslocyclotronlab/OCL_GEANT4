@@ -1,0 +1,258 @@
+# output from
+# /comand/manual /OCL
+
+Command directory path : /OCL/
+
+
+Guidance :
+Commands for OCL
+
+ Sub-directories :
+   /OCL/det/   UI commands of OCL detector (geometry)
+ Commands :
+   setOutName * Select output root (directory and) file name.
+
+
+Command /OCL/setOutName
+Guidance :
+Select output root (directory and) file name.
+
+Parameter : choice
+ Parameter type  : s
+ Omittable       : False
+
+Command directory path : /OCL/det/
+
+
+Guidance :
+UI commands of OCL detector (geometry)
+
+ Sub-directories :
+   /OCL/det/oscar/   UI commands of OSCAR
+ Commands :
+   useCSGOldTC * Set usage of old (CSG) Target Chamber
+   useCSGOldTarget * Set usage of CAD Target
+   useCSGRadSource * Set usage of CSG radioactive calibration source (rectangular)
+   useCSGSiRi * Set usage ofold (CSG) SiRi
+   setCoatThickFront * Set LaBr3 (aluminum) encapsulation thickness in the front.
+   setCoatThickRad * Set LaBr3 /aluminum/ encapsulation radial thickness.
+   setLaBrRefThick * Set LaBr3 reflector thickness.
+   setLaBrLidHalfThick * Set LaBr3 /half/-thickness of the lid of the shielding
+   useCADTargetChamber * Set usage of CAD Target Chamber
+   useCADFrameOuter * Set usage of CAD Frame
+   useCADSiRi * Set usage of CAD Frame
+   useCADTargetsOnWheel * Set usage of CAD Target Wheel
+
+
+Command /OCL/det/useCSGOldTC
+Guidance :
+Set usage of old (CSG) Target Chamber
+Note: Due to the useage of the _HP physics list, we have to set this command before initialization
+
+Parameter : use
+ Parameter type  : b
+ Omittable       : True
+ Default value   : 1
+
+
+
+Command /OCL/det/useCSGOldTarget
+Guidance :
+Set usage of CAD Target
+Note: Due to the useage of the _HP physics list, we have to set this command before initialization
+
+Parameter : use
+ Parameter type  : b
+ Omittable       : True
+ Default value   : 1
+
+
+
+Command /OCL/det/useCSGRadSource
+Guidance :
+Set usage of CSG radioactive calibration source (rectangular)
+Note: Due to the useage of the _HP physics list, we have to set this command before initialization
+
+Parameter : use
+ Parameter type  : b
+ Omittable       : True
+ Default value   : 1
+
+
+
+Command /OCL/det/useCSGSiRi
+Guidance :
+Set usage ofold (CSG) SiRi
+Note: Due to the useage of the _HP physics list, we have to set this command before initialization
+
+Parameter : use
+ Parameter type  : b
+ Omittable       : True
+ Default value   : 1
+
+
+
+Command /OCL/det/setCoatThickFront
+Guidance :
+Set LaBr3 (aluminum) encapsulation thickness in the front.
+ Range of parameters : t>=0
+
+Parameter : t
+ Parameter type  : d
+ Omittable       : False
+
+Parameter : Unit
+ Parameter type  : s
+ Omittable       : False
+ Candidates      : pc km m cm mm um nm Ang fm parsec kilometer meter centimeter millimeter micrometer nanometer angstrom fermi
+
+
+
+Command /OCL/det/setCoatThickRad
+Guidance :
+Set LaBr3 /aluminum/ encapsulation radial thickness.
+Note: There will be a plexi glass layer to fill up the difference
+ Range of parameters : t>=0 && t<=36.5
+
+Parameter : t
+ Parameter type  : d
+ Omittable       : False
+
+Parameter : Unit
+ Parameter type  : s
+ Omittable       : False
+ Candidates      : pc km m cm mm um nm Ang fm parsec kilometer meter centimeter millimeter micrometer nanometer angstrom fermi
+
+
+
+Command /OCL/det/setLaBrRefThick
+Guidance :
+Set LaBr3 reflector thickness.
+ Range of parameters : t>=0
+
+Parameter : t
+ Parameter type  : d
+ Omittable       : False
+
+Parameter : Unit
+ Parameter type  : s
+ Omittable       : False
+ Candidates      : pc km m cm mm um nm Ang fm parsec kilometer meter centimeter millimeter micrometer nanometer angstrom fermi
+
+
+
+Command /OCL/det/setLaBrLidHalfThick
+Guidance :
+Set LaBr3 /half/-thickness of the lid of the shielding
+ Range of parameters : t>=0
+
+Parameter : t
+ Parameter type  : d
+ Omittable       : False
+
+Parameter : Unit
+ Parameter type  : s
+ Omittable       : False
+ Candidates      : pc km m cm mm um nm Ang fm parsec kilometer meter centimeter millimeter micrometer nanometer angstrom fermi
+
+
+
+Command /OCL/det/useCADTargetChamber
+Guidance :
+Set usage of CAD Target Chamber
+Due to the useage of the _HP physics list, we have to set this command before initialization
+
+Parameter : bool
+ Parameter type  : b
+ Omittable       : True
+ Default value   : true
+
+
+
+Command /OCL/det/useCADFrameOuter
+Guidance :
+Set usage of CAD Frame
+Due to the useage of the _HP physics list, we have to set this command before initialization
+
+Parameter : bool
+ Parameter type  : b
+ Omittable       : True
+ Default value   : true
+
+
+
+Command /OCL/det/useCADSiRi
+Guidance :
+Set usage of CAD Frame
+Due to the useage of the _HP physics list, we have to set this command before initialization
+
+Parameter : bool
+ Parameter type  : b
+ Omittable       : True
+ Default value   : true
+
+
+
+Command /OCL/det/useCADTargetsOnWheel
+Guidance :
+Set usage of CAD Target Wheel
+Due to the useage of the _HP physics list, we have to set this command before initialization
+
+Parameter : bool
+ Parameter type  : b
+ Omittable       : True
+ Default value   : true
+
+Command directory path : /OCL/det/oscar/
+
+
+Guidance :
+UI commands of OSCAR
+
+ Sub-directories :
+ Commands :
+   setLaBrDist * Set source/origen to detector housing face
+   setLaBrUse * Set usage of detector number N
+
+
+Command /OCL/det/oscar/setLaBrDist
+Guidance :
+Set source/origen to detector housing face
+[usage] /OCL/det/oscar/setLaBrDist N distance
+        N:(int) Internal detector (face) number
+        distance:(double) Distance (in cm)
+Note:
+- N=0 and N=32 are the beamline facets
+- No geometry check is performed, so you're responsible to check
+  that there will not be any geometry overlap
+
+Parameter : N
+ Parameter type  : i
+ Omittable       : False
+ Parameter range : N>=1&&N<=30
+
+Parameter : distance
+ Parameter type  : d
+ Omittable       : False
+ Parameter range : distance>=12
+
+
+
+Command /OCL/det/oscar/setLaBrUse
+Guidance :
+Set usage of detector number N
+[usage] /OCL/det/oscar/setLaBrUse N bool
+        N:(int) Internal detector (face) number
+        bool:(double) True or false
+Note:
+- N=0 and N=32 are the beamline facets
+
+Parameter : N
+ Parameter type  : i
+ Omittable       : False
+ Parameter range : N>=1&&N<=30
+
+Parameter : bool
+ Parameter type  : b
+ Omittable       : False
+
