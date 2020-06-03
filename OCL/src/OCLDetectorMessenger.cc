@@ -43,7 +43,8 @@
 OCLDetectorMessenger::OCLDetectorMessenger(OCLDetectorConstruction* Det)
  : G4UImessenger(),
    fDetector(Det),
-   fDirectory(0),
+   fDetDirectory(0),
+   fLaBrDirectory(0),
    fLaBrDistCmd(0),
    fLaBrUseCmd(0),
    fUseCSGOldTCCmd(0),
@@ -52,12 +53,14 @@ OCLDetectorMessenger::OCLDetectorMessenger(OCLDetectorConstruction* Det)
    fUseCSGSiRiCmd(0),
    fUseCSGNiffCmd(0)
 {
-  fDirectory = new G4UIdirectory("/OCL/det/");
-  fDirectory->SetGuidance("UI commands of OCL (OSCAR)");
+  fDetDirectory = new G4UIdirectory("/OCL/det/oscar/");
+  fDetDirectory->SetGuidance("UI commands of OCL detector (geometry)");
+  fLaBrDirectory = new G4UIdirectory("/OCL/det/oscar/oscar");
+  fLaBrDirectory->SetGuidance("UI commands of OSCAR");
 
-  fLaBrDistCmd = new G4UIcommand("/OCL/det/setLaBrDist",this);
+  fLaBrDistCmd = new G4UIcommand("/OCL/det/oscar/setLaBrDist",this);
   fLaBrDistCmd->SetGuidance("Set source/origen to detector housing face");
-  fLaBrDistCmd->SetGuidance("[usage] /OCL/det/setLaBrDist N distance");
+  fLaBrDistCmd->SetGuidance("[usage] /OCL/det/oscar/setLaBrDist N distance");
   fLaBrDistCmd->SetGuidance("        N:(int) Internal detector (face) number");
   fLaBrDistCmd->SetGuidance("        distance:(double) Distance (in cm)");
   fLaBrDistCmd->SetGuidance("Note:");
@@ -73,9 +76,9 @@ OCLDetectorMessenger::OCLDetectorMessenger(OCLDetectorConstruction* Det)
   fLaBrDistCmd->SetParameter(paramDist);
   fLaBrDistCmd->AvailableForStates(G4State_PreInit);
 
-  fLaBrUseCmd = new G4UIcommand("/OCL/det/setLaBrUse",this);
+  fLaBrUseCmd = new G4UIcommand("/OCL/det/oscar/setLaBrUse",this);
   fLaBrUseCmd->SetGuidance("Set usage of detector number N");
-  fLaBrUseCmd->SetGuidance("[usage] /OCL/det/setLaBrUse N bool");
+  fLaBrUseCmd->SetGuidance("[usage] /OCL/det/oscar/setLaBrUse N bool");
   fLaBrUseCmd->SetGuidance("        N:(int) Internal detector (face) number");
   fLaBrUseCmd->SetGuidance("        bool:(double) True or false");
   fLaBrUseCmd->SetGuidance("Note:");
@@ -116,7 +119,7 @@ OCLDetectorMessenger::OCLDetectorMessenger(OCLDetectorConstruction* Det)
   fUseCSGSiRiCmd->SetParameterName("use",true);
   fUseCSGSiRiCmd->SetDefaultValue(true);
 
-  fUseCSGNiffCmd = new G4UIcmdWithABool("OCL/det/useCSGNiff",this);
+  fUseCSGNiffCmd = new G4UIcmdWithABool("OCL/useCSGNiff",this);
   fUseCSGNiffCmd->SetGuidance("Set usage ofCSG NIFF (PPACS)");
   fUseCSGNiffCmd->SetGuidance("Note: Due to the useage of the _HP physics list, "
                                "we have to set this command before initialization");
@@ -129,7 +132,8 @@ OCLDetectorMessenger::OCLDetectorMessenger(OCLDetectorConstruction* Det)
 
 OCLDetectorMessenger::~OCLDetectorMessenger()
 {
-  delete fDirectory;
+  delete fDetDirectory;
+  delete fLaBrDirectory;
   delete fLaBrDistCmd;
   delete fLaBrUseCmd;
   delete fUseCSGOldTCCmd;

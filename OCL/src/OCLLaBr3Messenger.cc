@@ -56,7 +56,7 @@ OCLLaBr3Messenger::OCLLaBr3Messenger()
    fShieldingHalfThicknessLid(defaultshieldingHalfThicknessLid)
 
 {
-  fDirectory = new G4UIdirectory("/OCL/det/");
+  fDirectory = new G4UIdirectory("/OCL/det/oscar");
   fDirectory->SetGuidance("UI commands of OCL (OSCAR)");
 
   fCoatingAlThicknessFrontCmd = new G4UIcmdWithADoubleAndUnit("/OCL/det/setCoatThickFront",this);

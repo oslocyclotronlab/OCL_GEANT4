@@ -69,7 +69,7 @@ void OCLParallelWorldTargetChamber::DefineCommands()
   // Define command directory using generic messenger class
   fMessenger = new G4GenericMessenger(this,
                                       "/OCL/det/",
-                                      "Detector control");
+                                      "Detector (geometry) control");
 
   // define the command
   auto& useCmd
