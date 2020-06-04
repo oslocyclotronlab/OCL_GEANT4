@@ -13,4 +13,6 @@
 #/run/initialize
 #
 # Visualization setting
-/control/execute vis.mac
+# need to move this after initialization
+# and initialization has to come later due to the macro choise of the geometry
+#/control/execute vis.mac
