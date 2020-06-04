@@ -1,4 +1,6 @@
+# execute this macro after running ./OCL
+# /control/execute example_vis.mac
 /control/execute setup_rad_source.mac
 /run/initialize
-#/control/execute vis.mac
-/control/execute run1.mac
+/control/execute vis.mac
+#/control/execute run1.mac
