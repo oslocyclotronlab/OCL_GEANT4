@@ -59,26 +59,26 @@ OCLLaBr3Messenger::OCLLaBr3Messenger()
   fDirectory = new G4UIdirectory("/OCL/det/oscar/");
   fDirectory->SetGuidance("UI commands of OCL (OSCAR)");
 
-  fCoatingAlThicknessFrontCmd = new G4UIcmdWithADoubleAndUnit("/OCL/det/setCoatThickFront",this);
+  fCoatingAlThicknessFrontCmd = new G4UIcmdWithADoubleAndUnit("/OCL/det/oscar/setCoatThickFront",this);
   fCoatingAlThicknessFrontCmd->SetGuidance("Set LaBr3 (aluminum) encapsulation thickness in the front.");
   fCoatingAlThicknessFrontCmd->SetParameterName("t",false);
   fCoatingAlThicknessFrontCmd->SetUnitCategory("Length");
   fCoatingAlThicknessFrontCmd->SetRange("t>=0");
 
-  fCoatingAlThicknessCmd = new G4UIcmdWithADoubleAndUnit("/OCL/det/setCoatThickRad",this);
+  fCoatingAlThicknessCmd = new G4UIcmdWithADoubleAndUnit("/OCL/det/oscar/setCoatThickRad",this);
   fCoatingAlThicknessCmd->SetGuidance("Set LaBr3 /aluminum/ encapsulation radial thickness.");
   fCoatingAlThicknessCmd->SetGuidance("Note: There will be a plexi glass layer to fill up the difference");
   fCoatingAlThicknessCmd->SetParameterName("t",false);
   fCoatingAlThicknessCmd->SetUnitCategory("Length");
   fCoatingAlThicknessCmd->SetRange("t>=0 && t<=36.5"); // 1mm reflector + 2.55mm plastic + 1 mm Al
 
-  fReflectorThicknessCmd = new G4UIcmdWithADoubleAndUnit("/OCL/det/setLaBrRefThick",this);
+  fReflectorThicknessCmd = new G4UIcmdWithADoubleAndUnit("/OCL/det/oscar/setLaBrRefThick",this);
   fReflectorThicknessCmd->SetGuidance("Set LaBr3 reflector thickness.");
   fReflectorThicknessCmd->SetParameterName("t",false);
   fReflectorThicknessCmd->SetUnitCategory("Length");
   fReflectorThicknessCmd->SetRange("t>=0");
 
-  fShieldingHalfThicknessLidCmd = new G4UIcmdWithADoubleAndUnit("/OCL/det/setLaBrLidHalfThick",this);
+  fShieldingHalfThicknessLidCmd = new G4UIcmdWithADoubleAndUnit("/OCL/det/oscar/setLaBrLidHalfThick",this);
   fShieldingHalfThicknessLidCmd->SetGuidance("Set LaBr3 /half/-thickness of the lid of the shielding");
   fShieldingHalfThicknessLidCmd->SetParameterName("t",false);
   fShieldingHalfThicknessLidCmd->SetUnitCategory("Length");
