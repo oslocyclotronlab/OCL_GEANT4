@@ -1,0 +1,92 @@
+<html><head><title>Commands in /OCL/det/oscar/</title></head>
+<body bgcolor="#ffffff"><h2>/OCL/det/oscar/</h2><p>
+UI commands of OSCAR<br>
+<p><hr><p>
+<h2>Sub-directories : </h2><dl>
+</dl><p><hr><p>
+<h2>Commands : </h2><dl>
+<p><br><p><dt><b>setLaBrDist [<i>N</i>] [<i>distance</i>]</b>
+<p><dd>
+Set source/origen to detector housing face<br>
+[usage] /OCL/det/oscar/setLaBrDist N distance<br>
+        N:(int) Internal detector (face) number<br>
+        distance:(double) Distance (in cm)<br>
+Note:<br>
+- N=0 and N=32 are the beamline facets<br>
+- No geometry check is performed, so you're responsible to check <br>
+  that there will not be any geometry overlap<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+<p><dd>Parameters<table border=1>
+<tr><td>N
+<td>type i
+<td><td>Parameter range : N&gt;=1&amp;&amp;N&lt;=30
+<tr><td>distance
+<td>type d
+<td><td>Parameter range : distance&gt;=12
+</table>
+<p><br><p><dt><b>setLaBrUse [<i>N</i>] [<i>bool</i>]</b>
+<p><dd>
+Set usage of detector number N<br>
+[usage] /OCL/det/oscar/setLaBrUse N bool<br>
+        N:(int) Internal detector (face) number<br>
+        bool:(double) True or false<br>
+Note:<br>
+- N=0 and N=32 are the beamline facets<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+<p><dd>Parameters<table border=1>
+<tr><td>N
+<td>type i
+<td><td>Parameter range : N&gt;=1&amp;&amp;N&lt;=30
+<tr><td>bool
+<td>type b
+<td><td></table>
+<p><br><p><dt><b>setCoatThickFront [<i>t</i>] [<i>Unit</i>]</b>
+<p><dd>
+Set LaBr3 (aluminum) encapsulation thickness in the front.<br>
+<p><dd>Range : t&gt;=0
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>t
+<td>type d
+<td><td><tr><td>Unit
+<td>type s
+<td><td>Parameter candidates : pc km m cm mm um nm Ang fm parsec kilometer meter centimeter millimeter micrometer nanometer angstrom fermi
+</table>
+<p><br><p><dt><b>setCoatThickRad [<i>t</i>] [<i>Unit</i>]</b>
+<p><dd>
+Set LaBr3 /aluminum/ encapsulation radial thickness.<br>
+Note: There will be a plexi glass layer to fill up the difference<br>
+<p><dd>Range : t&gt;=0 &amp;&amp; t&lt;=36.5
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>t
+<td>type d
+<td><td><tr><td>Unit
+<td>type s
+<td><td>Parameter candidates : pc km m cm mm um nm Ang fm parsec kilometer meter centimeter millimeter micrometer nanometer angstrom fermi
+</table>
+<p><br><p><dt><b>setLaBrRefThick [<i>t</i>] [<i>Unit</i>]</b>
+<p><dd>
+Set LaBr3 reflector thickness.<br>
+<p><dd>Range : t&gt;=0
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>t
+<td>type d
+<td><td><tr><td>Unit
+<td>type s
+<td><td>Parameter candidates : pc km m cm mm um nm Ang fm parsec kilometer meter centimeter millimeter micrometer nanometer angstrom fermi
+</table>
+<p><br><p><dt><b>setLaBrLidHalfThick [<i>t</i>] [<i>Unit</i>]</b>
+<p><dd>
+Set LaBr3 /half/-thickness of the lid of the shielding<br>
+<p><dd>Range : t&gt;=0
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>t
+<td>type d
+<td><td><tr><td>Unit
+<td>type s
+<td><td>Parameter candidates : pc km m cm mm um nm Ang fm parsec kilometer meter centimeter millimeter micrometer nanometer angstrom fermi
+</table>
+</dl></body></html>

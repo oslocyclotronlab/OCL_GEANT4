@@ -9,7 +9,7 @@ Note that the CAD geometry files (see more information below) are stored with [g
  This simluation implements OSCARS LaBr3:Ce Scint. Detectors  
  The energy spectra are saved in a root tree. 
 	
- # 1- GEOMETRY DEFINITION
+## 1- GEOMETRY DEFINITION
 	
    The general geometry is constructed in the DetectorConstruction class, with 
    a helper class for each element (LaBr3s, Frame, SiRi ...). The geoetry is either
@@ -20,7 +20,7 @@ Note that the CAD geometry files (see more information below) are stored with [g
 
    Further seetings are available to customize the detector geometry, like
    `/OCL/det/useCADFrameOuter true` or `/OCL/det/useCADFrameOuter false` to use/exclude
-   the CAD version of the "outer" frame. More commands can be found [here](OCL_macro_cmd.txt).
+   the CAD version of the "outer" frame. More commands can be found [here](https://htmlpreview.github.io/?https://github.com/oslocyclotronlab/OCL_GEANT4/blob/master/docs/_OCL_.html).
 
    The LaBr3 setup consists of a cylinder containing the LaBr3 crystal, and 
    outer ring with shielding, a lit in front side of the detector and 
@@ -45,7 +45,7 @@ Note that the CAD geometry files (see more information below) are stored with [g
    Most for the detector geometry definition have been moved 
    as /const/ values to Parameters.hh.
 		
-# 2- PHYSICS LIST
+## 2- PHYSICS LIST
  
   We now use QGSP_BIC_HP, such that the simulation can eg be used for neutrons 
   without modifications. To get scintillation processes, you can eg use the 
@@ -57,13 +57,13 @@ Note that the CAD geometry files (see more information below) are stored with [g
   -- 12/10/15 One should review/set the ScintillationExcitationRatio, the ratio for the 
   fast&slow excitation ratio.
  	
-# 3- AN EVENT : THE PRIMARY GENERATOR
+## 3- AN EVENT : THE PRIMARY GENERATOR
  
   The Primary Generator is defined in the PrimaryGeneratorAction  via 
   the G4GeneralParticleSource. The type of the particle and its energy 
   (and possible biases/shape...) are via macro.
         
-# 4- DETECTOR RESPONSE
+## 4- DETECTOR RESPONSE
 
    The detector response is simulated via UserSteppingAction in the 
    SteppingAction class. More precisely, the number and time of absorbed photons 
