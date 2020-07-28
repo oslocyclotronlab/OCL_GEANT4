@@ -6,7 +6,7 @@ Geant4 Simulation of OSCAR @ OCL
 
 Note that the CAD geometry files (see more information below) are stored with [git lfs](https://git-lfs.github.com/). If you don't have git lfs, you will receive an [error like this](https://github.com/oslocyclotronlab/OCL_GEANT4/issues/21).
 
- This simluation implements OSCARS LaBr3:Ce Scint. Detectors  
+ This simluation implements OSCARS LaBr3:Ce Scintillator detectors  
  The energy spectra are saved in a root tree. 
 	
 ## 1- GEOMETRY DEFINITION
@@ -23,27 +23,21 @@ Note that the CAD geometry files (see more information below) are stored with [g
    the CAD version of the "outer" frame. More commands can be found [here](https://htmlpreview.github.io/?https://github.com/oslocyclotronlab/OCL_GEANT4/blob/master/docs/_OCL_.html).
 
    The LaBr3 setup consists of a cylinder containing the LaBr3 crystal, and 
-   outer ring with shielding, a lit in front side of the detector and 
-   if chosen, a collimator. The shielding is composed as a boolean solid to
+   outer ring with shielding, a lit in front side of the detector.
+   The shielding is composed as a boolean solid to
    include the conical front. The detector os optically coupled to 
    a bialkali photocathode through a Borosilicate PMT Window.
 
-   -- 12/10/15 Currently we assumed a MgO reflector in accordance with 
-   the workshop example.
-   
-   The collimator currently designed such that it aims to stop gammas that reach
-   less then the half length of the detector. This is easily changeable by a 
-   parameter called "ratioInCrystal".
-
    The dimensions and materials have been chosen as close as possible to our 
-   set-up. Where no manufacturer information was available, we used assumptions 
+   set-up, with additional information from i.a. Sain-Gobain. 
+   Where no manufacturer information was available, we used assumptions 
    based e.g. other studies. The is an arbitrary mix of materials created with 
    the NIST manager and by hand. Additionally, we defined the optical properties
    and Surfaces and boundary processes for the Scintillation process.
    (only if activated in physics list)
    
-   Most for the detector geometry definition have been moved 
-   as /const/ values to Parameters.hh.
+   Note that the beam line is not set to Vacuum as this would complicate the geometry definition
+   at the current stage without an obvious benefits for our accurac level.
 		
 ## 2- PHYSICS LIST
  
@@ -51,7 +45,7 @@ Note that the CAD geometry files (see more information below) are stored with [g
   without modifications. To get scintillation processes, you can eg use the 
   physics described in the src/PhysicsList file.
  
-  If activating G4OpticalPhysics:
+  If activating G4OpticalPhysics [mostly for visualisation purposes]:
   To speed-up the simulations one can either set the ScinillationYieldFactor to a low value
   (for example 0.0008) or uncomment the scintillation physics part totally.
   -- 12/10/15 One should review/set the ScintillationExcitationRatio, the ratio for the 
@@ -83,9 +77,7 @@ Note that the CAD geometry files (see more information below) are stored with [g
    and summed over the whole run (see EventAction::EndOfevent()).
    
    The ntuples are exported as a tree to root files to the data folder. 
-   To ensure that this works, one has to have a data folder on the same level 
-   as the build folder! Currently one has to rename the file after each run 
-   to save the results.
+   The default output file and path can be changed via the macros.
    
    
 ___
@@ -144,7 +136,7 @@ ___
    according to the Geant4 configuration or it can be done explicitly via 
    the third argument of the G4UIExecutive constructor (see exampleB4a.cc). 
  
-### C- HOW TO RUN the simulations
+### C- HOW TO RUN the simulations (outdated?)
 
     - Execute OCL in the 'interactive mode' with visualization:
         % ./OCL
@@ -166,7 +158,7 @@ ___
    ///////////////////////////////////////////
 
 
-### Obtaining the response functions
+### Obtaining the response functions (outdated?)
 - Run the simulation for a grid of gamma-ray energies, eg with `runsims.sh`.
 - Analyse the histograms in the data directory with `GetPeaks.dat`. This will create a summary file, `Peaks.dat` and spectra of the compton/rest for unfolding with mama.
 - Smooth the spectra for mama, running the `RunSmooth.py` script.

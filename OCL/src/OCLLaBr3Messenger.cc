@@ -49,9 +49,9 @@ OCLLaBr3Messenger::OCLLaBr3Messenger()
    fCoatingAlThicknessCmd(0),
    fReflectorThicknessCmd(0),
    fShieldingHalfThicknessLidCmd(0),
-   fReflectorThickness(1.*mm),
-   fCoatingAlThicknessFront(2.*mm),
-   fCoatingAlThickness(1.*mm),
+   fReflectorThickness(2.2*mm),
+   fCoatingAlThicknessFront(0.8*mm),
+   fCoatingAlThickness(0.8*mm),
    fShieldingHalfThicknessLid(defaultshieldingHalfThicknessLid)
 
 {
