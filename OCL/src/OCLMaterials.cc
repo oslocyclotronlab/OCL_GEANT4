@@ -50,6 +50,27 @@ void OCLMaterials::CreateMaterials() {
   G4Element* He = nist->FindOrBuildElement("He");
   G4Element* Ca = nist->FindOrBuildElement("C");
 
+  G4Element* Al = nist->FindOrBuildElement("Al");
+  G4Element* Si = nist->FindOrBuildElement("Si");
+  G4Element* Fe = nist->FindOrBuildElement("Fe");
+  G4Element* Cu = nist->FindOrBuildElement("Cu");
+  G4Element* Mn = nist->FindOrBuildElement("Mn");
+  G4Element* Cr = nist->FindOrBuildElement("Cr");
+  // G4Element* Cr = nist->FindOrBuildElement("Cr");
+  G4Element* Zn = nist->FindOrBuildElement("Zn");
+  G4Element* Ti = nist->FindOrBuildElement("Ti");
+
+  G4Material* Al_6061 = new G4Material("Al_6061", 2.70*g/cm3, 9);
+  Al_6061->AddElement(Si,  0.6*perCent);  //0.6
+  Al_6061->AddElement(Fe,  0.5*perCent);  //1.1
+  Al_6061->AddElement(Cu,  0.3*perCent);  //1.4
+  Al_6061->AddElement(Mn,  0.1*perCent);  //1.5
+  Al_6061->AddElement(Mg,  1.0*perCent);  //2.5
+  Al_6061->AddElement(Cr,  0.2*perCent);  //2.7
+  Al_6061->AddElement(Zn,  0.2*perCent);  //2.9
+  Al_6061->AddElement(Ti,  0.1*perCent);  //3.0
+  Al_6061->AddElement(Al, 97.0*perCent);  //100
+
   //
   // define materials from elements.
   //

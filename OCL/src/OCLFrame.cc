@@ -50,7 +50,7 @@ OCLFrame::OCLFrame()
 	// Define Elements
 	//
 
-	Aluminium  = fMat->GetMaterial("G4_Al");
+	Aluminium  = fMat->GetMaterial("Al_6061");
 
 	//
 	// Set all Placement Parameters
