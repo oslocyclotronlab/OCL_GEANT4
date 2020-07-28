@@ -27,7 +27,6 @@
 //
 
 #include "OCLLaBr3Messenger.hh"
-#include "OCLParameters.hh"
 
 #include "G4Material.hh"
 #include "G4SystemOfUnits.hh"

@@ -27,7 +27,6 @@
 #include "OCLLaBr3.hh"
 #include "OCLLaBr3Messenger.hh"
 #include "OCLMaterials.hh"
-#include "OCLParameters.hh"
 
 #include "G4ExceptionSeverity.hh"
 #include "G4NistManager.hh"

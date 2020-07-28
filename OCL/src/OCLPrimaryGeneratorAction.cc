@@ -4,14 +4,13 @@
 //
 // Based on the /gps method. This simplifies life, but...
 // The OCLPrimaryGeneratorAction must be instantiated after initialization of the
-// runManager in the main.cc:  
+// runManager in the main.cc:
 //                          runManager->Initialize();
 //                          runManager->SetUserAction(new OCLPrimaryGeneratorAction);
 //
 ///////////////////////////////////////////////////////////////////////////////////////
 
 #include "OCLPrimaryGeneratorAction.hh"
-#include "OCLParameters.hh"
 
 #include "G4Event.hh"
 #include "G4ParticleTable.hh"
@@ -23,13 +22,13 @@
 #include "G4ios.hh"
 #include "fstream"
 #include "iomanip"
-#include "G4GeneralParticleSource.hh" 
+#include "G4GeneralParticleSource.hh"
 
 OCLPrimaryGeneratorAction::OCLPrimaryGeneratorAction()
 {
-	
-	// Default values  
-	
+
+	// Default values
+
 	particleGun = new G4GeneralParticleSource();
 	particleGun->SetCurrentSourceIntensity (1);
 	particleGun->SetParticlePosition(G4ThreeVector());
@@ -48,6 +47,6 @@ OCLPrimaryGeneratorAction::~OCLPrimaryGeneratorAction()
 void OCLPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
 	//create vertex
-	
+
 	particleGun->GeneratePrimaryVertex(anEvent);
 }

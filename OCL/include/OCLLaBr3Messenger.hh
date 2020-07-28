@@ -30,12 +30,15 @@
 
 #include "globals.hh"
 #include "G4UImessenger.hh"
+#include "G4SystemOfUnits.hh"
 
 class G4UIdirectory;
 class G4UIcmdWithAString;
 class G4UIcmdWithABool;
 class G4UIcmdWithoutParameter;
 class G4UIcmdWithADoubleAndUnit;
+
+const G4double defaultshieldingHalfThicknessLid = 2.*mm/2.;
 
 class OCLLaBr3Messenger: public G4UImessenger
 {

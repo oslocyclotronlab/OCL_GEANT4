@@ -99,7 +99,7 @@ public :
 #endif
 
 #ifdef AnalyseSims_cxx
-AnalyseSims::AnalyseSims(TTree *tree) : fChain(0) 
+AnalyseSims::AnalyseSims(TTree *tree) : fChain(0)
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.

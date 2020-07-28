@@ -9,7 +9,7 @@ def append_spherical_np(xyz):
     ptsnew[:,4] = np.arctan2(np.sqrt(xy),xyz[:,2])  # theta (0,pi); from z axis down
     ptsnew[:,5] = np.arctan2(xyz[:,1], xyz[:,0])  # phi (-pi,pi)
 
-    # map phi (-pi,pi) to (0,2*pi) 
+    # map phi (-pi,pi) to (0,2*pi)
     gt_idx = ptsnew[:,-1] < 0	# get rows where collum [:,i] is negative
     ptsnew[gt_idx,-1] = 2.*np.pi + ptsnew[gt_idx,-1]
 
@@ -40,7 +40,7 @@ dx_from_center = 267.655
 # load dataset
 data = np.loadtxt("Koord_ball.csv")
 
-# pick gobal xyz coordinates 
+# pick gobal xyz coordinates
 xyz = data[:,4:]
 # transform such that center of the ball is the origin
 xyz[:,0] -= dx_from_center
@@ -48,7 +48,7 @@ xyz[:,0] -= dx_from_center
 # Rotate the axes such that it fits to our setup
 v = np.array([[1,0,0],[2,0,1]])
 
-xaxis  = [1, 0 , 0] 
+xaxis  = [1, 0 , 0]
 xtheta = np.pi/10. # rotation angle
 
 yaxis = [0, 1, 0]
@@ -67,7 +67,7 @@ sph_coords = append_spherical_np(xyz)
 # np.set_printoptions(precision=2,suppress=True)
 np.set_printoptions(suppress=True)
 
-#convert to degree 
+#convert to degree
 sph_coords[:,-2:] *= 180/np.pi
 # print sph_coords[:,-2:] # print (theta,phi)
 # print sph_coords
@@ -76,20 +76,20 @@ n_hexa = 20
 n_pent = 12
 n_tot  = n_pent + n_hexa
 for i in range(n_hexa):
-	print    "frameHexagon_theta[%2i]\t= %f*deg;\
-			\nframeHexagon_phi[%2i]\t= %f*deg;\n\
-			 " % (i,sph_coords[i,-2],i,sph_coords[i,-1],i,0)
+	print("frameHexagon_theta[{:2d}]\t= {:.5f}*deg;\
+			\nframeHexagon_phi[{:2d}]\t= {:.5f}*deg;\n\
+			 ".format(i,sph_coords[i,-2],i,sph_coords[i,-1],i,0))
 
 for n in range(n_pent):
 	i = n_tot - n_pent + n
-	print    "framePentagon_theta[%2i]\t= %f*deg;\
-			\nframePentagon_phi[%2i]\t= %f*deg;\n\
-			 " % (n,sph_coords[i,-2],n,sph_coords[i,-1],n,0)
+	print("framePentagon_theta[{:2d}]\t= {:.5f}*deg;\
+			\nframePentagon_phi[{:2d}]\t= {:.5f}*deg;\n\
+			 ".format(n,sph_coords[i,-2],n,sph_coords[i,-1],n,0))
 
 for n in range(n_tot):
-    print     "OCLLaBr3_presence[%2i]\t\t= true;\
-             \nOCLCollimator_presence[%2i]\t= true;\
-             \nOCLLaBr3_Distance[%2i]\t\t= %s;\
-             \nOCLLaBr3_theta[%2i]\t\t\t= %f*deg;\
-             \nOCLLaBr3_phi[%2i]\t\t\t= %f*deg;\n\
-             " % (n,n,n,"20*cm",n,sph_coords[n,-2],n,sph_coords[n,-1])
+    print("OCLLaBr3_presence[{:2d}]\t\t= true;\
+             \nOCLCollimator_presence[{:2d}]\t= true;\
+             \nOCLLaBr3_Distance[{:2d}]\t\t= {};\
+             \nOCLLaBr3_theta[{:2d}]\t\t\t= {:.5f}*deg;\
+             \nOCLLaBr3_phi[{:2d}]\t\t\t= {:.5f}*deg;\n\
+             ".format(n,n,n,"20*cm",n,sph_coords[n,-2],n,sph_coords[n,-1]))

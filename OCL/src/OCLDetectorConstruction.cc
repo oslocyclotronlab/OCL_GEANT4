@@ -31,7 +31,6 @@
 #include "OCLMaterials.hh"
 #include "OCLLaBr3.hh"
 #include "OCLLaBr3Messenger.hh"
-#include "OCLCollimator.hh"
 #include "OCLFrame.hh"
 #include "SiRi.hh"
 #include "NIFF.hh"
