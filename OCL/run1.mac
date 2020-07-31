@@ -5,8 +5,13 @@
 /gps/particle gamma
 /gps/number 1
 
-# Source not hardcoded any longer
-#/gps/pos/centre  0 0 -22 cm
+## Particle source distribution and definition
+/gps/pos/type Plane
+/gps/pos/shape Ellipse
+/gps/pos/centre 0. 0. 0. mm
+/gps/pos/halfx 0.75 mm
+/gps/pos/halfy 1.25 mm
+
 /gps/energy 500. keV
 #/gps/direction 0 0 1
 /gps/ang/type iso

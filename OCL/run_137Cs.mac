@@ -8,8 +8,8 @@
 
 /gps/particle ion
 /gps/energy 0 keV
-/gps/ion 27 60 0 0
-/grdm/nucleusLimits 60 60 27 27
+/gps/ion 55 137 0 0
+/grdm/nucleusLimits 137 137 55 55
 
 ## Particle source distribution
 /gps/pos/type Volume
