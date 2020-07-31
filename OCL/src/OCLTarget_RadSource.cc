@@ -14,7 +14,8 @@ OCLTarget_RadSource::OCLTarget_RadSource()
 
   // Get materials
   OCLMaterials* fMat = OCLMaterials::GetInstance();
-  pyrex = fMat->GetMaterial("G4_Pyrex_Glass");
+  plexiglass = fMat->GetMaterial("G4_PLEXIGLASS");
+  amberlite = fMat->GetMaterial("AmberliteIR120H");
 
   //
   // Create the solids.....
@@ -35,7 +36,7 @@ void  OCLTarget_RadSource::CreateSolids() {
   // Geometry
   //
 
-  // Target
+  // Target - support material
   pX2Target = 23./2.*mm;
   pY2Target = 11./2.*mm;
   pZ2Target = 2/2.*mm;
@@ -44,7 +45,14 @@ void  OCLTarget_RadSource::CreateSolids() {
                           pX2Target,
                           pY2Target,
                           pZ2Target);
-  logTarget = new G4LogicalVolume(solidTarget, pyrex, "Target");
+  logTarget = new G4LogicalVolume(solidTarget, plexiglass, "Target");
+
+  // Target - active material; ion exchange support
+  amberliteRadius = 0.5 * mm;
+
+  solidAmberlite = new G4Orb("TargetAmberlite",
+                            amberliteRadius);
+  logAmberlite = new G4LogicalVolume(solidAmberlite, plexiglass, "TargetAmberlite");
 }
 
 
@@ -52,16 +60,25 @@ void  OCLTarget_RadSource::CreateSolids() {
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 void OCLTarget_RadSource::Placement(G4int copyNo, G4VPhysicalVolume* physiMother, G4bool checkOverlaps)
 {
-   double pmone = -1; // in principal one can adjust for forward/backward angles placement
+  double pmone = -1; // in principal one can adjust for forward/backward angles placement
 
-   physTarget = new G4PVPlacement(0,
-                                  G4ThreeVector(0,0,-pmone*pZ2Target),
-                                  "Target",
-                                  logTarget,
-                                  physiMother,
-                                  false,
-                                  0,
-                                  checkOverlaps);
+  physTarget = new G4PVPlacement(0,
+                                 G4ThreeVector(0,0,-pmone*pZ2Target),
+                                 "Target",
+                                 logTarget,
+                                 physiMother,
+                                 false,
+                                 0,
+                                 checkOverlaps);
+
+  physAmberlite = new G4PVPlacement(0,
+                                    G4ThreeVector(0,0,0),
+                                    "TargetAmberlite",
+                                    logAmberlite,
+                                    physTarget,
+                                    false,
+                                    0,
+                                    checkOverlaps);
 }
 
 

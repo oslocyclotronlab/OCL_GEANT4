@@ -10,6 +10,7 @@
 #include "G4NistManager.hh"
 
 #include "G4Box.hh"
+#include "G4Orb.hh"
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
 #include "G4SystemOfUnits.hh"
@@ -50,16 +51,23 @@ class OCLTarget_RadSource
     G4double pX2Target;
     G4double pY2Target;
     G4double pZ2Target;
+
+    G4double amberliteRadius;
     //
     // Materials
     //
-    G4Material* pyrex;
+    G4Material* plexiglass;
+    G4Material* amberlite;
 
     // Shapes
 
     G4Box* solidTarget;
     G4LogicalVolume* logTarget;
     G4VPhysicalVolume* physTarget;
+
+    G4Orb* solidAmberlite;
+    G4LogicalVolume* logAmberlite;
+    G4VPhysicalVolume* physAmberlite;
 };
 
 #endif // OCLTarget_RadSource_hh

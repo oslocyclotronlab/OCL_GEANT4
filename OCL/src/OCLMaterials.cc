@@ -39,37 +39,27 @@ void OCLMaterials::CreateMaterials() {
   G4Element* C = new G4Element(name="Carbon", symbol="C", z=6., a = 12.01*g/mole);
 
   // add more elements from NIST database
+  // G4Element* Cr = nist->FindOrBuildElement("Cr");
+  G4Element* Al = nist->FindOrBuildElement("Al");
   G4Element* Ar  = nist->FindOrBuildElement("Ar");
+  G4Element* Ca = nist->FindOrBuildElement("C");
+  G4Element* Cl = nist->FindOrBuildElement("Cl");
+  G4Element* Cr = nist->FindOrBuildElement("Cr");
   G4Element* Cs = nist->FindOrBuildElement("Cs");
-  G4Element* K  = nist->FindOrBuildElement("K");
-  G4Element* Mg = nist->FindOrBuildElement("Mg");
-  G4Element* N  = nist->FindOrBuildElement("N");
-  G4Element* O  = nist->FindOrBuildElement("O");
-  G4Element* Sb = nist->FindOrBuildElement("Sb");
+  G4Element* Cu = nist->FindOrBuildElement("Cu");
+  G4Element* Fe = nist->FindOrBuildElement("Fe");
   G4Element* H = nist->FindOrBuildElement("H");
   G4Element* He = nist->FindOrBuildElement("He");
-  G4Element* Ca = nist->FindOrBuildElement("C");
-
-  G4Element* Al = nist->FindOrBuildElement("Al");
-  G4Element* Si = nist->FindOrBuildElement("Si");
-  G4Element* Fe = nist->FindOrBuildElement("Fe");
-  G4Element* Cu = nist->FindOrBuildElement("Cu");
+  G4Element* K  = nist->FindOrBuildElement("K");
+  G4Element* Mg = nist->FindOrBuildElement("Mg");
   G4Element* Mn = nist->FindOrBuildElement("Mn");
-  G4Element* Cr = nist->FindOrBuildElement("Cr");
-  // G4Element* Cr = nist->FindOrBuildElement("Cr");
-  G4Element* Zn = nist->FindOrBuildElement("Zn");
+  G4Element* N  = nist->FindOrBuildElement("N");
+  G4Element* O  = nist->FindOrBuildElement("O");
+  G4Element* S = nist->FindOrBuildElement("S");
+  G4Element* Sb = nist->FindOrBuildElement("Sb");
+  G4Element* Si = nist->FindOrBuildElement("Si");
   G4Element* Ti = nist->FindOrBuildElement("Ti");
-
-  G4Material* Al_6061 = new G4Material("Al_6061", 2.70*g/cm3, 9);
-  Al_6061->AddElement(Si,  0.6*perCent);  //0.6
-  Al_6061->AddElement(Fe,  0.5*perCent);  //1.1
-  Al_6061->AddElement(Cu,  0.3*perCent);  //1.4
-  Al_6061->AddElement(Mn,  0.1*perCent);  //1.5
-  Al_6061->AddElement(Mg,  1.0*perCent);  //2.5
-  Al_6061->AddElement(Cr,  0.2*perCent);  //2.7
-  Al_6061->AddElement(Zn,  0.2*perCent);  //2.9
-  Al_6061->AddElement(Ti,  0.1*perCent);  //3.0
-  Al_6061->AddElement(Al, 97.0*perCent);  //100
+  G4Element* Zn = nist->FindOrBuildElement("Zn");
 
   //
   // define materials from elements.
@@ -96,13 +86,27 @@ void OCLMaterials::CreateMaterials() {
   G4Material* Argon = new G4Material(name="Argon", density = 1.7836*mg/cm3, ncomponents=1);
   Argon->AddElement(Ar, 1);
 
+  G4Material* Al_6061 = new G4Material("Al_6061", 2.70*g/cm3, 9);
+  Al_6061->AddElement(Si,  0.6*perCent);  //0.6
+  Al_6061->AddElement(Fe,  0.5*perCent);  //1.1
+  Al_6061->AddElement(Cu,  0.3*perCent);  //1.4
+  Al_6061->AddElement(Mn,  0.1*perCent);  //1.5
+  Al_6061->AddElement(Mg,  1.0*perCent);  //2.5
+  Al_6061->AddElement(Cr,  0.2*perCent);  //2.7
+  Al_6061->AddElement(Zn,  0.2*perCent);  //2.9
+  Al_6061->AddElement(Ti,  0.1*perCent);  //3.0
+  Al_6061->AddElement(Al, 97.0*perCent);  //100
 
-  //
-  // composites
-  //
+  // as provided from Fischer
+  // https://www.fishersci.se/shop/products/amberlite-ir-120-h-ion-exchange-resin/p-7046423
+  G4Material* Amberlite = new G4Material("AmerliteIR120H", 1.28*g/cm3, 6);
+  Amberlite->AddElement(C,  13);
+  Amberlite->AddElement(H,  10);
+  Amberlite->AddElement(Cl,  1);
+  Amberlite->AddElement(N,   1);
+  Amberlite->AddElement(O,   4);
+  Amberlite->AddElement(S,   1);
 
-  //---------------------------------
-  // AIR
   //1 hPa = 1 mbar
   //1 atm = 1013.25 hPa
   // density = P / R.T where R=286.9 J/(Kg.K) [or is it 287.058]
