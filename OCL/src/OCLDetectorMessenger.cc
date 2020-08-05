@@ -119,7 +119,7 @@ OCLDetectorMessenger::OCLDetectorMessenger(OCLDetectorConstruction* Det)
   fUseCSGSiRiCmd->SetParameterName("use",true);
   fUseCSGSiRiCmd->SetDefaultValue(true);
 
-  fUseCSGNiffCmd = new G4UIcmdWithABool("OCL/useCSGNiff",this);
+  fUseCSGNiffCmd = new G4UIcmdWithABool("/OCL/det/useCSGNiff",this);
   fUseCSGNiffCmd->SetGuidance("Set usage ofCSG NIFF (PPACS)");
   fUseCSGNiffCmd->SetGuidance("Note: Due to the useage of the _HP physics list, "
                                "we have to set this command before initialization");
