@@ -152,7 +152,6 @@ void OCLDetectorMessenger::SetNewValue(G4UIcommand* command, G4String newValue)
     // check argument
     G4int detNumber = StoI(next());
     G4double distance = StoD(next())*cm;
-
     fDetector->SetLaBr3_Distance(detNumber, distance);
   }
 
@@ -160,7 +159,7 @@ void OCLDetectorMessenger::SetNewValue(G4UIcommand* command, G4String newValue)
     G4Tokenizer next( newValue );
     // check argument
     G4int detNumber = StoI(next());
-    G4bool usage = StoD(next());
+    G4bool usage = StoB(next());
     fDetector->SetUseLaBr3(detNumber, usage);
   }
 
