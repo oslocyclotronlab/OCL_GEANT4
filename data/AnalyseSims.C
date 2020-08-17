@@ -43,6 +43,7 @@ void AnalyseSims::Loop()
    if (fChain == 0) return; //aborts if it cannot find the tree/chain of trees
 
    TH1D *h1 = new TH1D("h1","Simulated electron energy deposition",4200,0,21);
+   TH2D *h1_all = new TH2D("h1_all","Simulated electron energy deposition per detector",4200,0,21,30,1,31);
    TH1D *h2 = new TH1D("h2","Simulated and folded energy deposition",4200,0,21);
 
    Double_t cSmooth[] = {2.03936976e-04, 6.82322078e-23,  3.76053110e-05}; // make sure cal is in same units (MeVor keV)
@@ -88,6 +89,37 @@ void AnalyseSims::Loop()
       if(EdepInCrystal28 > 0.) h1->Fill(EdepInCrystal28);
       if(EdepInCrystal29 > 0.) h1->Fill(EdepInCrystal29);
       if(EdepInCrystal30 > 0.) h1->Fill(EdepInCrystal30);
+
+      if(EdepInCrystal1  > 0.) h1_all->Fill(EdepInCrystal1, 1);
+      if(EdepInCrystal2  > 0.) h1_all->Fill(EdepInCrystal2, 2);
+      if(EdepInCrystal3  > 0.) h1_all->Fill(EdepInCrystal3, 3);
+      if(EdepInCrystal4  > 0.) h1_all->Fill(EdepInCrystal4, 4);
+      if(EdepInCrystal5  > 0.) h1_all->Fill(EdepInCrystal5, 5);
+      if(EdepInCrystal6  > 0.) h1_all->Fill(EdepInCrystal6, 6);
+      if(EdepInCrystal7  > 0.) h1_all->Fill(EdepInCrystal7, 7);
+      if(EdepInCrystal8  > 0.) h1_all->Fill(EdepInCrystal8, 8);
+      if(EdepInCrystal9  > 0.) h1_all->Fill(EdepInCrystal9, 9);
+      if(EdepInCrystal10  > 0.) h1_all->Fill(EdepInCrystal10, 10);
+      if(EdepInCrystal11  > 0.) h1_all->Fill(EdepInCrystal11, 11);
+      if(EdepInCrystal12  > 0.) h1_all->Fill(EdepInCrystal12, 12);
+      if(EdepInCrystal13  > 0.) h1_all->Fill(EdepInCrystal13, 13);
+      if(EdepInCrystal14  > 0.) h1_all->Fill(EdepInCrystal14, 14);
+      if(EdepInCrystal15  > 0.) h1_all->Fill(EdepInCrystal15, 15);
+      if(EdepInCrystal16  > 0.) h1_all->Fill(EdepInCrystal16, 16);
+      if(EdepInCrystal17  > 0.) h1_all->Fill(EdepInCrystal17, 17);
+      if(EdepInCrystal18  > 0.) h1_all->Fill(EdepInCrystal18, 18);
+      if(EdepInCrystal19  > 0.) h1_all->Fill(EdepInCrystal19, 19);
+      if(EdepInCrystal20  > 0.) h1_all->Fill(EdepInCrystal20, 20);
+      if(EdepInCrystal21  > 0.) h1_all->Fill(EdepInCrystal21, 21);
+      if(EdepInCrystal22  > 0.) h1_all->Fill(EdepInCrystal22, 22);
+      if(EdepInCrystal23  > 0.) h1_all->Fill(EdepInCrystal23, 23);
+      if(EdepInCrystal24  > 0.) h1_all->Fill(EdepInCrystal24, 24);
+      if(EdepInCrystal25  > 0.) h1_all->Fill(EdepInCrystal25, 25);
+      if(EdepInCrystal26  > 0.) h1_all->Fill(EdepInCrystal26, 26);
+      if(EdepInCrystal27  > 0.) h1_all->Fill(EdepInCrystal27, 27);
+      if(EdepInCrystal28  > 0.) h1_all->Fill(EdepInCrystal28, 28);
+      if(EdepInCrystal29  > 0.) h1_all->Fill(EdepInCrystal29, 29);
+      if(EdepInCrystal30  > 0.) h1_all->Fill(EdepInCrystal30, 30);
 
                                         // use the random numb generator to sample from a gaussian with the parameters below
       if(EdepInCrystal1  > 0.) h2->Fill(r3->Gaus(EdepInCrystal1 , sqrt(cSmooth[0] + cSmooth[1]*EdepInCrystal1  + cSmooth[2]*EdepInCrystal1 *EdepInCrystal1 )));

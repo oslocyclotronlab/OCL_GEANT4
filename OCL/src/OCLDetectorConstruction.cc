@@ -300,6 +300,9 @@ void OCLDetectorConstruction::SetPlacementParameters()
 {
   // G4double distColltoDet = 10*mm; // Distance between Collimator and Detector (surface to Surf)
 
+  // Note that there is some machine imprecision here...
+  // Example: 359.999847*deg should of course have been 0.
+
   //Beamline
   // fOCLLaBr3_presence[0]		= false;
   // fOCLCollimator_presence[0]	= false;
