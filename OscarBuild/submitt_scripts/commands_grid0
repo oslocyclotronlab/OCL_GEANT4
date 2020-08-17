@@ -1,0 +1,1 @@
+./OCL response_grid_macs/grid_997.mac > $LOGDIR/out.o$LAUNCHER_JID

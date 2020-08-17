@@ -46,6 +46,7 @@ void AnalyseSims::Loop()
    TH2D *h1_all = new TH2D("h1_all","Simulated electron energy deposition per detector",4200,0,21,30,1,31);
    TH1D *h2 = new TH1D("h2","Simulated and folded energy deposition",4200,0,21);
 
+   // this is the old FWHM parametrization -- see python scripts for updates
    Double_t cSmooth[] = {2.03936976e-04, 6.82322078e-23,  3.76053110e-05}; // make sure cal is in same units (MeVor keV)
 
    // generate a random number

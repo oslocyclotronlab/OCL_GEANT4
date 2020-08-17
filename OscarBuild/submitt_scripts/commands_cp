@@ -1,0 +1,5 @@
+./OCL grid/1.mac > $LOGDIR/out.o$LAUNCHER_JID
+./OCL grid/2.mac > $LOGDIR/out.o$LAUNCHER_JID
+./OCL grid/3.mac > $LOGDIR/out.o$LAUNCHER_JID
+./OCL grid/4.mac > $LOGDIR/out.o$LAUNCHER_JID
+./OCL grid/5.mac > $LOGDIR/out.o$LAUNCHER_JID

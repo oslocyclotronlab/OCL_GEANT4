@@ -43,19 +43,6 @@ target_link_libraries(OCL ${Geant4_LIBRARIES})
 # build Scint. This is so that we can run the executable directly because it
 # relies on these scripts being in the current working directory.
 #
-set(OCLSCRIPTS
-  PrintSimMacs.cpp
-  manyruns.sh 
-  )
-
-foreach(_script ${OCLSCRIPTS})
-  configure_file(
-    ${PROJECT_SOURCE_DIR}/${_script}
-    ${PROJECT_BINARY_DIR}/${_script}
-    COPYONLY
-    )
-endforeach()
-
 file(GLOB MACROS "${PROJECT_SOURCE_DIR}/*.mac")
 file(COPY ${MACROS} DESTINATION ${PROJECT_BINARY_DIR})
 
@@ -64,12 +51,12 @@ file(COPY ${MACROS} DESTINATION ${PROJECT_BINARY_DIR})
 #--------------------------------------------------------------------------
 #
 # Checks whether a "data" directory exists at the place GEANT4 wants to save
-# the root files. 
+# the root files.
 # If it does not exist, this will lead to errors when you run the simulation
 #
 IF(EXISTS "../data")
        message("-- Data directory exists (needed for the root outputs)")
-else() 
+else()
        message(SEND_ERROR " \n WARNING \n \"../data\" directory DOES NOT exists (needed for the root outputs)")
 endif()
 
