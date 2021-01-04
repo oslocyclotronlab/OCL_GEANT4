@@ -1,13 +1,36 @@
 
 Geant4 Simulation of OSCAR @ OCL
 =========================================================
-[![DOI](https://zenodo.org/badge/44380221.svg)](https://zenodo.org/badge/latestdoi/44380221)
-(DOI for the latest release. Earlier verions can be cited by a specific "version" DOI, if necessary)
+[![DOI](https://zenodo.org/badge/44380221.svg)](https://zenodo.org/badge/latestdoi/44380221)  
+(DOI for the latest release of the `code`. Earlier verions can be cited by a specific "version" DOI, if necessary)
 
+This simulation implements OSCAR's LaBr3:Ce Scintillator detectors. The response functions for incident $\gamma$ rays up to 20 MeV are simulated with Geant4. The energy spectra are saved in a root tree. The results stored on zenodo (see below), and the extracted response matries are also available at [oslocyclotronlab/OCL_response_functions](https://github.com/oslocyclotronlab/OCL_response_functions).
+
+# Description / How to cite
+The simulations are described in following [article](https://doi.org/10.1016/j.nima.2020.164678):
+```
+@article{Zeiser2020,
+title = "The $\gamma$-ray energy response of the Oslo Scintillator Array OSCAR",
+journal = "Nuclear Instruments and Methods in Physics Research Section A: Accelerators, Spectrometers, Detectors and Associated Equipment",
+volume = "985",
+pages = "164678",
+year = "2021",
+issn = "0168-9002",
+doi = "https://doi.org/10.1016/j.nima.2020.164678",
+url = "http://www.sciencedirect.com/science/article/pii/S0168900220310755",
+author = "Zeiser, F. and Tveten, G.M. and {Bello Garrote}, F.L. and Guttormsen, M. and Larsen, A.C. and Ingeberg, V.W. and Görgen, A. and Siem, S.",
+keywords = "Geant4, Response function, Lanthanum-bromide, Gamma-ray detector array, Monte Carlo Simulation, Detector modeling",
+abstract = "The new Oslo Scintillator Array (OSCAR) has been commissioned at the Oslo Cyclotron Laboratory (OCL). It consists of 30 large volume (3.5 x 8 inches) LaBr$_3$(Ce) detectors that are used for $\gamma$-ray spectroscopy. The response functions for incident $\gamma$ rays up to 20 MeV are simulated with Geant4. In addition, the resolution, and the total and full-energy peak efficiencies are extracted. The results are in very good agreement with measurements from calibration sources and experimentally obtained mono-energetic in-beam  $\gamma$-ray spectra."
+}
+```
+
+- If you use/modify the simulations and or the generated response matrix, please cite the `article` mentioned above, [DOI: 10.1016/j.nima.2020.164678](https://doi.org/10.1016/j.nima.2020.164678). 
+- if possible, reference also the DOI of the specific version of the response you use / the files, i.e. `zenodo` reccord via 
+[DOI: 10.5281/zenodo.4018494](https://doi.org/10.5281/zenodo.4018494) for `v2.0.0.1`.
+- When using `v1.0.3` *or earlier*: Cite the arXive article (v1) [arxiv/2008.06240v1](https://arxiv.org/abs/2008.06240v1) and the correct zenodo version v1.0.3 (10.5281/zenodo.1339347). We appreciate if you also cite the published article, [DOI: 10.1016/j.nima.2020.164678](https://doi.org/10.1016/j.nima.2020.164678), which very briefly discusses the challenges and changes that occurred since v1.0.3. Citing the article will also give us, the programmers, creds.
+
+## 0 - Dowloading notes
 Note that the CAD geometry files (see more information below) are stored with [git lfs](https://git-lfs.github.com/). If you don't have git lfs, you will receive an [error like this](https://github.com/oslocyclotronlab/OCL_GEANT4/issues/21).
-
- This simluation implements OSCARS LaBr3:Ce Scintillator detectors  
- The energy spectra are saved in a root tree. 
 	
 ## 1- GEOMETRY DEFINITION
 	
