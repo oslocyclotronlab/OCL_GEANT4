@@ -117,11 +117,48 @@ def efficiency_plots(efficiencies: pd.DataFrame, energy_grid):
     fig.tight_layout(pad=0.02)
     return fig, ax
 
-def export_Guttormsen1996_interpolation():
-    """ write files for Guttormsen1996 response interpolation
 
-    TODO: clean up / refactor
-    """
+if __name__ == "__main__":
+    figs_dir = Path("figs")
+    figs_dir.mkdir(exist_ok=True)
+
+    response_outdir = Path("response_export")
+    response_outdir.mkdir(exist_ok=True)
+
+    energy_grid = np.arange(50, 1e4, 10, dtype=int)
+    nevents = np.linspace(6e5, 3e6, len(energy_grid), dtype=np.int)
+
+    energy_grid = np.append(energy_grid, [int(1.2e4), int(1.5e4), int(2e4)])
+    nevents = np.append(nevents, [int(3e6), int(3e6), int(3e6)])
+
+    fwhm_pars = np.array([60.6499, 0.458252, 0.000265552])
+
+    energy_out = np.arange(energy_grid[0], 21000, 10)
+    energy_out_uncut = np.arange(0, 21000, 10)
+    # response mat. with x: incident energy; y: outgoing
+    respmat = om.Matrix(values=np.zeros((len(energy_grid), len(energy_out))),
+                        Ex=energy_grid,
+                        Eg=energy_out)
+
+    eff = pd.DataFrame(columns=["E", "tot", "tot>50keV", "tot>200keV",
+                                "tot>500keV",
+                                "fe", "se", "de", "511"])
+    eff["E"] = energy_grid
+
+    eff_mama = eff.copy()
+
+    specdir = Path("from_geant")
+    # fig, ax = plt.subplots()
+    # fig_plain, ax_plain = plt.subplots()
+
+    fnmama = Path("mama_export")
+    fnmama.mkdir(exist_ok=True)
+
+    fnompy = Path("ompy_interpolate")
+    fnompy.mkdir(exist_ok=True)
+
+    ##############################
+    # Start of hack export to mama
     for i, (energy, nevent) in enumerate(zip(tqdm(energy_grid), nevents)):
         fn = specdir / f"grid_{energy}keV_n{nevent}.root.m"
         if not fn.exists():
@@ -132,7 +169,7 @@ def export_Guttormsen1996_interpolation():
 
         eff.loc[i], mama_vec = get_efficiencies(vec, eff["E"][i])
 
-        # rebin and smooth; rebin first to save time smoothing
+        # rebin and smooth; rebin first to same time smoothing
         vec.rebin(mids=energy_out_uncut)
         vec.values = om.gauss_smoothing(vec.values, vec.E,
                                         fFWHM(vec.E, fwhm_pars))
@@ -185,48 +222,8 @@ def export_Guttormsen1996_interpolation():
                    delimiter="\t", header=mama_header, comments="")
         print("saved mama")
 
-
-if __name__ == "__main__":
-    figs_dir = Path("figs")
-    figs_dir.mkdir(exist_ok=True)
-
-    response_outdir = Path("response_export")
-    response_outdir.mkdir(exist_ok=True)
-
-    energy_grid = np.arange(50, 1e4, 10, dtype=int)
-    nevents = np.linspace(6e5, 3e6, len(energy_grid), dtype=np.int)
-
-    energy_grid = np.append(energy_grid, [int(1.2e4), int(1.5e4), int(2e4)])
-    nevents = np.append(nevents, [int(3e6), int(3e6), int(3e6)])
-
-    fwhm_pars = np.array([60.6499, 0.458252, 0.000265552])
-
-    energy_out = np.arange(energy_grid[0], 21000, 10)
-    energy_out_uncut = np.arange(0, 21000, 10)
-    # response mat. with x: incident energy; y: outgoing
-    respmat = om.Matrix(values=np.zeros((len(energy_grid), len(energy_out))),
-                        Ex=energy_grid,
-                        Eg=energy_out)
-
-    eff = pd.DataFrame(columns=["E", "tot", "tot>50keV", "tot>200keV",
-                                "tot>500keV",
-                                "fe", "se", "de", "511"])
-    eff["E"] = energy_grid
-
-    eff_mama = eff.copy()
-
-    specdir = Path("from_geant")
-    # fig, ax = plt.subplots()
-    # fig_plain, ax_plain = plt.subplots()
-
-    fnmama = Path("mama_export")
-    fnmama.mkdir(exist_ok=True)
-
-    fnompy = Path("ompy_interpolate")
-    fnompy.mkdir(exist_ok=True)
-
-    # export files for interpolation with mama / ompy
-    export_Guttormsen1996_interpolation()
+    # end hacky export to mama
+    ##########################
 
     # different version of response matrix
     fn = "response_unnorm"
