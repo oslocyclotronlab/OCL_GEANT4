@@ -4,8 +4,11 @@ Geant4 Simulation of OSCAR @ OCL
 [![DOI](https://zenodo.org/badge/44380221.svg)](https://zenodo.org/badge/latestdoi/44380221)  
 (DOI for the latest release of the `code`. Earlier verions can be cited by a specific "version" DOI, if necessary)
 
+[[Description / How to cite]](#cite) - [[Dowloading notes & usage]](#download) - [[More information]](#more)
+
 This simulation implements OSCAR's LaBr3:Ce Scintillator detectors. The response functions for incident $\gamma$ rays up to 20 MeV are simulated with Geant4. The energy spectra are saved in a root tree. The results stored on zenodo (see below), and the extracted response matries are also available at [oslocyclotronlab/OCL_response_functions](https://github.com/oslocyclotronlab/OCL_response_functions).
 
+<a name="cite"/></a>
 # Description / How to cite
 The simulations are described in following [article](https://doi.org/10.1016/j.nima.2020.164678):
 ```
@@ -29,9 +32,13 @@ abstract = "The new Oslo Scintillator Array (OSCAR) has been commissioned at the
 [DOI: 10.5281/zenodo.4018494](https://doi.org/10.5281/zenodo.4018494) for `v2.0.0.1`.
 - When using `v1.0.3` *or earlier*: Cite the arXive article (v1) [arxiv/2008.06240v1](https://arxiv.org/abs/2008.06240v1) and the correct zenodo version v1.0.3 (10.5281/zenodo.1339347). We appreciate if you also cite the published article, [DOI: 10.1016/j.nima.2020.164678](https://doi.org/10.1016/j.nima.2020.164678), which very briefly discusses the challenges and changes that occurred since v1.0.3. Citing the article will also give us, the programmers, creds.
 
-## 0 - Dowloading notes
-Note that the CAD geometry files (see more information below) are stored with [git lfs](https://git-lfs.github.com/). If you don't have git lfs, you will receive an [error like this](https://github.com/oslocyclotronlab/OCL_GEANT4/issues/21).
-	
+<a name="download"/></a>
+
+## 0 - Dowloading notes & usage
+- We started a [wiki](https://github.com/oslocyclotronlab/OCL_GEANT4/wiki) with a detailed how-to guide on creating your own response matrix.
+- Note that the CAD geometry files (see more information below) are stored with [git lfs](https://git-lfs.github.com/). If you don't have git lfs, you will receive an [error like this](https://github.com/oslocyclotronlab/OCL_GEANT4/issues/21).
+
+<a name="more"/></a>
 ## 1- GEOMETRY DEFINITION
 	
    The general geometry is constructed in the DetectorConstruction class, with 
