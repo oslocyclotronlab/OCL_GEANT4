@@ -42,6 +42,7 @@ SiRi::~SiRi()
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 // Dummy class -- doesn't compile otherwise
 G4VPhysicalVolume* SiRi::Construct(){
+  return nullptr;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....

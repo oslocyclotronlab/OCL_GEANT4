@@ -51,6 +51,7 @@ NIFF::~NIFF()
 // Dummy class -- doesn't compile otherwise
 G4VPhysicalVolume* NIFF::Construct()
 {
+  return nullptr;
 }
 
 

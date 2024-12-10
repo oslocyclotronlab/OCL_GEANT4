@@ -54,7 +54,7 @@ file(COPY ${MACROS} DESTINATION ${PROJECT_BINARY_DIR})
 # the root files.
 # If it does not exist, this will lead to errors when you run the simulation
 #
-IF(EXISTS "../data")
+IF(EXISTS "${PROJECT_SOURCE_DIR}/../data")
        message("-- Data directory exists (needed for the root outputs)")
 else()
        message(SEND_ERROR " \n WARNING \n \"../data\" directory DOES NOT exists (needed for the root outputs)")

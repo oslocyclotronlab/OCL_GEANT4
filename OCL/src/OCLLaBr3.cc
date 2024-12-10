@@ -296,12 +296,12 @@ void OCLLaBr3::SetOpticalProperties() {
 	G4int nEntries = 2;
 
 	// 1eV -> 1.2399 µm; 7eV -> 0.1771µm // TODO more detailed; adopt all of them
-	G4double PhotonEnergy[nEntries] = {1.0*eV,7.0*eV};
+	G4double PhotonEnergy[] = {1.0*eV,7.0*eV};
 
 	// MgO reflector
 
-	G4double MgORefractionIndex[nEntries] = {1.0,1.0};
-	G4double MgOAbsorptionLength[nEntries] = {1.0E-9*m,1.0E-9*m};
+	G4double MgORefractionIndex[] = {1.0,1.0};
+	G4double MgOAbsorptionLength[] = {1.0E-9*m,1.0E-9*m};
 	MgOMPT = new G4MaterialPropertiesTable();
 	MgOMPT->AddProperty("RINDEX",
 						PhotonEnergy,
@@ -316,8 +316,8 @@ void OCLLaBr3::SetOpticalProperties() {
 
 	// LaBr3
 
-	G4double LaBr3RefractionIndex[nEntries] = {1.9,1.9};
-	G4double LaBr3AbsorptionLength[nEntries] = {50.*cm,50.*cm};
+	G4double LaBr3RefractionIndex[] = {1.9,1.9};
+	G4double LaBr3AbsorptionLength[] = {50.*cm,50.*cm};
 
 	LaBr3MPT = new G4MaterialPropertiesTable();
 	LaBr3MPT->AddProperty("RINDEX",
@@ -329,8 +329,8 @@ void OCLLaBr3::SetOpticalProperties() {
 						  LaBr3AbsorptionLength,
 						  nEntries);
 
-	G4double ScintEnergy[nEntries] = {3.26*eV,3.44*eV};
-	G4double ScintFast[nEntries] = {1.0,1.0};
+	G4double ScintEnergy[] = {3.26*eV,3.44*eV};
+	G4double ScintFast[] = {1.0,1.0};
 
 	LaBr3MPT->AddProperty("FASTCOMPONENT",
 						  ScintEnergy,
@@ -346,16 +346,16 @@ void OCLLaBr3::SetOpticalProperties() {
 
 	// PlexiGlas
 
-	G4double PhotonEnergy_PlexiGlass[nEntries] = {3.2626*eV, 3.4439*eV}; // 3.4439eV <- 360nm; 3.2626eV <- 380nm
+	G4double PhotonEnergy_PlexiGlass[] = {3.2626*eV, 3.4439*eV}; // 3.4439eV <- 360nm; 3.2626eV <- 380nm
 
 	//info from: http://refractiveindex.info/?shelf=organic&book=poly%28methyl_methacrylate%29&page=Szczurowski
 	// Szczurowski 2013 - n 0.4047-1.083 µm; extrapolated with
 	// n=\sqrt( 1+\frac{0.99654λ^2}{λ^2-0.00787}+\frac{0.18964λ^2}{λ^2-0.02191}
 	//          +\frac{0.00411λ^2}{λ^2-3.85727} ), where λ is in µm
-	G4double PlexiGlasRefractionIndex[nEntries] = {1.47996,1.47996};
+	G4double PlexiGlasRefractionIndex[] = {1.47996,1.47996};
 	// values from
 	// Polycast Acrylic Sheets. Davis Earle, Ron Deal and Earl Gaudette. 	SNO-STR-93-042	revised and expanded Jan 24, 1994
-	G4double PlexiGlasAbsorptionLength[nEntries] = {1./(0.04e-2)*m,1./(0.02e-2)*m};
+	G4double PlexiGlasAbsorptionLength[] = {1./(0.04e-2)*m,1./(0.02e-2)*m};
 
 	PlexiGlasMPT = new G4MaterialPropertiesTable();
 	MgOMPT->AddProperty("RINDEX",
@@ -371,8 +371,8 @@ void OCLLaBr3::SetOpticalProperties() {
 
 	// Quartz
 
-	G4double QuartzRefractionIndex[nEntries] = {1.47,1.47};
-	G4double QuartzAbsorptionLength[nEntries] = {3.0*cm,3.0*cm};
+	G4double QuartzRefractionIndex[] = {1.47,1.47};
+	G4double QuartzAbsorptionLength[] = {3.0*cm,3.0*cm};
 	QuartzMPT = new G4MaterialPropertiesTable();
 	QuartzMPT->AddProperty("RINDEX",
 						   PhotonEnergy,
@@ -386,8 +386,8 @@ void OCLLaBr3::SetOpticalProperties() {
 
 	// K2CsSb (Bialcali Photocathode)
 
-	G4double K2CsSbRefractionIndex[nEntries] = {1.47,1.47};
-	G4double K2CsSbAbsorptionLength[nEntries] = {1.0E-9*m,1.0E-9*m};
+	G4double K2CsSbRefractionIndex[] = {1.47,1.47};
+	G4double K2CsSbAbsorptionLength[] = {1.0E-9*m,1.0E-9*m};
 	K2CsSbMPT = new G4MaterialPropertiesTable();
 	K2CsSbMPT->AddProperty("RINDEX",
 						   PhotonEnergy,
@@ -401,7 +401,7 @@ void OCLLaBr3::SetOpticalProperties() {
 
 	// Air
 
-	G4double vacRefractionIndex[nEntries] = {1.0,1.0};
+	G4double vacRefractionIndex[] = {1.0,1.0};
 	vacMPT = new G4MaterialPropertiesTable();
 	vacMPT->AddProperty("RINDEX",
 						PhotonEnergy,

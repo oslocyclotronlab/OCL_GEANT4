@@ -31,7 +31,8 @@
 #ifndef OCLAnalysis_h
 #define OCLAnalysis_h 1
 
-#include "g4root.hh"
+//#include "g4root.hh"
+#include "G4AnalysisManager.hh"
 //#include "g4xml.hh"
 
 #endif

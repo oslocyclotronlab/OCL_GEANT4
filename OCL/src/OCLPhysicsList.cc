@@ -10,7 +10,6 @@
 
 #include "G4EmStandardPhysics.hh"
 #include "G4OpticalPhysics.hh"
-#include "G4OpticalProcessIndex.hh"
 
 #include "G4ParticleTypes.hh"
 
