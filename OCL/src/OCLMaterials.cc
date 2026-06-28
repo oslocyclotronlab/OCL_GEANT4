@@ -34,7 +34,7 @@ void OCLMaterials::CreateMaterials() {
   //---------------------------------
   //Define simple materials
   G4Element* Br = new G4Element("Bromium",    "Br",   z=35.,  a=79.904*g/mole);
-  G4Element* Ce = new G4Element("Cerium",     "Cl",   z=58.,  a=140.116*g/mole);
+  G4Element* Ce = new G4Element("Cerium",     "Ce",   z=58.,  a=140.116*g/mole);
   G4Element* La = new G4Element("Lanthanum",  "La",   z=57.,  a=138.90547*g/mole);
   G4Element* C = new G4Element(name="Carbon", symbol="C", z=6., a = 12.01*g/mole);
 
